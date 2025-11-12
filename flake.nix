@@ -138,6 +138,7 @@
       };
 
       formatter = {
+        # TODO is this necessary?
         # https://github.com/NixOS/nix/pull/11438#issuecomment-2343378813
         x86_64-linux = pkgs.writeShellScriptBin "formatter" ''
           # If no arguments are passed, default to formatting the whole project
