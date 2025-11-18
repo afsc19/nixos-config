@@ -121,6 +121,19 @@
     mobile = {
       android-tools.enable = true;
     }
+    services = {
+      # Nebula (VPN)
+      nebula = {
+        enable = true;
+        firewall.inbound = [
+          {
+            port = lib.my.ports.ssh;
+            proto = "tcp";
+            group = "afsc";
+          }
+        ];
+      };
+    }
     shell = {
       git.enable = true;
       yazi.enable = true;
