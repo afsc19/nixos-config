@@ -1,3 +1,4 @@
+# Laptop PC
 { configs, pkgs, lib, inputs, modulePaths, ... }:
 
 {
