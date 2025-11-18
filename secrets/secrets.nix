@@ -1,6 +1,6 @@
 # Agenix secrets, heavily inspired on Diogotcorreia's dotfiles.
 let
-  zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh9INLI4sUow/VZaBoZGwdlr3ZoYa8/j58ahzSK1LPE"
+  zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh9INLI4sUow/VZaBoZGwdlr3ZoYa8/j58ahzSK1LPE";
 
   personalSystems = [
     zenSystem
