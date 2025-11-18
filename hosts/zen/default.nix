@@ -8,20 +8,20 @@
 
 
   # --- Bootloader ---
-  boot.loader.systemd-boot.enable = false; # disable systemd-boot
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "nodev"; # for UEFI systems
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.useOSProber = true; # to detect Windows and Fedora automatically
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  #boot.loader.systemd-boot.enable = false; # disable systemd-boot
+  #boot.loader.grub.enable = true;
+  #boot.loader.grub.version = 2;
+  #boot.loader.grub.device = "nodev"; # for UEFI systems
+  #boot.loader.grub.efiSupport = true;
+  #boot.loader.grub.useOSProber = true; # to detect Windows and Fedora automatically
+  #boot.loader.efi.canTouchEfiVariables = true;
+  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # /tmp configuration
   boot.tmp.cleanOnBoot = true;
 
   # --- Network ---
-  networking.hostName = "unkown";
+  networking.hostName = "playerunknown";
   networking.networkmanager.enable = true; 
 
   # --- Bluetooth ---
@@ -113,6 +113,7 @@
     graphical = {
       gnome.enable = true;
       gtk.enable = true;
+      qt.enable = true;
     }
     laptop = {
       battery.enable = true;
@@ -126,6 +127,18 @@
       zsh.enable = true;
     }
   }
+
+
+
+  imports = with profiles; [
+    graphical.spotify;
+    graphical.zen;
+
+    security.agenix;
+    security.securegrub;
+    
+    shell.essential;
+  ]
 
   
 
