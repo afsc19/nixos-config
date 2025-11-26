@@ -25,32 +25,32 @@ in {
       font.name = "TeX Gyre Adventor 10";
 
       theme = {
-        name = "Tokyo Night";
-        package = pkgs.tokyonight-gtk-theme;
+        name = "Catppuccin1-Yellow-Dark";
+        package = pkgs.callPackage ../../config/themes/catppuccin1-yellow-dark.nix { };
       };
-      
+
       iconTheme = {
         name = "Papirus-Dark";
         package = pkgs.papirus-icon-theme;
       };
+
       cursorTheme = {
         name = "Bibata-Modern-Classic";
         package = pkgs.bibata-cursors;
       };
 
-      gtk3.extraConfig = { 
+      gtk3.extraConfig = {
         Settings = ''
           gtk-application-prefer-dark-theme=1
           gtk-cursor-theme-name=Bibata-Modern-Classic
         '';
       };
 
-
       gtk4.extraConfig = {
-      Settings = ''
-        gtk-application-prefer-dark-theme=1
-        gtk-cursor-theme-name=Bibata-Modern-Classic
-      '';
+        Settings = ''
+          gtk-application-prefer-dark-theme=1
+          gtk-cursor-theme-name=Bibata-Modern-Classic
+        '';
       };
     };
   }

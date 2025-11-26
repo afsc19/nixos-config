@@ -39,9 +39,19 @@ in
 
     # Nice-to-have GNOME tools
     environment.systemPackages = (with pkgs; [
+      # tools
       gnome.sushi        # quick preview in Nautilus (Space)
       gnome.gnome-tweaks # tweak tool
       gnome.seahorse     # GUI for keyring & 
+
+      # extensions
+      gnomeExtensions.tilingshell        # helps tiling
+      gnomeExtensions.caffeine           # dont sleep
+      gnomeExtensions.blur-my-shell      # modern background blur
+      gnomeExtensions.system-monitor     # vitals on navbar # TODO declaratively customize which may appear
+      gnomeExtensions.user-theme         # TODO add catpuccin1-yellow-dark
+
+      # TODO customize which are enabled by default (for System extensions that aren't listed here)
     ]);
     # Exclude gnome default packages
     environment.gnome.excludePackages = 
@@ -70,6 +80,52 @@ in
       ]);
     # Manage shell extensions through the browser
     services.gnome.gnome-browser-connector.enable = true; 
+
+
+    enable = true;
+    settings = {
+      "org/gnome/desktop/background" = {
+        color-shading-type = "solid";
+        # TODO understand + change this
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/Photo%20of%20Valley.jpg";
+        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/Photo%20of%20Valley.jpg";
+      };
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = "Catppuccin1-Yellow-Dark";
+        icon-theme = "Papirus-Dark";       # or Catppuccin icons ?
+        cursor-theme = "Bibata-Modern-Classic";
+      };
+      "org/gnome/shell" = {
+        enabled-extensions = [
+          "dash-to-dock@micxgx.gmail.com"
+          "show-desktop-button@amivaleo"
+          "user-theme@gnome-shell-extensions.gcampax.github.com"
+        ];
+        favorite-apps = [
+          # TODO select favorites (pinned on the bottom bar)
+          "org.gnome.Nautilus.desktop"
+          "firefox.desktop"
+          "org.gnome.Terminal.desktop"
+          "org.gnome.TextEditor.desktop"
+          "gvim.desktop"
+          "org.gnome.Extensions.desktop"
+          "org.gnome.Settings.desktop"
+          "org.gnome.tweaks.desktop"
+          "nixos-manual.desktop"
+        ];
+        "org/gnome/shell/extensions/user-theme" = {
+          name = "Catppuccin1-Yellow-Dark";  # Shell theme name from theme dir
+        };
+
+        # TODO add keybindings
+        #"org/gnome/desktop/wm/keybindings" = {
+        #  close = ["<Super>q"];
+        #  maximize = "<Super>f";
+        #  minimize = ["<Super>comma"];
+        #};
+      };
+    };
 
 
     # Enabled by default.

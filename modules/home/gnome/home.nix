@@ -8,32 +8,9 @@ in
   nixpkgs.config = { allowUnfree = true; };
 
 
-  # Home Manager needs a bit of information about you and the paths it should manage.
-  programs.home-manager.enable = true;
-  home.username = "${user}";
-  home.homeDirectory = "/home/${user}";
-  # TODO set this stateVersion
-  #home.stateVersion = "23.05";
 
 
-  
 
-    #gnome outside gnome
-  dconf = {
-    enable = true;
-    settings = {
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-	      theme = "Tokyo Night";
-      };
-      # TODO add keybindings
-      #"org/gnome/desktop/wm/keybindings" = {
-      #  close = ["<Super>q"];
-      #  maximize = "<Super>f";
-      #  minimize = ["<Super>comma"];
-      #};
-    };
-  };
 
 
 
