@@ -87,7 +87,6 @@ in
     settings = {
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
-        # TODO understand + change this
         picture-uri = wallpaper;
         picture-uri-dark = wallpaper;
       };
