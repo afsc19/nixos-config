@@ -11,6 +11,7 @@ let
   inherit (lib) mkEnableOption mkIf escapeShellArg;
   cfg = config.modules.graphical.gnome;
 
+  wallpaper = "file://${configDir}/wallpapers/dedsec1.jpg"
 in
 {
   options.modules.graphical.gnome.enable = mkEnableOption "GNOME";
@@ -87,8 +88,8 @@ in
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         # TODO understand + change this
-        picture-uri = "file:///run/current-system/sw/share/backgrounds/Photo%20of%20Valley.jpg";
-        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/Photo%20of%20Valley.jpg";
+        picture-uri = wallpaper;
+        picture-uri-dark = wallpaper;
       };
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
