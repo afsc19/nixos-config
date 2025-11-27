@@ -14,6 +14,7 @@
     neofetch
     git
     gh
+    tmux
 
 
 
