@@ -14,7 +14,9 @@
     ];
   };
 
-  hm.programs = {
-    sober.enable = true;
-  };
+  hm.home.packages = with pkgs; [
+    lunar-client
+  ];
+
+
 }
