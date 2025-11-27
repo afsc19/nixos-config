@@ -3,9 +3,6 @@
 
 {
   imports = with profiles
-  
-
-  nix.optimise.automatic = true;
 
 
   # --- Bootloader ---
@@ -18,104 +15,22 @@
   #boot.loader.efi.canTouchEfiVariables = true;
   #boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-  # /tmp configuration
-  boot.tmp.cleanOnBoot = true;
 
   # --- Network ---
   networking.hostName = "playerunknown";
   networking.networkmanager.enable = true; 
 
-  # --- Bluetooth ---
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
-
-  # --- Sound ---
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    #isDefault
-    #wireplumber.enable= true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
 
   # --- Time ---
   time.timeZone = "Europe/Lisbon";
-  
-  # --- Region/Locale ---
-  i18n.defaultLocale = "en_US.UTF-8";
-  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "pt_PT.UTF-8/UTF-8" ];
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "pt_PT.UTF-8";
-    LC_IDENTIFICATION = "pt_PT.UTF-8";
-    LC_MEASUREMENT = "pt_PT.UTF-8";
-    LC_MONETARY = "pt_PT.UTF-8";
-    LC_NAME = "pt_PT.UTF-8";
-    LC_NUMERIC = "pt_PT.UTF-8";
-    LC_PAPER = "pt_PT.UTF-8";
-    LC_TELEPHONE = "pt_PT.UTF-8";
-    LC_TIME = "pt_PT.UTF-8";
-  };
-
-
-  # --- Input ---
-  services.xserver = {
-    exportConfiguration = true; # link /usr/share/X11/ properly
-    xkb.layout = "us,pt";
-    xkb.options = "grp:win_space_toggle";
-    xkb.variant = "qwerty_digits";
-  };
-  services.gnome3.gsettings = {
-    ["org.gnome.desktop.input-sources"] = {
-      sources = [
-        ['xkb', 'us']
-        ['xkb', 'pt']
-      ];
-    };
-  };
-
-  # --- Fonts ---
-  fonts.packages = with pkgs; [
-    font-awesome
-    noto-fonts-emoji
-    # TODO Pick a font
-    #(nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Iosevka"  ]; })
-  ];
-
-  # --- Services ---
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  # Flatpak
-  services.flatpak.enable = true;
-  # locate
-  services.locate.enable = true;
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
-  services.libinput.touchpad.tapping = true; #tap
-
-
 
 
 
   modules = {
-    audio = {
-      easyeffects.enable = true;
-    };
+    # Audio enabled in the corresponding profile.
     graphical = {
       # Browsers enabled in the corresponding profile.
+      # Discord enabled in the corresponding profile.
       gnome.enable = true;
       gtk.enable = true;
       qt.enable = true;
@@ -123,6 +38,8 @@
     };
     laptop = {
       battery.enable = true;
+      bluetooth.enable = true;
+      touchpad.enable = true;
     };
     services = {
       # Nebula (VPN)
@@ -141,13 +58,17 @@
       git.enable = true;
       yazi.enable = true;
       zsh.enable = true;
-    }
+    };
+    personal.enable = true;
+    xdg.enable = true;
   }
 
 
 
   imports = with profiles; [
     graphical.browsers
+    graphical.discord
+    graphical.games
 
     mobile.android-tools
 
@@ -155,6 +76,7 @@
     security.securegrub
     
     shell.essential
+    audio
   ]
 
   
@@ -164,8 +86,8 @@
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
-  # For Chromecast from chrome
-  networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
+  # For Chromecast from chrome (defined in brave.nix)
+  #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 

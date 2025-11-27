@@ -6,9 +6,10 @@
   ...
 }:
 {
+  nix.optimise.automatic = true; # replaces nix.settings.auto-optimise-store
   nix = {
     settings = {
-      auto-optimise-store = true;
+      #auto-optimise-store = true;
       experimental-features = [
         "nix-command"
         "flakes"
@@ -75,9 +76,28 @@
   boot.loader.grub.configurationLimit = lib.mkDefault 20;
   boot.loader.systemd-boot.configurationLimit = lib.mkDefault 20;
 
+  # /tmp configuration
+  boot.tmp.cleanOnBoot = true;
+
   # dedup equal pages
   hardware.ksm = {
     enable = true;
     sleep = null;
+  };
+
+  # move to personal?
+  # --- Region/Locale ---
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "pt_PT.UTF-8/UTF-8" ];
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "pt_PT.UTF-8";
+    LC_IDENTIFICATION = "pt_PT.UTF-8";
+    LC_MEASUREMENT = "pt_PT.UTF-8";
+    LC_MONETARY = "pt_PT.UTF-8";
+    LC_NAME = "pt_PT.UTF-8";
+    LC_NUMERIC = "pt_PT.UTF-8";
+    LC_PAPER = "pt_PT.UTF-8";
+    LC_TELEPHONE = "pt_PT.UTF-8";
+    LC_TIME = "pt_PT.UTF-8";
   };
 }
