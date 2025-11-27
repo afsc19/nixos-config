@@ -7,8 +7,8 @@
 }:
 {
 
-  imports = with profiles [
-    graphical.browser.zen;
-    graphical.browser.brave;
-  ];
+  modules.graphical.browser = {
+    zen.enable = true;
+    brave.enable = true;
+  }
 }

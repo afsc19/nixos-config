@@ -112,9 +112,11 @@
 
   modules = {
     graphical = {
+      # Browsers enabled in the corresponding profile.
       gnome.enable = true;
       gtk.enable = true;
       qt.enable = true;
+      spotify.enable = true;
     }
     laptop = {
       battery.enable = true;
@@ -145,14 +147,14 @@
 
 
   imports = with profiles; [
-    graphical.spotify;
-    graphical.zen;
-    graphical.brave;
+    graphical.browsers
 
-    security.agenix;
-    security.securegrub;
+    mobile.android-tools
+
+    security.agenix
+    security.securegrub
     
-    shell.essential;
+    shell.essential
   ]
 
   
