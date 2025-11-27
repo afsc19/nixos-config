@@ -111,19 +111,19 @@
 
 
   modules = {
+    audio = {
+      easyeffects.enable = true;
+    };
     graphical = {
       # Browsers enabled in the corresponding profile.
       gnome.enable = true;
       gtk.enable = true;
       qt.enable = true;
       spotify.enable = true;
-    }
+    };
     laptop = {
       battery.enable = true;
-    }
-    mobile = {
-      android-tools.enable = true;
-    }
+    };
     services = {
       # Nebula (VPN)
       nebula = {
@@ -136,7 +136,7 @@
           }
         ];
       };
-    }
+    };
     shell = {
       git.enable = true;
       yazi.enable = true;

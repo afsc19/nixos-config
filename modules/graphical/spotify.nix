@@ -1,31 +1,41 @@
 # Spotify configuration and themeing with Spicetify
 {
-  inputs,
-  lib,
   pkgs,
+  config,
+  lib,
   ...
 }:
+let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.modules.graphical.spotify;
+
+in
 {
-  home-manager.sharedModules = [
-    inputs.spicetify-nix.homeManagerModules.default
-  ];
+  options.modules.graphical.spotify.enable = mkEnableOption "Spicified Spotify"
 
-  # Allow mDNS discovery of Google Cast devices
-  networking.firewall.allowedUDPPorts = [ lib.my.ports.mdnsGoogleCast ];
+  config = mkIf cfg.enable {
 
-  hm.programs.spicetify = {
-    enable = true;
-    spotifyPackage = pkgs.spotify;
-
-    theme = pkgs.spicetify.themes.text;
-    colorScheme = "Spotify";
-
-    enabledExtensions = with pkgs.spicetify.extensions; [
-      # TODO add extensions
+    home-manager.sharedModules = [
+      inputs.spicetify-nix.homeManagerModules.default
     ];
 
-    enabledCustomApps = with pkgs.spicetify.apps; [
-      # TODO add custom apps
-     ];
+    # Allow mDNS discovery of Google Cast devices
+    networking.firewall.allowedUDPPorts = [ lib.my.ports.mdnsGoogleCast ];
+
+    hm.programs.spicetify = {
+      enable = true;
+      spotifyPackage = pkgs.spotify;
+
+      theme = pkgs.spicetify.themes.text;
+      colorScheme = "Spotify";
+
+      enabledExtensions = with pkgs.spicetify.extensions; [
+        # TODO add extensions
+      ];
+
+      enabledCustomApps = with pkgs.spicetify.apps; [
+        # TODO add custom apps
+      ];
+    };
   };
 }
