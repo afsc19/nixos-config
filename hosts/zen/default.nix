@@ -147,6 +147,7 @@
   imports = with profiles; [
     graphical.spotify;
     graphical.zen;
+    graphical.brave;
 
     security.agenix;
     security.securegrub;
