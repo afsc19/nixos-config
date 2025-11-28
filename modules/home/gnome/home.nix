@@ -20,46 +20,31 @@ in
     vscode-with-extensions
     neovim
 
-    # Browsers
-    zen
-    chrome
-
-    # GTK customization
-    #papirus-icon-theme
-    #bibata-cursors
-    #tokyonight-gtk-theme
-
-    # File Management
-    yazi
-
-    # Yazi dependencies
-
-    # Chatting
-    equibop
-    discord # Backup
+    # Yazi dependencies?
 
     # Email
-    #thunderbird
+    thunderbird
 
 
     # File scraping
     binwalk
     foremost
+
+    # Rev
+    #ghidra
+    #binary-ninja
+    #ida
     
+    # TODO 
+    distrobox # + podman?
+    docker
+    #vmware
+    #kvm
+
+    # TODO Move themes to an independent repo
 
 
-     #########System#########
-     kitty
-     poweralertd
-     dbus
-     gnome-browser-connector
-     cudatoolkit
-     gnomeExtensions.gsconnect
-     #gnomeExtensions.legacy-gtk3-theme-scheme-auto-switcher
-     #gnome-network-displays
-     ###apps###
-     discord
-     #thunderbird
+
   ];
 
 
