@@ -30,10 +30,22 @@ in
     binwalk
     foremost
 
+    # Audio
+    #sonic-visualizer
+    #audacity
+
     # Rev
     #ghidra
     #binary-ninja
     #ida
+
+    # Steg
+    #zsteg
+    #stegoveritas
+    #stegsolve
+
+    # Brainfuck
+    #beef
     
     # TODO 
     distrobox # + podman?
