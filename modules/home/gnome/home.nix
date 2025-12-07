@@ -33,6 +33,9 @@ in
     # Audio
     #sonic-visualizer
     #audacity
+    #ffmpeg
+    #exiftool
+    #
 
     # Rev
     #ghidra
@@ -46,7 +49,12 @@ in
 
     # Brainfuck
     #beef
-    
+
+    #portswigger
+    #caido?
+
+    # TODO change gnome alt+tab to include windows from the same app
+
     # TODO 
     distrobox # + podman?
     docker
