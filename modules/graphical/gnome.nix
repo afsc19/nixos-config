@@ -83,6 +83,9 @@ in
     services.gnome.gnome-browser-connector.enable = true; 
 
 
+    # TODO gsettings set org.gnome.shell.window-switcher current-workspace-only false
+    # TODO change alt-tab to window-switcher instead of application-switcher
+
     enable = true;
     settings = {
       "org/gnome/desktop/background" = {
