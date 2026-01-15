@@ -63,6 +63,9 @@ in
 
     # TODO Move themes to an independent repo
 
+    # TODO add thunderbolt daemon
+    # TODO add tidal app? Or use brave for drm?
+
 
 
   ];
