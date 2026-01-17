@@ -28,6 +28,8 @@ in
       enableDefaultConfig = false;
       matchBlocks = {
         "*" = { };
+        
+        # TODO is this necessary? from diogotcorreia
         "* !apollo !bacchus".setEnv = {
           TERM = "xterm-256color";
         };
