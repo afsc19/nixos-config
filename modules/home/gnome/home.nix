@@ -61,8 +61,6 @@ in
     #vmware
     #kvm
 
-    # TODO Move themes to an independent repo
-
     # TODO add thunderbolt daemon
 
 

@@ -3,6 +3,7 @@
   pkgs,
   config,
   lib,
+  themesDir,
   ...
 }:
 let
@@ -26,7 +27,10 @@ in {
 
       theme = {
         name = "Catppuccin1-Yellow-Dark";
-        package = pkgs.callPackage ../../config/themes/catppuccin1-yellow-dark.nix { };
+        package = pkgs.runCommand "catppuccin1-yellow-dark" { } ''
+          mkdir -p $out/share/themes
+          cp -r ${themesDir}/Catppuccin1-Yellow-Dark $out/share/themes/
+        '';
       };
 
       iconTheme = {

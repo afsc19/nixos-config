@@ -61,7 +61,12 @@
     nix-flatpak = {
       url = "github:gmodena/nix-flatpak";
       inputs.nixpkgs.follows = "nixpkgs";
-    }
+    };
+
+    themes = {
+      url = "github:afsc19/gtk-themes";
+      flake = false;
+    };
   };
 
   outputs =
@@ -85,6 +90,7 @@
           userFullName
           ;
         configDir = ./config;
+        themesDir = inputs.themes;
       };
 
       lib = inputs.nixpkgs.lib.extend (
@@ -175,7 +181,6 @@
 #    in
 #    {
 #      nixosConfigurations = {
-#        # TODO try hyprland
 #        #hyprland = nixpkgs.lib.nixosSystem {
 #        #  inherit system;
 #        #  specialArgs = { inherit user; };

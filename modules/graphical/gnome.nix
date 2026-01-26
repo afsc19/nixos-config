@@ -51,7 +51,7 @@ in
       gnomeExtensions.caffeine           # dont sleep
       gnomeExtensions.blur-my-shell      # modern background blur
       gnomeExtensions.system-monitor     # vitals on navbar # TODO declaratively customize which may appear
-      gnomeExtensions.user-theme         # TODO add catpuccin1-yellow-dark
+      gnomeExtensions.user-theme
 
       # TODO customize which are enabled by default (for System extensions that aren't listed here)
     ]);
