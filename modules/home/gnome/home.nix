@@ -53,18 +53,17 @@ in
     #portswigger
     #caido?
 
-    # TODO change gnome alt+tab to include windows from the same app
 
-    # TODO 
-    distrobox # + podman?
+    distrobox
+    podman
     docker
+    # TODO move to virtualization profile or dedidcated modules 
     #vmware
     #kvm
 
     # TODO Move themes to an independent repo
 
     # TODO add thunderbolt daemon
-    # TODO add tidal app? Or use brave for drm?
 
 
 
