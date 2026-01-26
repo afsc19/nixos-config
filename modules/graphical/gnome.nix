@@ -11,7 +11,7 @@ let
   inherit (lib) mkEnableOption mkIf escapeShellArg;
   cfg = config.modules.graphical.gnome;
 
-  wallpaper = "file://${configDir}/wallpapers/dedsec1.jpg"
+  wallpaper = "file://${configDir}/wallpapers/dedsec1.jpg";
 in
 {
   options.modules.graphical.gnome.enable = mkEnableOption "GNOME";
@@ -81,80 +81,80 @@ in
         gnome-contacts
       ]);
     # Manage shell extensions through the browser
-    services.gnome.gnome-browser-connector.enable = true; 
+    services.gnome.gnome-browser-connector.enable = true;
 
-
-    dconf = {
-      enable = true;
-      settings = {
-        "org/gnome/desktop/background" = {
-          color-shading-type = "solid";
-          picture-uri = wallpaper;
-          picture-uri-dark = wallpaper;
-        };
-        "org/gnome/desktop/interface" = {
-          color-scheme = "prefer-dark";
-          gtk-theme = "Catppuccin1-Yellow-Dark";
-          icon-theme = "Papirus-Dark";       # or Catppuccin icons ?
-          cursor-theme = "Bibata-Modern-Classic";
-        };
-        "org/gnome/shell/extensions/system-monitor" = {
-          show-cpu = true;
-          show-download = true;
-          show-memory = true;
-          show-swap = false;
-          show-upload = false;
-        };
-        "org/gnome/shell" = {
-          enabled-extensions = [
-            "dash-to-dock@micxgx.gmail.com"
-            "show-desktop-button@amivaleo"
-            "user-theme@gnome-shell-extensions.gcampax.github.com"
-          ];
-          favorite-apps = [
-            # TODO select favorites (pinned on the bottom bar)
-            "org.gnome.Nautilus.desktop"
-            "firefox.desktop"
-            "org.gnome.Terminal.desktop"
-            "org.gnome.TextEditor.desktop"
-            "gvim.desktop"
-            "org.gnome.Extensions.desktop"
-            "org.gnome.Settings.desktop"
-            "org.gnome.tweaks.desktop"
-            "nixos-manual.desktop"
-          ];
-          "org/gnome/shell/extensions/user-theme" = {
-            name = "Catppuccin1-Yellow-Dark";  # Shell theme name from theme dir
-          };
-
-          "org/gnome/desktop/wm/keybindings" = {
-            switch-windows = ["<Alt>Tab"];
-            switch-windows-backward = ["<Shift><Alt>Tab"];
-            switch-applications = ["<Super>Tab"];
-            switch-applications-backward = ["<Shift><Super>Tab"];
-            # close = ["<Super>q"];
-            # maximize = "<Super>f";
-            # minimize = ["<Super>comma"];
-          };
-          "org/gnome/shell/window-switcher" = {
-            current-workspace-only = false;
-          };
-
-          "org/gnome/settings-daemon/plugins/media-keys" = {
-            custom-keybindings = [
-              "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
-            ];
-          };
-
-          "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
-            name = "Open Terminal";
-            command = "ptyxis --new-window"; # or "kgx", "alacritty", etc.
-            binding = "<Control><Alt>comma";
-          };
-        };
+    programs.dconf.settings = {
+      "org/gnome/desktop/background" = {
+        color-shading-type = "solid";
+        picture-uri = wallpaper;
+        picture-uri-dark = wallpaper;
       };
-    }
 
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        gtk-theme = "Catppuccin1-Yellow-Dark";
+        icon-theme = "Papirus-Dark"; # or Catppuccin icons ?
+        cursor-theme = "Bibata-Modern-Classic";
+      };
+
+      "org/gnome/shell/extensions/system-monitor" = {
+        show-cpu = true;
+        show-download = true;
+        show-memory = true;
+        show-swap = false;
+        show-upload = false;
+      };
+
+      "org/gnome/shell" = {
+        enabled-extensions = [
+          "dash-to-dock@micxgx.gmail.com"
+          "show-desktop-button@amivaleo"
+          "user-theme@gnome-shell-extensions.gcampax.github.com"
+        ];
+        favorite-apps = [
+          # TODO select favorites (pinned on the bottom bar)
+          "org.gnome.Nautilus.desktop"
+          "firefox.desktop"
+          "org.gnome.Terminal.desktop"
+          "org.gnome.TextEditor.desktop"
+          "gvim.desktop"
+          "org.gnome.Extensions.desktop"
+          "org.gnome.Settings.desktop"
+          "org.gnome.tweaks.desktop"
+          "nixos-manual.desktop"
+        ];
+      };
+
+      "org/gnome/shell/extensions/user-theme" = {
+        name = "Catppuccin1-Yellow-Dark"; # Shell theme name from theme dir
+      };
+
+      "org/gnome/desktop/wm/keybindings" = {
+        switch-windows = [ "<Alt>Tab" ];
+        switch-windows-backward = [ "<Shift><Alt>Tab" ];
+        switch-applications = [ "<Super>Tab" ];
+        switch-applications-backward = [ "<Shift><Super>Tab" ];
+        # close = ["<Super>q"];
+        # maximize = "<Super>f";
+        # minimize = ["<Super>comma"];
+      };
+
+      "org/gnome/shell/window-switcher" = {
+        current-workspace-only = false;
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+        ];
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        name = "Open Terminal";
+        command = "ptyxis --new-window"; # or "kgx", "alacritty", etc.
+        binding = "<Control><Alt>comma";
+      };
+    };
 
     # Enabled by default.
     #polkit Auth Agent
