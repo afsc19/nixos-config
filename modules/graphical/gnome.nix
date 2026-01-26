@@ -50,7 +50,7 @@ in
       gnomeExtensions.tilingshell        # helps tiling
       gnomeExtensions.caffeine           # dont sleep
       gnomeExtensions.blur-my-shell      # modern background blur
-      gnomeExtensions.system-monitor     # vitals on navbar # TODO declaratively customize which may appear
+      gnomeExtensions.system-monitor     # vitals on navbar
       gnomeExtensions.user-theme
 
       # TODO customize which are enabled by default (for System extensions that aren't listed here)
@@ -85,7 +85,7 @@ in
 
 
     dconf = {
-    enable = true;
+      enable = true;
       settings = {
         "org/gnome/desktop/background" = {
           color-shading-type = "solid";
@@ -97,6 +97,13 @@ in
           gtk-theme = "Catppuccin1-Yellow-Dark";
           icon-theme = "Papirus-Dark";       # or Catppuccin icons ?
           cursor-theme = "Bibata-Modern-Classic";
+        };
+        "org/gnome/shell/extensions/system-monitor" = {
+          show-cpu = true;
+          show-download = true;
+          show-memory = true;
+          show-swap = false;
+          show-upload = false;
         };
         "org/gnome/shell" = {
           enabled-extensions = [
