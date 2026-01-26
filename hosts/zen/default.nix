@@ -59,6 +59,10 @@
       yazi.enable = true;
       zsh.enable = true;
     };
+    virtualization = {
+      distrobox.enable = true;
+      docker.enable = true;
+    }
     personal.enable = true;
     xdg.enable = true;
   }
