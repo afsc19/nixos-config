@@ -44,9 +44,6 @@ in
     #portswigger
     #caido?
 
-    # TODO move to virtualization profile or dedidcated modules 
-    #vmware
-    #kvm
 
     # TODO add thunderbolt daemon
 
