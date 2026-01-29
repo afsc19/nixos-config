@@ -13,14 +13,8 @@ in
 
 
   home.packages = with pkgs; [
-    # Text editors
-    # TODO move to a module
-    # neovim
 
     # Yazi dependencies?
-
-    # Email
-    thunderbird
 
 
     # File scraping

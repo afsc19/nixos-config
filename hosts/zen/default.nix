@@ -31,8 +31,8 @@
     graphical = {
       # Browsers enabled in the corresponding profile.
       # Discord enabled in the corresponding profile.
+      # Editors enabled in the corresponding profile.
       gnome.enable = true;
-      vscode.enable = true;
       gtk.enable = true;
       qt.enable = true;
       spotify.enable = true;
@@ -73,6 +73,7 @@
   imports = with profiles; [
     graphical.browsers
     graphical.discord
+    graphical.editors
     graphical.games
 
     mobile.android-tools

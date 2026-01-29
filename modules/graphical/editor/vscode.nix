@@ -7,7 +7,7 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.modules.graphical.vscode;
+  cfg = config.modules.graphical.editors.vscode;
 
   ayu-high-contrast = pkgs.vscode-utils.buildVscodeExtension {
     name = "ayu-high-contrast-themes";
@@ -19,7 +19,7 @@ let
   };
 in
 {
-  options.modules.graphical.vscode.enable = mkEnableOption "vscode";
+  options.modules.graphical.editors.vscode.enable = mkEnableOption "vscode";
 
   config = mkIf cfg.enable {
     hm.programs.vscode = {

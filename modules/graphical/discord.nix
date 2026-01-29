@@ -32,7 +32,7 @@ let
       '';
 in
 {
-  options.modules.graphical.discord.enable = mkEnableOption "Discord (openasar)"
+  options.modules.graphical.discord.enable = mkEnableOption "Discord (openasar)";
 
   config = mkIf cfg.enable {
     hm.home.packages = with pkgs; [
