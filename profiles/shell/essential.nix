@@ -18,10 +18,10 @@
 
 
 
-    # TODO Test gunzip
     # Archives
     zip
     unzip
+    gzip
     tar
     xz
     p7zip
