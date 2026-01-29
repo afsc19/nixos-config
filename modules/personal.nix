@@ -13,7 +13,7 @@ let
 
 in
 {
-  options.modules.personal.enable = mkEnableOption "Personal Configs"
+  options.modules.personal.enable = mkEnableOption "Personal Configs";
 
   config = mkIf cfg.enable {
     age.secrets = {
@@ -36,23 +36,38 @@ in
 
         
         sylva = {
-          hostname = "sylva.aeesaq.eu";
+          hostname = "sylva.andrecadete.com";
           user = "ubuntu";
           IdentityFile = [ "${config.age.secrets.sylvaKey.path}" ];
-
           extraOptions = {
             IdentitiesOnly = "yes";
           };
         };
-        sylvapub = {
-          hostname = "world.sylva.aeesaq.eu";
+        "world.sylva sylva.world" = {
+          hostname = "world.sylva.andrecadete.com";
           user = "ubuntu";
           IdentityFile = [ "${config.age.secrets.sylvaKey.path}" ];
-
           extraOptions = {
             IdentitiesOnly = "yes";
           };
         };
+        sigma = {
+          hostname = "sigma.ist.utl.pt";
+          user = "ist1114254";
+          extraOptions = {
+            PubkeyAuthentication = "no";
+          }
+        };
+
+        "rnl cluster.rnl" = {
+          hostname = "cluster.rnl.tecnico.ulisboa.pt";
+          user = "ist1114254"
+          extraOptions = {
+            PubkeyAuthentication = "no";
+          }
+        }
+
+
         pwncollege = {
           hostname = "pwn.college";
           user = "hacker";
@@ -62,15 +77,6 @@ in
             IdentitiesOnly = "yes";
           }
         }
-        sigma = {
-          hostname = "sigma.ist.utl.pt";
-          user = "ist1114254";
-          extraOptions = {
-            PubkeyAuthentication = "no";
-          }
-        };
-
-
 
       };
 
