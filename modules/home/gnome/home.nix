@@ -1,11 +1,8 @@
 { config, pkgs, user, home-manager, ... }:
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+  # home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
-
-  # Allow "unfree" licenced packages
-  nixpkgs.config = { allowUnfree = true; };
 
 
 
@@ -18,7 +15,7 @@ in
   home.packages = with pkgs; [
     # Text editors
     # TODO move to a module
-    neovim
+    # neovim
 
     # Yazi dependencies?
 
@@ -29,8 +26,6 @@ in
     # File scraping
     binwalk
     foremost
-
-    #TODO add ist cert
 
     # Audio
     #sonic-visualizer
