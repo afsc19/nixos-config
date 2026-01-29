@@ -57,7 +57,10 @@
     };
     shell = {
       git.enable = true;
-      yazi.enable = true;
+      yazi = {
+        enable = true;
+        installDependencies = true;
+      }
       zsh.enable = true;
     };
     personal.enable = true;
