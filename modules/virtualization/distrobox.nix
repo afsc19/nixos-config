@@ -21,8 +21,7 @@ in
       podman
     ])
     # Optional but useful so user services are reliably started
-    # TODO what is this
-    systemd.user.startServices = "sd-switch";
+    # systemd.user.startServices = "sd-switch";
 
     # TODO test first, how to ensure it will use podman instead of docker
     # systemd.user.services."distrobox-arch" = {
