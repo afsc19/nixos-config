@@ -19,10 +19,9 @@ in
     hm = mkOption { type = types.attrs; };
     usr = mkOption { type = types.attrs; };
 
-    # FIXME this is very hacky, but no idea how to get around
     my = {
-      homeDirectory = mkOpt types.path "/home/${user}";
-      configHome = mkOpt types.path "/home/${user}/.config";
+      homeDirectory = mkOpt types.path config.users.users.${user}.home;
+      configHome = mkOpt types.path "${config.my.homeDirectory}/.config";
     };
   };
 
