@@ -29,10 +29,10 @@ in
       matchBlocks = {
         "*" = { };
         
-        # TODO is this necessary? from diogotcorreia
-        "* !apollo !bacchus".setEnv = {
-          TERM = "xterm-256color";
-        };
+        # Use if TERM isnt recognized on older  servers
+        # "* !apollo !bacchus".setEnv = {
+        #   TERM = "xterm-256color";
+        # };
 
         
         sylva = {
