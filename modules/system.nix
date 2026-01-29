@@ -62,8 +62,7 @@
     Defaults lecture=never
   '';
 
-  # Every host shares the same time zone.
-  # TODO perhaps set this per host
+  # Every host shares the same time zone. (By default)
   time.timeZone = lib.mkDefault "Europe/Lisbon";
 
   #networking.domain = lib.mkDefault ".com";
