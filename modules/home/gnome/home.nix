@@ -46,6 +46,7 @@ in
 
 
     # TODO add thunderbolt daemon
+    services.hardware.bolt.enable = true;
 
 
 

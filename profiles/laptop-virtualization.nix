@@ -8,7 +8,7 @@
   modules.virtualization = {
     docker.enable = true;
     distrobox.enable = true;
-    kvm.enable = true;
+    kvm.enable = true; # qemu_kvm + libvirtd
   };
 
   # System packages
