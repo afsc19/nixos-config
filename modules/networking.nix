@@ -18,4 +18,12 @@ in
       description = "The main wireless interface of this device";
     };
   };
+
+  # Network Manager
+  networking.networkmanager = {
+    enable = true;
+    ethernet.macAddress = "stable";
+    wifi.macAddress = "stable";
+  };
+  usr.extraGroups = [ "networkmanager" ];
 }

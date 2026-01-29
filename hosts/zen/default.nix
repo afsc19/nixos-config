@@ -17,7 +17,7 @@
 
 
   # --- Network ---
-  networking.hostName = "playerunknown";
+  networking.hostName = "zen";
   networking.networkmanager.enable = true; 
 
 
@@ -32,6 +32,7 @@
       # Browsers enabled in the corresponding profile.
       # Discord enabled in the corresponding profile.
       gnome.enable = true;
+      vscode.enable = true;
       gtk.enable = true;
       qt.enable = true;
       spotify.enable = true;
@@ -83,17 +84,10 @@
     audio
   ]
 
-  # Network Manager
-  # TODO move to module
-  networking.networkmanager = {
-    enable = true;
-    ethernet.macAddress = "stable";
-    wifi.macAddress = "stable";
-  };
-  usr.extraGroups = [ "networkmanager" ];
-
+  my.networking.wiredInterface = "eth1"
   my.networking.wirelessInterface = "wlo1";
   my.hardware.laptop = true;
+  # TODO add my....
   
 
   
