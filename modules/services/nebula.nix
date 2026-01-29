@@ -16,7 +16,7 @@ let
   cfg = config.modules.services.nebula;
 
   lighthouses = {
-    "192.168.100.1" = [ "nebula.aeesaq.eu:4242" ]; # TODO change domain (keep revproxy)
+    "192.168.100.1" = [ "nebula.andrecadete.com:4242" ];
   };
 in
 {
