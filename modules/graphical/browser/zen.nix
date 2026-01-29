@@ -11,7 +11,7 @@ let
 in
 {
 
-  options.modules.graphical.browser.zen.enable = mkEnableOption "Zen Browser"
+  options.modules.graphical.browser.zen.enable = mkEnableOption "Zen Browser";
 
   config = mkIf cfg.enable {
     hm.sharedModules = [

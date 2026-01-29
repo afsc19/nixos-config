@@ -14,12 +14,12 @@ in
 
   home.packages = with pkgs; [
 
-    # Yazi dependencies?
+    # TODO Yazi dependencies?
 
 
     # File scraping
-    binwalk
-    foremost
+    # binwalk
+    # foremost
 
     # Audio
     #sonic-visualizer
@@ -43,12 +43,6 @@ in
 
     #portswigger
     #caido?
-
-
-    # TODO add thunderbolt daemon
-    services.hardware.bolt.enable = true;
-
-
 
   ];
 

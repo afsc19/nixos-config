@@ -11,7 +11,7 @@ let
 
 in
 {
-  options.modules.graphical.browser.brave.enable = mkEnableOption "Brave Browser"
+  options.modules.graphical.browser.brave.enable = mkEnableOption "Brave Browser";
 
   config = mkIf cfg.enable {
     hm.programs.brave.enable = true;

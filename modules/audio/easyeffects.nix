@@ -23,7 +23,7 @@ let
 
 in
 {
-  options.modules.audio.easyeffects.enable = mkEnableOption "EasyEffects"
+  options.modules.audio.easyeffects.enable = mkEnableOption "EasyEffects";
 
   config = mkIf cfg.enable {
 

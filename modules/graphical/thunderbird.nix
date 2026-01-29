@@ -10,7 +10,7 @@ let
   cfg = config.modules.graphical.thunderbird;
 in
 {
-  options.modules.graphical.thunderbird.enable = mkEnableOption "Thunderbird"
+  options.modules.graphical.thunderbird.enable = mkEnableOption "Thunderbird";
 
   config = mkIf cfg.enable {
     hm.home.packages = with pkgs; [

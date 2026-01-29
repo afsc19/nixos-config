@@ -11,7 +11,7 @@ let
 
 in
 {
-  options.modules.laptop.touchpad.enable = mkEnableOption "Touchpad Support"
+  options.modules.laptop.touchpad.enable = mkEnableOption "Touchpad Support";
 
   config = mkIf cfg.enable {
 

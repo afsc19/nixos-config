@@ -11,7 +11,7 @@ let
 
 in
 {
-  options.modules.graphical.spotify.enable = mkEnableOption "Spicified Spotify"
+  options.modules.graphical.spotify.enable = mkEnableOption "Spicified Spotify";
 
   config = mkIf cfg.enable {
 

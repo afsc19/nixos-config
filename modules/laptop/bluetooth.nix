@@ -11,7 +11,7 @@ let
 
 in
 {
-  options.modules.laptop.bluetooth.enable = mkEnableOption "Bluetooth"
+  options.modules.laptop.bluetooth.enable = mkEnableOption "Bluetooth";
 
   config = mkIf cfg.enable {
 
