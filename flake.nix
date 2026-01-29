@@ -19,9 +19,8 @@
       # we don't use darwin, so we can get rid of it
       inputs.darwin.follows = "";
 
-      # TODO understand the purpose of this:
-      # used for tests only
-      #inputs.home-manager.follows = "";
+      # used for home-manager's internal tests only
+      inputs.home-manager.follows = "";
     };
 
     spicetify-nix = {
