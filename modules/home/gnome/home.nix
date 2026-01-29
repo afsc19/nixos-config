@@ -17,7 +17,7 @@ in
 
   home.packages = with pkgs; [
     # Text editors
-    vscode-with-extensions
+    # TODO move to a module
     neovim
 
     # Yazi dependencies?
@@ -29,6 +29,8 @@ in
     # File scraping
     binwalk
     foremost
+
+    #TODO add ist cert
 
     # Audio
     #sonic-visualizer
@@ -53,10 +55,6 @@ in
     #portswigger
     #caido?
 
-
-    distrobox
-    podman
-    docker
     # TODO move to virtualization profile or dedidcated modules 
     #vmware
     #kvm

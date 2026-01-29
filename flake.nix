@@ -67,6 +67,11 @@
       url = "github:afsc19/gtk-themes";
       flake = false;
     };
+
+    vscode-ayu-theme = {
+      url = "github:afsc19/ayu-high-contrast-themes";
+      flake = false;
+    };
   };
 
   outputs =
@@ -91,6 +96,7 @@
           ;
         configDir = ./config;
         themesDir = inputs.themes;
+        vscodeAyuThemeDir = inputs.vscode-ayu-theme;
       };
 
       lib = inputs.nixpkgs.lib.extend (
