@@ -18,7 +18,7 @@ in {
       tokyonight-gtk-theme.enable = true;
       papirus-icon-theme.enable = true;
       bibata-cursors.enable = true;
-    }
+    };
 
     # --- GTK customization ---
     gtk = {
@@ -57,5 +57,5 @@ in {
         '';
       };
     };
-  }
+  };
 }
