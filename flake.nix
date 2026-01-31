@@ -2,7 +2,8 @@
   description = "afsc gnome flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
     home = {
@@ -152,8 +153,8 @@
       packages = {
         x86_64-linux = pkgs.my // {
           inherit (pkgs);
-          lzbt = inputs.lanzaboote.packages.x86_64-linux.lzbt;
-          pwndbg = inputs.pwndbg.packages.x86_64-linux.pwndbg;
+          inherit (inputs.lanzaboote.packages.x86_64-linux) lzbt;
+          inherit (inputs.pwndbg.packages.x86_64-linux) pwndbg;
         };
       };
 
