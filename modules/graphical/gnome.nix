@@ -18,7 +18,7 @@ in
 
   config = mkIf cfg.enable {
 
-      # --- Services ---
+    # --- Services ---
     # Enable the X11 windowing system.
     services.xserver.enable = true;
 
@@ -29,9 +29,9 @@ in
     services.xserver.displayManager.gdm.wayland = true;
 
     # Desktop plumbing that GNOME expects
-    programs.dconf.enable = true;                # system dconf support
-    services.gvfs.enable = true;                 # Trash, MTP, SMB, etc.
-    services.gnome.gnome-keyring.enable = true;  # Secret storage + SSH/GPG integration
+    programs.dconf.enable = true; # system dconf support
+    services.gvfs.enable = true; # Trash, MTP, SMB, etc.
+    services.gnome.gnome-keyring.enable = true; # Secret storage + SSH/GPG integration
     #services.power-profiles-daemon.enable = true;# Power management in GNOME
 
     # Portals for GNOME (file pickers, screencast)
@@ -39,28 +39,32 @@ in
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
 
     # Nice-to-have GNOME tools
-    environment.systemPackages = (with pkgs; [
-      # tools
-      gnome.sushi        # quick preview in Nautilus (Space)
-      gnome.gnome-tweaks # tweak tool
-      gnome.seahorse     # GUI for keyring & 
-      ptyxis
+    environment.systemPackages = (
+      with pkgs;
+      [
+        # tools
+        gnome.sushi # quick preview in Nautilus (Space)
+        gnome.gnome-tweaks # tweak tool
+        gnome.seahorse # GUI for keyring &
+        ptyxis
 
-      # extensions
-      gnomeExtensions.tilingshell        # helps tiling
-      gnomeExtensions.caffeine           # dont sleep
-      gnomeExtensions.blur-my-shell      # modern background blur
-      gnomeExtensions.system-monitor     # vitals on navbar
-      gnomeExtensions.user-theme
+        # extensions
+        gnomeExtensions.tilingshell # helps tiling
+        gnomeExtensions.caffeine # dont sleep
+        gnomeExtensions.blur-my-shell # modern background blur
+        gnomeExtensions.system-monitor # vitals on navbar
+        gnomeExtensions.user-theme
 
-      # TODO customize which are enabled by default (for System extensions that aren't listed here)
-    ]);
+        # TODO customize which are enabled by default (for System extensions that aren't listed here)
+      ]
+    );
     # Exclude gnome default packages
-    environment.gnome.excludePackages = 
+    environment.gnome.excludePackages =
       (with pkgs; [
         gnome-photos
         gnome-tour
-      ]) ++ (with pkgs.gnome; [
+      ])
+      ++ (with pkgs.gnome; [
         cheese # webcam tool
         #gnome-music
         gnome-terminal # default terminal

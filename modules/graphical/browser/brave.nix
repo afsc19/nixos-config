@@ -16,6 +16,11 @@ in
   config = mkIf cfg.enable {
     hm.programs.brave.enable = true;
     # chromecast ports
-    networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
+    networking.firewall.allowedUDPPortRanges = [
+      {
+        from = 32768;
+        to = 60999;
+      }
+    ];
   };
 }

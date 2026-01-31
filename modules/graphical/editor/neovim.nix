@@ -26,7 +26,7 @@ in
         gcc
         gnumake
         unzip
-        
+
         # Search tools for Telescope
         ripgrep
         fd

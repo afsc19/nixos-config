@@ -6,7 +6,12 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.modules.shell.yazi;
 
   # Recommended dependency bundle
@@ -63,7 +68,7 @@ in
     };
     extraPackages = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
       description = "Additional packages to install alongside yazi (system-wide & HM).";
     };
   };
@@ -82,7 +87,9 @@ in
     };
 
     # System-wide packages (so yazi + deps available even outside HM user)
-    environment.systemPackages = lib.mkIf cfg.installDependencies (recommendedDeps ++ cfg.extraPackages);
+    environment.systemPackages = lib.mkIf cfg.installDependencies (
+      recommendedDeps ++ cfg.extraPackages
+    );
 
     # Provide the function for non-HM managed POSIX shells (e.g. root, other users)
     environment.etc."profile.d/30-yazi-cwd.sh".text = yFunctionPOSIX;

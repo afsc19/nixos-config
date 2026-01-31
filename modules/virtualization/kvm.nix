@@ -30,7 +30,10 @@ in
     programs.virt-manager.enable = true;
 
     # Add user to the libvirtd/kvm group
-    usr.extraGroups = [ "libvirtd" "kvm" ];
+    usr.extraGroups = [
+      "libvirtd"
+      "kvm"
+    ];
 
     # Better spice support
     services.spice-vdagentd.enable = true;

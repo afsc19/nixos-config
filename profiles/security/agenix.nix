@@ -15,7 +15,7 @@ in
   ];
 
   age.identityPaths = [
-    "${systemRoot}/etc/ssh/ssh_host_ed25519_key" 
+    "${systemRoot}/etc/ssh/ssh_host_ed25519_key"
     "/etc/age/fido2-hmac-magic.txt"
   ];
 

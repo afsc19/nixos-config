@@ -1,21 +1,18 @@
-{ config, pkgs, user, home-manager, ... }:
+{
+  config,
+  pkgs,
+  user,
+  home-manager,
+  ...
+}:
 let
   # home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
 in
 {
 
-
-
-
-
-
-
-
-
   home.packages = with pkgs; [
 
     # TODO Yazi dependencies?
-
 
     # File scraping
     # binwalk
@@ -45,7 +42,5 @@ in
     #caido?
 
   ];
-
-
 
 }

@@ -40,7 +40,6 @@ mkSecrets [
 
   # Add secrets on another distro using: nix-shell -E 'let pkgs = import <nixpkgs> {}; src = builtins.fetchTarball "https://github.com/ryantm/agenix/archive/main.tar.gz"; agenix = pkgs.callPackage "${src}/pkgs/agenix.nix" {}; in pkgs.mkShell { packages = [ agenix pkgs.age-plugin-fido2-hmac ]; }'
 
-
   (mkSystem null allSystems [
     "nebulaCA"
   ])

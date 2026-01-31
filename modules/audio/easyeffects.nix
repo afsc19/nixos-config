@@ -13,11 +13,10 @@ let
   # 1. Define your specific device name (Run `pw-cli info all` or check EasyEffects logs to find this)
   # Example: "alsa_output.pci-0000_00_1f.3.analog-stereo"
   myDeviceName = "alsa_output.usb-Logitech_PRO_X_2_LIGHTSPEED_0000000000000000-00.stereo-fallback";
-  
+
   # 2. Define the Preset Name
   myPresetName = "px2";
 
-  
   # Option B: Use a local file
   impulseResponse = "${configDir}/audio/px2.irs";
 
@@ -32,14 +31,14 @@ in
 
     # Declarative Configuration via XDG Config
     xdg.configFile = {
-      
+
       # A. Link the Impulse Response file
       "easyeffects/irs/${myPresetName}.irs".source = impulseResponse;
 
       # B. Create the Preset JSON
       "easyeffects/output/${myPresetName}.json".text = builtins.toJSON {
         output = {
-          blocklist = [];
+          blocklist = [ ];
           plugins_order = [ "convolverpx2" ];
           convolverpx2 = {
             autogain = true;
@@ -59,6 +58,6 @@ in
         device = myDeviceName;
         preset = myPresetName;
       };
-    };  
+    };
   };
 }

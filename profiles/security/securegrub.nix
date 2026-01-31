@@ -14,7 +14,7 @@ in
     useOSProber = true;
     extraFiles = {
       "shimx64.efi" = "${pkgs.shim}/share/shimx64.efi";
-      "mmx64.efi"   = "${pkgs.shim}/share/mmx64.efi";
+      "mmx64.efi" = "${pkgs.shim}/share/mmx64.efi";
     };
     # Post-install hook: first-time key generation + MOK enrollment + signing (idempotent)
     extraInstallCommands = ''
@@ -45,7 +45,10 @@ in
     '';
   };
 
-  environment.systemPackages = [ pkgs.sbctl pkgs.shim ];
+  environment.systemPackages = [
+    pkgs.sbctl
+    pkgs.shim
+  ];
 
   # Activation script: re-check & (re)sign after switch (covers grub path changes)
   system.activationScripts.secureboot-resign = lib.stringAfter [ "users" ] ''
