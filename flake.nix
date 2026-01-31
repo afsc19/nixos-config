@@ -152,7 +152,7 @@
       # Packages are here so they are built by CI and cached
       packages = {
         x86_64-linux = pkgs.my // {
-          inherit (pkgs);
+          # inherit (pkgs);
           inherit (inputs.lanzaboote.packages.x86_64-linux) lzbt;
           inherit (inputs.pwndbg.packages.x86_64-linux) pwndbg;
         };
