@@ -3,7 +3,7 @@
   pkgs,
   config,
   lib,
-  options
+  options,
   ...
 }:
 let
@@ -17,5 +17,5 @@ in
 
   config = mkIf cfg.enable {
     services.hardware.bolt.enable = true;
-  }
+  };
 }

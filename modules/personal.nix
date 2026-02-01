@@ -56,16 +56,16 @@ in
           user = "ist1114254";
           extraOptions = {
             PubkeyAuthentication = "no";
-          }
+          };
         };
 
         "rnl cluster.rnl" = {
           hostname = "cluster.rnl.tecnico.ulisboa.pt";
-          user = "ist1114254"
+          user = "ist1114254";
           extraOptions = {
             PubkeyAuthentication = "no";
-          }
-        }
+          };
+        };
 
 
         pwncollege = {
@@ -75,8 +75,8 @@ in
 
           extraOptions = {
             IdentitiesOnly = "yes";
-          }
-        }
+          };
+        };
 
       };
 
@@ -92,7 +92,7 @@ in
       xkb.variant = "qwerty_digits";
     };
     services.gnome3.gsettings = {
-      ["org.gnome.desktop.input-sources"] = {
+      "org.gnome.desktop.input-sources" = {
         sources = [
           ['xkb', 'us']
           ['xkb', 'pt']
