@@ -10,14 +10,12 @@ let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.audio.easyeffects;
 
-  # 1. Define your specific device name (Run `pw-cli info all` or check EasyEffects logs to find this)
-  # Example: "alsa_output.pci-0000_00_1f.3.analog-stereo"
+  # Define your specific device name (Run `pw-cli info all` or check EasyEffects logs to find this)
   myDeviceName = "alsa_output.usb-Logitech_PRO_X_2_LIGHTSPEED_0000000000000000-00.stereo-fallback";
-
-  # 2. Define the Preset Name
+  # Define the Preset Name
   myPresetName = "px2";
 
-  # Option B: Use a local file
+  # Use an local irs file
   impulseResponse = "${configDir}/audio/px2.irs";
 
 in
@@ -29,13 +27,12 @@ in
     # Enable EasyEffects
     services.easyeffects.enable = true;
 
-    # Declarative Configuration via XDG Config
     xdg.configFile = {
 
-      # A. Link the Impulse Response file
+      # Link the Impulse Response file
       "easyeffects/irs/${myPresetName}.irs".source = impulseResponse;
 
-      # B. Create the Preset JSON
+      # Create the Preset JSON
       "easyeffects/output/${myPresetName}.json".text = builtins.toJSON {
         output = {
           blocklist = [ ];
@@ -52,8 +49,7 @@ in
         };
       };
 
-      # C. Setup Autoloading for the specific device
-      # This creates the map file that tells EasyEffects "When this device connects, load this preset"
+      # Setup Autoloading for the specific device
       "easyeffects/autoload/output/${myDeviceName}.json".text = builtins.toJSON {
         device = myDeviceName;
         preset = myPresetName;
