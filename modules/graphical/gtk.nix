@@ -21,7 +21,7 @@ in {
     };
 
     # --- GTK customization ---
-    gtk = {
+    hm.gtk = {
       enable = true;
       font.name = "TeX Gyre Adventor 10";
 

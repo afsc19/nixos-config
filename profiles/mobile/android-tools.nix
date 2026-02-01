@@ -2,7 +2,6 @@
 {
   pkgs,
   config,
-  lib,
   user,
   ...
 }:
@@ -10,7 +9,7 @@
 
   programs.adb.enable = true;
   users.users.${user}.extraGroups = [ "adbusers" ];
-  hm.home.packages = (
+  hm.home.packages = 
     with pkgs;
     [
       # adb, fastboot, etc..
@@ -19,7 +18,6 @@
       # Screen mirroring + UI for adb connection
       qtscrcpy
 
-    ]
-  );
+    ];
 
 }
