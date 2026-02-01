@@ -91,11 +91,11 @@ in
       xkb.options = "grp:win_space_toggle";
       xkb.variant = "qwerty_digits";
     };
-    services.gnome3.gsettings = {
-      "org.gnome.desktop.input-sources" = {
+    hm.dconf.settings = {
+      "org/gnome/desktop/input-sources" = {
         sources = [
-          ['xkb', 'us']
-          ['xkb', 'pt']
+          [ "xkb" "us" ]
+          [ "xkb" "pt" ]
         ];
       };
     };
