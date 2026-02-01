@@ -19,11 +19,13 @@ in
     };
   };
 
-  # Network Manager
-  networking.networkmanager = {
-    enable = true;
-    ethernet.macAddress = "stable";
-    wifi.macAddress = "stable";
+  config = {
+    # Network Manager
+    networking.networkmanager = {
+      enable = true;
+      ethernet.macAddress = "stable";
+      wifi.macAddress = "stable";
+    };
+    usr.extraGroups = [ "networkmanager" ];
   };
-  usr.extraGroups = [ "networkmanager" ];
 }
