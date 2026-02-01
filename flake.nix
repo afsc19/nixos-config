@@ -139,7 +139,7 @@
               useUserPackages = true;
             };
           }
-          inputs.impermanence.nixosModules.impermanence
+          # inputs.impermanence.nixosModules.impermanence
           inputs.lanzaboote.nixosModules.lanzaboote
         ];
       };
