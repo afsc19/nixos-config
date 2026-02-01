@@ -2,6 +2,8 @@
   config,
   inputs,
   lib,
+  systemRoot,
+  pkgs,
   ...
 }:
 let

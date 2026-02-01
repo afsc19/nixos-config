@@ -1,8 +1,7 @@
 # Laptop PC
-{ configs, pkgs, lib, inputs, modulePaths, ... }:
+{ configs, pkgs, lib, inputs, modulePaths, profiles, ... }:
 
 {
-  imports = with profiles
 
 
   # --- Bootloader ---
@@ -60,7 +59,7 @@
       yazi = {
         enable = true;
         installDependencies = true;
-      }
+      };
       zsh.enable = true;
     };
     personal.enable = true;
@@ -84,9 +83,9 @@
     shell.essential
     audio
     laptop-virtualization
-  ]
+  ];
 
-  my.networking.wiredInterface = "eth1"
+  my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
   my.hardware.laptop = true;
   # TODO add my....

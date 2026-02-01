@@ -19,7 +19,7 @@ in
     environment.systemPackages = (with pkgs; [
       distrobox
       podman
-    ])
+    ]);
     # Optional but useful so user services are reliably started
     # systemd.user.startServices = "sd-switch";
 
@@ -47,5 +47,5 @@ in
     #     ${pkgs.distrobox}/bin/distrobox-create --name kali --image docker.io/kalilinux/kali-rolling --yes || true
     #   '';
     # };
-  }
+  };
 }

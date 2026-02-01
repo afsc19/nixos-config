@@ -10,5 +10,5 @@
   modules.graphical.browser = {
     zen.enable = true;
     brave.enable = true;
-  }
+  };
 }
