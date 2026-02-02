@@ -41,7 +41,7 @@ in
 
         # Themes
         teabyii.ayu
-        FranRuizSantaclara.high-contrast-theme
+        # FranRuizSantaclara.high-contrast-theme
 
         # Custom theme
         ayu-high-contrast
