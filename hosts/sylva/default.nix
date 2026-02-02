@@ -46,16 +46,7 @@
     };
     services = {
       # Nebula (VPN)
-      nebula = {
-        enable = true;
-        firewall.inbound = [
-          {
-            port = lib.my.ports.ssh;
-            proto = "tcp";
-            group = "afsc";
-          }
-        ];
-      };
+      nebula.enable = true;
     };
     shell = {
       git.enable = true;

@@ -1,0 +1,35 @@
+# OpenSSH server configuration
+{ lib, ... }:
+let
+  sshKeys = [
+    "" # TODO add afsc ssh keys
+  ];
+in
+{
+  services.openssh = {
+    enable = true;
+    authorizedKeysFiles = lib.mkForce [ "/etc/ssh/authorized_keys.d/%u" ];
+    settings = {
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
+    ports = [ lib.my.ports.ssh ];
+
+    # Disable RSA host key
+    hostKeys = [
+      {
+        path = "/etc/ssh/ssh_host_ed25519_key";
+        type = "ed25519";
+      }
+    ];
+  };
+  usr.openssh.authorizedKeys.keys = sshKeys;
+
+  modules.services.nebula.firewall.inbound = [
+    {
+      port = lib.my.ports.ssh;
+      proto = "tcp";
+      group = "afsc";
+    }
+  ];
+}
