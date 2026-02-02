@@ -87,7 +87,7 @@ in
     # Manage shell extensions through the browser
     services.gnome.gnome-browser-connector.enable = true;
 
-    programs.dconf.settings = {
+    hm.dconf.settings = {
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         picture-uri = wallpaper;

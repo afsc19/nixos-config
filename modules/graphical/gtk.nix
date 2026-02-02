@@ -14,11 +14,11 @@ in {
 
   config = mkIf cfg.enable {
 
-    hm.programs = {
-      tokyonight-gtk-theme.enable = true;
-      papirus-icon-theme.enable = true;
-      bibata-cursors.enable = true;
-    };
+    hm.home.packages = with pkgs; [
+      tokyonight-gtk-theme
+      papirus-icon-theme
+      bibata-cursors
+    ];
 
     # --- GTK customization ---
     hm.gtk = {

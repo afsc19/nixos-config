@@ -15,8 +15,8 @@ in
   options.modules.graphical.browser.zen.enable = mkEnableOption "Zen Browser";
 
   config = mkIf cfg.enable {
-    hm.sharedModules = [
-      inputs.zen-browser.homeManagerModules.default
+    home-manager.sharedModules = [
+      inputs.zen-browser.homeModules.default
     ];
 
     hm.programs.zen-browser = {
@@ -62,7 +62,7 @@ in
       nativeMessagingHosts = [ pkgs.firefoxpwa ];
     };
 
-    xdg.mimeApps =
+    hm.xdg.mimeApps =
       let
         value =
           let

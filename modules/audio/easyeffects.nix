@@ -24,35 +24,37 @@ in
 
   config = mkIf cfg.enable {
 
-    # Enable EasyEffects
-    services.easyeffects.enable = true;
+    hm = {
+      # Enable EasyEffects
+      services.easyeffects.enable = true;
 
-    xdg.configFile = {
+      xdg.configFile = {
 
-      # Link the Impulse Response file
-      "easyeffects/irs/${myPresetName}.irs".source = impulseResponse;
+        # Link the Impulse Response file
+        "easyeffects/irs/${myPresetName}.irs".source = impulseResponse;
 
-      # Create the Preset JSON
-      "easyeffects/output/${myPresetName}.json".text = builtins.toJSON {
-        output = {
-          blocklist = [ ];
-          plugins_order = [ "convolverpx2" ];
-          convolverpx2 = {
-            autogain = true;
-            bypass = false;
-            input-gain = 0.0;
-            output-gain = 0.0;
-            # Important: EasyEffects looks for the filename in the 'irs' dir
-            kernel-name = "${myPresetName}.irs";
-            ir-width = 100;
+        # Create the Preset JSON
+        "easyeffects/output/${myPresetName}.json".text = builtins.toJSON {
+          output = {
+            blocklist = [ ];
+            plugins_order = [ "convolverpx2" ];
+            convolverpx2 = {
+              autogain = true;
+              bypass = false;
+              input-gain = 0.0;
+              output-gain = 0.0;
+              # Important: EasyEffects looks for the filename in the 'irs' dir
+              kernel-name = "${myPresetName}.irs";
+              ir-width = 100;
+            };
           };
         };
-      };
 
-      # Setup Autoloading for the specific device
-      "easyeffects/autoload/output/${myDeviceName}.json".text = builtins.toJSON {
-        device = myDeviceName;
-        preset = myPresetName;
+        # Setup Autoloading for the specific device
+        "easyeffects/autoload/output/${myDeviceName}.json".text = builtins.toJSON {
+          device = myDeviceName;
+          preset = myPresetName;
+        };
       };
     };
   };
