@@ -89,7 +89,6 @@ in
       exportConfiguration = true; # link /usr/share/X11/ properly
       xkb.layout = "us,pt";
       xkb.options = "grp:win_space_toggle";
-      xkb.variant = "qwerty_digits";
     };
     hm.dconf.settings = {
       "org/gnome/desktop/input-sources" = {
