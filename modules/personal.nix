@@ -103,7 +103,7 @@ in
     # --- Fonts ---
     fonts.packages = with pkgs; [
       font-awesome
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       # TODO Pick a font
       #(nerdfonts.override { fonts = [ "FiraCode" "JetBrainsMono" "Iosevka"  ]; })
     ];

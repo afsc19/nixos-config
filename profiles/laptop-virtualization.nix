@@ -14,6 +14,6 @@
   # System packages
   environment.systemPackages = with pkgs; [
     # VMWare Workstation
-    vmware
+    vmware-workstation
   ];
 }

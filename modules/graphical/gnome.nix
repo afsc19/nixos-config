@@ -23,10 +23,10 @@ in
     services.xserver.enable = true;
 
     # Enable GNOME (modern option)
-    services.xserver.desktopManager.gnome.enable = true;
+    services.desktopManager.gnome.enable = true;
     # Enable Gnome login
-    services.xserver.displayManager.gdm.enable = true;
-    services.xserver.displayManager.gdm.wayland = true;
+    services.displayManager.gdm.enable = true;
+    services.displayManager.gdm.wayland = true;
 
     # Desktop plumbing that GNOME expects
     programs.dconf.enable = true; # system dconf support

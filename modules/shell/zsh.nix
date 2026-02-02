@@ -48,7 +48,7 @@ in
         # Disable beep when no file is found, per example.
         #initExtra = "unsetopt beep";
 
-        enableAutosuggestions = true;
+        autosuggestion.enable = true;
         zplug = {
           enable = true;
           plugins = [

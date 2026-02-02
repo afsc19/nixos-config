@@ -78,7 +78,7 @@ in
       programs.yazi.enable = true;
 
       # Inject 'y'
-      programs.zsh.initExtra = lib.mkAfter yFunctionPOSIX;
+      programs.zsh.initContent = lib.mkAfter yFunctionPOSIX;
       programs.bash.initExtra = lib.mkAfter yFunctionPOSIX;
       programs.fish.interactiveShellInit = lib.mkAfter yFunctionFish;
 

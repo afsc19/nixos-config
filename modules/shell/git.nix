@@ -19,11 +19,11 @@ in
       lfs.enable = true;
 
       # Global config
-      userName = "afsc19";
-      userEmail = "71138696+afsc19@users.noreply.github.com";
+      settings.user.name = "afsc19";
+      settings.user.email = "71138696+afsc19@users.noreply.github.com";
 
       # Extra settings for better defaults
-      extraConfig = {
+      settings = {
         init.defaultBranch = "main";
         pull.rebase = true; # rebase on pull to avoid merge commits
         push.autoSetupRemote = true; # auto-track remote branch on first push
@@ -33,7 +33,7 @@ in
       };
 
       # Aliases for convenience
-      aliases = {
+      settings.alias = {
         co = "checkout";
         br = "branch";
         ci = "commit";
@@ -42,15 +42,15 @@ in
         unstage = "reset HEAD --";
         lg = "log --graph --oneline --decorate --all";
       };
+    };
 
-      # Delta (better diff viewer)
-      delta = {
-        enable = true;
-        options = {
-          navigate = true;
-          line-numbers = true;
-          side-by-side = false;
-        };
+    # Delta (better diff viewer)
+    programs.delta = {
+      enable = true;
+      options = {
+        navigate = true;
+        line-numbers = true;
+        side-by-side = false;
       };
     };
 

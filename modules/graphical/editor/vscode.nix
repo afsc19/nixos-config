@@ -34,33 +34,35 @@ in
     hm.programs.vscode = {
       enable = true;
       package = pkgs.vscode;
-      extensions = with pkgs.vscode-extensions; [
-        # Nix
-        bbenoist.nix
-        jnoortheen.nix-ide
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          # Nix
+          bbenoist.nix
+          jnoortheen.nix-ide
 
-        # PDFs
-        tomoki1207.pdf
+          # PDFs
+          tomoki1207.pdf
 
-        # HEX editor
-        ms-vscode.hexeditor
+          # HEX editor
+          ms-vscode.hexeditor
 
-        # CSV colors
-        mechatroner.rainbow-csv
+          # CSV colors
+          mechatroner.rainbow-csv
 
-        # Themes
-        teabyii.ayu
-        # FranRuizSantaclara.high-contrast-theme
+          # Themes
+          teabyii.ayu
+          # FranRuizSantaclara.high-contrast-theme
 
-        # Custom theme
-        ayu-high-contrast
+          # Custom theme
+          ayu-high-contrast
 
-      ];
-      userSettings = {
-        "workbench.colorTheme" = "Ayu Dark Bordered High Contrast"; # Custom theme
-        "editor.fontSize" = 14;
-        "files.refactoring.autoSave" = true;
-        # TODO add more settings
+        ];
+        userSettings = {
+          "workbench.colorTheme" = "Ayu Dark Bordered High Contrast"; # Custom theme
+          "editor.fontSize" = 14;
+          "files.refactoring.autoSave" = true;
+          # TODO add more settings
+        };
       };
     };
   };
