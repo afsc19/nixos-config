@@ -28,7 +28,7 @@ let
       }
       ''
         jq --argjson cfg ${lib.escapeShellArg (builtins.toJSON settings)} \
-          
+          '$cfg' -n > $out
       '';
 in
 {
