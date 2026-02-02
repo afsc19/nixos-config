@@ -21,7 +21,7 @@ let
     ripgrep
     fzf
     zoxide
-    poppler_utils
+    poppler-utils
     ffmpeg
     mediainfo
     chafa

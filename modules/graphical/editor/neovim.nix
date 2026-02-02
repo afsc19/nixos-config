@@ -38,7 +38,7 @@ in
         nixpkgs-fmt # nix formatter
 
         # Common dependencies for LazyVim extras
-        nodePackages.pyright # Python LSP
+        pyright # Python LSP
         black # Python formatter
         shfmt # Shell formatter
         shellcheck # Shell linter
