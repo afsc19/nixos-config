@@ -38,7 +38,7 @@ in
         sylva = {
           hostname = "sylva.andrecadete.com";
           user = "ubuntu";
-          IdentityFile = [ "${config.age.secrets.sylvaKey.path}" ];
+          identityFile = [ "${config.age.secrets.sylvaKey.path}" ];
           extraOptions = {
             IdentitiesOnly = "yes";
           };
@@ -46,7 +46,7 @@ in
         "world.sylva sylva.world" = {
           hostname = "world.sylva.andrecadete.com";
           user = "ubuntu";
-          IdentityFile = [ "${config.age.secrets.sylvaKey.path}" ];
+          identityFile = [ "${config.age.secrets.sylvaKey.path}" ];
           extraOptions = {
             IdentitiesOnly = "yes";
           };
@@ -71,7 +71,7 @@ in
         pwncollege = {
           hostname = "pwn.college";
           user = "hacker";
-          IdentityFile = [ "${config.age.secrets.pwncollegeKey.path}" ];
+          identityFile = [ "${config.age.secrets.pwncollegeKey.path}" ];
 
           extraOptions = {
             IdentitiesOnly = "yes";
