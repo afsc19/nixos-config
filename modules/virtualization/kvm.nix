@@ -20,7 +20,7 @@ in
         runAsRoot = true;
         swtpm.enable = true;
 
-        
+
         # Now available by default
         # ovmf = {
         #   enable = true;
@@ -47,7 +47,7 @@ in
       spice
       spice-gtk
       spice-protocol
-      win-virtio
+      virtio-win
       win-spice
     ];
   };

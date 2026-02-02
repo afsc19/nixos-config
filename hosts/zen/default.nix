@@ -43,7 +43,7 @@
     };
     services = {
       # Nebula (VPN)
-      nebula.enabled = true;
+      nebula.enable = true;
     };
     shell = {
       git.enable = true;
@@ -56,7 +56,7 @@
     personal.enable = true;
     thunderbolt.enable = true;
     xdg.enable = true;
-  }
+  };
 
 
 

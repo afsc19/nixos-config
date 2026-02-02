@@ -43,17 +43,17 @@ in
       with pkgs;
       [
         # tools
-        gnome.sushi # quick preview in Nautilus (Space)
-        gnome.gnome-tweaks # tweak tool
-        gnome.seahorse # GUI for keyring &
+        sushi # quick preview in Nautilus (Space)
+        gnome-tweaks # tweak tool
+        seahorse # GUI for keyring &
         ptyxis
 
         # extensions
-        gnomeExtensions.tilingshell # helps tiling
+        gnomeExtensions.tiling-shell # helps tiling
         gnomeExtensions.caffeine # dont sleep
         gnomeExtensions.blur-my-shell # modern background blur
         gnomeExtensions.system-monitor # vitals on navbar
-        gnomeExtensions.user-theme
+        gnomeExtensions.user-themes
 
         # TODO customize which are enabled by default (for System extensions that aren't listed here)
       ]
@@ -61,15 +61,15 @@ in
     # Exclude gnome default packages
     environment.gnome.excludePackages =
       (with pkgs; [
-        gnome-photos
+        # gnome-photos
         gnome-tour
-        cheese # webcam tool
-        gnome-terminal # default terminal
+        # cheese # webcam tool
+        # gnome-terminal # default terminal
         gnome-music
         epiphany # web browser
-        gedit # text editor
+        # gedit # text editor
         # geary # email reader
-        evince # document viewer
+        # evince # document viewer
         # gnome-characters
         totem # video player
         tali # poker game
@@ -78,8 +78,8 @@ in
         atomix # puzzle game
         # rygel
         yelp
-        gnome-logs
-        gnome-clocks
+        # gnome-logs
+        # gnome-clocks
         gnome-contacts
       ]);
     # Manage shell extensions through the browser

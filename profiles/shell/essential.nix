@@ -22,7 +22,7 @@
     zip
     unzip
     gzip
-    tar
+    gnutar
     xz
     p7zip
 
