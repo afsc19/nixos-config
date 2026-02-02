@@ -16,6 +16,15 @@ let
     vscodeExtPublisher = "afsc19";
     vscodeExtUniqueId = "afsc19.ayu-high-contrast-themes";
     version = "1.0.0";
+    pname = "ayu-high-contrast-themes";
+    
+    # Manually install the extension since there's no build process
+    buildPhase = ''
+       runHook preBuild;
+       mkdir -p "$out/vscode/extensions/afsc19.ayu-high-contrast-themes"
+       cp -r * "$out/vscode/extensions/afsc19.ayu-high-contrast-themes"
+       runHook postBuild;
+    '';
   };
 in
 {
