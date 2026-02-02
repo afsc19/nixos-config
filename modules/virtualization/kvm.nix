@@ -19,10 +19,13 @@ in
         package = pkgs.qemu_kvm;
         runAsRoot = true;
         swtpm.enable = true;
-        ovmf = {
-          enable = true;
-          packages = [ pkgs.OVMFFull.fd ];
-        };
+
+        
+        # Now available by default
+        # ovmf = {
+        #   enable = true;
+        #   packages = [ pkgs.OVMFFull.fd ];
+        # };
       };
     };
 

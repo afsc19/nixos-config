@@ -5,7 +5,7 @@
 }:
 {
   # --- Sound ---
-  sound.enable = true;
+  # sound.enable = true; # No longed needed
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -22,7 +22,7 @@
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
-    media-session.enable = true; # Just to be sure
+    # media-session.enable = true;
   };
   modules.audio.easyeffects.enable = true;
 }
