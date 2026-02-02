@@ -33,7 +33,7 @@ in
       fi
 
       # Attempt to sign grub if unsigned and keys exist (will fail gracefully if not enrolled yet)
-      if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | grep -q grubx64.efi | grep -q UNSIGNED; then
+      if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         if [ -f "${secureBootDir}/db.key" ]; then
           echo "[secureboot] Signing grubx64.efi"
           ${pkgs.sbctl}/bin/sbctl sign /boot/efi/EFI/nixos/grubx64.efi || echo "[secureboot] grub signing failed (expected if keys not yet trusted)."
@@ -52,7 +52,7 @@ in
   # Activation script: re-check & (re)sign after switch (covers grub path changes)
   system.activationScripts.secureboot-resign = lib.stringAfter [ "users" ] ''
     if [ -f "${secureBootDir}/db.key" ]; then
-      if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | grep -q grubx64.efi | grep -q UNSIGNED; then
+      if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         echo "[secureboot] Activation: signing grubx64.efi"
         ${pkgs.sbctl}/bin/sbctl sign /boot/efi/EFI/nixos/grubx64.efi || echo "[secureboot] activation signing failed"
       fi
