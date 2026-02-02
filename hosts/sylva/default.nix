@@ -19,7 +19,7 @@
 
 
   # --- Network ---
-  networking.hostName = "zen";
+  # Defined in generators.nix - networking.hostName = "zen";
   networking.networkmanager.enable = true; 
 
 

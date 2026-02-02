@@ -2,7 +2,6 @@
   config,
   inputs,
   lib,
-  systemRoot,
   pkgs,
   ...
 }:
@@ -17,7 +16,7 @@ in
   ];
 
   age.identityPaths = [
-    "${systemRoot}/etc/ssh/ssh_host_ed25519_key"
+    "/etc/ssh/ssh_host_ed25519_key"
     "/etc/age/fido2-hmac-magic.txt"
   ];
 
