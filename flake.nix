@@ -122,7 +122,7 @@
         };
 
       overlays = (mkOverlays ./overlays) // {
-        extraPkgs = _self: _super: (extraPackages { inherit system; });
+        extraPkgs = final: prev: (extraPackages { inherit system; });
       };
       pkgs = mkPkgs overlays;
       nixosConfigurations = mkHosts ./hosts {
