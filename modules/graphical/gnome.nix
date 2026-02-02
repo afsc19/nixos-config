@@ -63,25 +63,23 @@ in
       (with pkgs; [
         gnome-photos
         gnome-tour
-      ])
-      ++ (with pkgs.gnome; [
         cheese # webcam tool
-        #gnome-music
         gnome-terminal # default terminal
-        #gedit # text editor
+        gnome-music
         epiphany # web browser
-        #geary # email reader
-        #evince # document viewer
-        #gnome-characters
-        #totem # video player
+        gedit # text editor
+        # geary # email reader
+        evince # document viewer
+        # gnome-characters
+        totem # video player
         tali # poker game
         iagno # go game
         hitori # sudoku game
         atomix # puzzle game
-        #rygel
+        # rygel
         yelp
-        #gnome-logs
-        #gnome-clocks
+        gnome-logs
+        gnome-clocks
         gnome-contacts
       ]);
     # Manage shell extensions through the browser
