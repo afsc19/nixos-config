@@ -4,5 +4,6 @@
   # track of assigned ports across all profiles/modules
   ports = {
     ssh = 22;
+    mdnsGoogleCast = 5353;
   };
 }
