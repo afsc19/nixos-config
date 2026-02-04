@@ -71,6 +71,7 @@
     security.agenix
     security.securegrub
     
+    services.ssh
     shell.essential
     audio
     laptop-virtualization
