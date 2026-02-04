@@ -54,6 +54,7 @@ in
         gnomeExtensions.blur-my-shell # modern background blur
         gnomeExtensions.system-monitor # vitals on navbar
         gnomeExtensions.user-themes
+        gnomeExtensions.dash-to-dock
 
         # TODO customize which are enabled by default (for System extensions that aren't listed here)
       ]
@@ -110,8 +111,11 @@ in
       "org/gnome/shell" = {
         enabled-extensions = [
           "dash-to-dock@micxgx.gmail.com"
-          "show-desktop-button@amivaleo"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
+          "tilingshell@ferrarodomenico.com"
+          "caffeine@patapon.info"
+          "blur-my-shell@aunetx"
+          "system-monitor@paradoxxx.zero.gmail.com"
         ];
         favorite-apps = [
           # TODO select favorites (pinned on the bottom bar)
