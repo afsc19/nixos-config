@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
-  plymouthTheme = "target_2";
+  plymouthTheme = "glitch";
 in
 {
   # Plymouth:
