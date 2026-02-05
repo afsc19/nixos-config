@@ -133,16 +133,13 @@ in
           "clipboard-history@alexsaveau.dev"
         ];
         favorite-apps = [
-          # TODO select favorites (pinned on the bottom bar)
+          "zen-beta.desktop"
+          "org.gnome.Ptyxis.desktop"
           "org.gnome.Nautilus.desktop"
-          "firefox.desktop"
-          "org.gnome.Terminal.desktop"
-          "org.gnome.TextEditor.desktop"
-          "gvim.desktop"
-          "org.gnome.Extensions.desktop"
+          "brave.desktop" # TODO confirm brave's .desktop
+          "virt-manager.desktop"
+          "vmware-workstation.desktop"
           "org.gnome.Settings.desktop"
-          "org.gnome.tweaks.desktop"
-          "nixos-manual.desktop"
         ];
       };
 
