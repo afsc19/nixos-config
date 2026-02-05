@@ -47,7 +47,7 @@ in
         # tools
         sushi # quick preview in Nautilus (Space)
         gnome-tweaks # tweak tool
-        seahorse # GUI for keyring &
+        seahorse # GUI for keyring
         ptyxis
       ]) ++ (with pkgs.gnomeExtensions; [
         # extensions
