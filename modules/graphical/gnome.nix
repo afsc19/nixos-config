@@ -12,6 +12,9 @@ let
   cfg = config.modules.graphical.gnome;
 
   wallpaper = "file://${configDir}/wallpapers/dedsec1.jpg";
+
+  ptyxisTheme = "Argonaut";
+  ptyxisProfileUUID = "23f46f5c-8d19-4c07-acab-7d4323234252";
 in
 {
   options.modules.graphical.gnome.enable = mkEnableOption "GNOME";
@@ -98,6 +101,16 @@ in
         gtk-theme = "Catppuccin1-Yellow-Dark";
         icon-theme = "Papirus-Dark"; # or Catppuccin icons ?
         cursor-theme = "Bibata-Modern-Classic";
+      };
+
+      "org/gnome/Ptyxis" = {
+        default-profile-uuid = ptyxisProfileUUID;
+        profile-uuids = [ ptyxisProfileUUID ];
+      };
+
+      "org/gnome/Ptyxis/Profiles/${ptyxisProfileUUID}" = {
+        label = "Default theme";
+        palette = ptyxisTheme;
       };
 
       "org/gnome/shell/extensions/system-monitor" = {
