@@ -18,6 +18,10 @@
       # https://github.com/NixOS/nix/issues/9649#issuecomment-1868001568
       trusted-users = [ "root" ];
 
+      # Yazi cache server
+      extra-substituters = [ "https://yazi.cachix.org" ];
+      extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" ];
+
       # https://jackson.dev/post/nix-reasonable-defaults/
       fallback = true; # skip offline binary-caches (can end up building from source)
 
