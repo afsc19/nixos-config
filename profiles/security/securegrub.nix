@@ -32,6 +32,11 @@ in
     device = "nodev";
     efiSupport = true;
     useOSProber = true;
+
+    # Crucial for Plymouth: Pass the correct video mode from GRUB to the kernel
+    gfxmodeEfi = "auto";
+    gfxpayloadEfi = "keep";
+
     extraFiles = {
       "shimx64.efi" = "${pkgs.shim-unsigned}/share/shim/shimx64.efi";
       "mmx64.efi" = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
