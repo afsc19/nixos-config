@@ -43,6 +43,14 @@ in
     useOSProber = true;
     default = "saved";
 
+    dedsec-theme = {
+      enable = true;
+      style = "firewall";
+      icon = "white";
+      resolution = "1440p";
+    };
+
+
     extraEntries = ''
       menuentry "UEFI Firmware Settings" {
         fwsetup

@@ -71,6 +71,11 @@
       url = "github:afsc19/ayu-high-contrast-themes";
       flake = false;
     };
+
+    dedsec-grub-theme = {
+      url = gitlab:VandalByte/dedsec-grub-theme;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -174,53 +179,3 @@
       };
     };
 }
-
-#      pkgs = import nixpkgs {
-#        inherit system;
-#        config.allowUnfree = true;
-#      };
-#
-#      lib = nixpkgs.lib;
-#    in
-#    {
-#      nixosConfigurations = {
-#        #hyprland = nixpkgs.lib.nixosSystem {
-#        #  inherit system;
-#        #  specialArgs = { inherit user; };
-#        #  modules = [
-#        #    ./hosts/hyprland/configuration.nix
-##
-#        #    hyprland.nixosModules.default
-#        #    {
-#        #      programs.hyprland.enable = true;
-#        #      programs.hyprland.xwayland.enable = true;
-#        #    }
-#        #    home-manager.nixosModules.home-manager
-#        #    {
-#        #      home-manager.useGlobalPkgs = true;
-#        #      home-manager.useUserPackages = true;
-#        #      home-manager.extraSpecialArgs = { inherit user; };
-#        #      home-manager.users.${user} = import ./modules/home/hyprland/home.nix;
-#        #    }
-#        #  ];
-#        #};
-#        gnome = nixpkgs.lib.nixosSystem {
-#          inherit system;
-#          specialArgs = { inherit user; };
-#          modules = [
-#            ./hosts/gnome/configuration.nix
-#
-#            home-manager.nixosModules.home-manager
-#            {
-#              home-manager.useGlobalPkgs = true;
-#              home-manager.useUserPackages = true;
-#              home-manager.extraSpecialArgs = { inherit user; };
-#              home-manager.users.${user} = import ./modules/home/gnome/home.nix;
-#            }
-#          ];
-#        };
-#
-#      };
-#
-#    };
-#}
