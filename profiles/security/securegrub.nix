@@ -1,12 +1,18 @@
 { lib, pkgs, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
+  plymouthTheme = "target_2";
 in
 {
   # Plymouth:
   boot.plymouth = {
     enable = true;
-    theme = "bgrt"; # "bgrt" uses the UEFI Vendor Logo (ACPI BGRT) + Spinner
+    theme = plymouthTheme;
+    themePackages = with pkgs; [
+      (adi1090x-plymouth-themes.override {
+        selected_themes = [ plymouthTheme ]; # Only install the selected theme
+      })
+    ];
   };
 
   # Enable systemd in initrd. This is required for the modern graphical 
