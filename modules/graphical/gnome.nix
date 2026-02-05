@@ -119,7 +119,7 @@ in
       };
 
       "org/gnome/shell/extensions/clipboard-history" = {
-        history-size = 72200;
+        history-size = 100000;
       };
 
       "org/gnome/shell" = {
