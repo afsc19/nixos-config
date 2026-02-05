@@ -16,6 +16,7 @@ let
 
   # Recommended dependency bundle
   recommendedDeps = with pkgs; [
+    nerd-fonts
     yazi
     fd
     ripgrep
