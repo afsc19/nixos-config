@@ -118,6 +118,10 @@ in
         show-upload = false;
       };
 
+      "org/gnome/shell/extensions/clipboard-history" = {
+        history-size = 72200;
+      };
+
       "org/gnome/shell" = {
         enabled-extensions = [
           "dash-to-dock@micxgx.gmail.com"
