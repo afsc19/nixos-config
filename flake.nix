@@ -146,7 +146,7 @@
           }
           # inputs.impermanence.nixosModules.impermanence
           inputs.lanzaboote.nixosModules.lanzaboote
-          inputs.dedsec-grub-theme.nixosModules.default
+          inputs.dedsec-grub-theme.nixosModule
         ];
       };
       profiles = mkProfiles ./profiles;
