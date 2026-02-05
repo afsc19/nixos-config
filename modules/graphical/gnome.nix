@@ -135,10 +135,12 @@ in
         favorite-apps = [
           "zen-beta.desktop"
           "org.gnome.Ptyxis.desktop"
-          "org.gnome.Nautilus.desktop"
+          "equibop.desktop"
           "brave-browser.desktop"
+          "discord.desktop"
           "virt-manager.desktop"
           "vmware-workstation.desktop"
+          "org.gnome.Nautilus.desktop"
           "org.gnome.Settings.desktop"
         ];
       };
