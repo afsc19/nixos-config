@@ -132,6 +132,8 @@ in
           "system-monitor@gnome-shell-extensions.gcampax.github.com"
           "clipboard-history@alexsaveau.dev"
         ];
+        # Find system apps in: /run/current-system/sw/share/applications
+        # Find home-manager apps in: ~/.local/state/home-manager/gcroots/current-home/home-path/share/applications
         favorite-apps = [
           "zen-beta.desktop"
           "org.gnome.Ptyxis.desktop"
