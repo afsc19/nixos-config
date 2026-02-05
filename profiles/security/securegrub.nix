@@ -25,6 +25,9 @@ in
   ];
   boot.consoleLogLevel = 0;
 
+  boot.loader.efi.canTouchEfiVariables = true; # Required for "reboot --firmware-setup"
+  boot.loader.timeout = 200;
+
   # Use sbctl verify, sbctl status, to check if it's working.
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub = {
@@ -32,6 +35,13 @@ in
     device = "nodev";
     efiSupport = true;
     useOSProber = true;
+    default = "saved";
+
+    extraEntries = ''
+      menuentry "UEFI Firmware Settings" {
+        fwsetup
+      }
+    '';
 
     # Crucial for Plymouth: Pass the correct video mode from GRUB to the kernel
     gfxmodeEfi = "auto";
@@ -49,10 +59,10 @@ in
         echo "[secureboot] No Secure Boot keys detected. Creating and enrolling MOK..."
         ${pkgs.sbctl}/bin/sbctl create-keys
         # Automatic MOK enrollment scheduling (user still confirms at next boot screen)
-        if ${pkgs.sbctl}/bin/sbctl enroll-keys; then
-          echo "[secureboot] MOK enrollment scheduled. Reboot and accept the MOK manager prompt."
+        if ${pkgs.sbctl}/bin/sbctl enroll-keys -m -t; then
+          echo "[secureboot] Key enrollment scheduled. Reboot and accept the MOK manager prompt if needed."
         else
-          echo "[secureboot] Failed to schedule MOK enrollment; run 'sbctl enroll-keys' manually."
+          echo "[secureboot] Failed to schedule key enrollment; ensure you are in Setup Mode or run 'sbctl enroll-keys --microsoft' manually."
         fi
       else
         echo "[secureboot] Secure Boot keys already present; skipping creation & enrollment schedule."
