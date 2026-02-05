@@ -49,10 +49,10 @@ in
         echo "[secureboot] No Secure Boot keys detected. Creating and enrolling MOK..."
         ${pkgs.sbctl}/bin/sbctl create-keys
         # Automatic MOK enrollment scheduling (user still confirms at next boot screen)
-        if ${pkgs.sbctl}/bin/sbctl enroll-moks; then
+        if ${pkgs.sbctl}/bin/sbctl enroll-keys; then
           echo "[secureboot] MOK enrollment scheduled. Reboot and accept the MOK manager prompt."
         else
-          echo "[secureboot] Failed to schedule MOK enrollment; run 'sbctl enroll-moks' manually."
+          echo "[secureboot] Failed to schedule MOK enrollment; run 'sbctl enroll-keys' manually."
         fi
       else
         echo "[secureboot] Secure Boot keys already present; skipping creation & enrollment schedule."
