@@ -26,4 +26,12 @@ in
     age
     age-plugin-fido2-hmac
   ];
+
+  # Ensure the fido2-hmac plugin is available during activation/decryption
+  age.ageBin = let
+    ageWrapped = pkgs.writeShellScriptBin "age" ''
+      export PATH=$PATH:${lib.makeBinPath [ pkgs.age-plugin-fido2-hmac ]}
+      exec ${pkgs.age}/bin/age "$@"
+    '';
+  in "${ageWrapped}/bin/age";
 }
