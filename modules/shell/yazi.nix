@@ -16,8 +16,9 @@ let
 
   # Recommended dependency bundle
   recommendedDeps = with pkgs; [
-    nerd-fonts
     yazi
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
     fd
     ripgrep
     fzf
@@ -76,18 +77,22 @@ in
 
   config = mkIf cfg.enable {
     hm = {
-      programs.yazi.enable = true;
+      programs.yazi = {
+        enable = true;
+        enableZshIntegration = true;
+        shellWrapperName = "y";
+      };
 
       # Inject 'y'
-      programs.zsh.initContent = lib.mkAfter yFunctionPOSIX;
-      programs.bash.initExtra = lib.mkAfter yFunctionPOSIX;
-      programs.fish.interactiveShellInit = lib.mkAfter yFunctionFish;
+      # programs.zsh.initContent = lib.mkAfter yFunctionPOSIX;
+      # programs.bash.initExtra = lib.mkAfter yFunctionPOSIX;
+      # programs.fish.interactiveShellInit = lib.mkAfter yFunctionFish;
 
       # Ensure packages exist for user profile
       home.packages = lib.mkIf cfg.installDependencies (recommendedDeps ++ cfg.extraPackages);
     };
 
-    # System-wide packages (so yazi + deps available even outside HM user)
+    # System-wide yazi
     environment.systemPackages = lib.mkIf cfg.installDependencies (
       recommendedDeps ++ cfg.extraPackages
     );
