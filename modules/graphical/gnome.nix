@@ -42,26 +42,23 @@ in
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
 
     # Nice-to-have GNOME tools
-    environment.systemPackages = (
-      with pkgs;
-      [
+    environment.systemPackages =
+      (with pkgs; [
         # tools
         sushi # quick preview in Nautilus (Space)
         gnome-tweaks # tweak tool
         seahorse # GUI for keyring &
         ptyxis
-
+      ]) ++ (with pkgs.gnomeExtensions; [
         # extensions
-        gnomeExtensions.tiling-shell # helps tiling
-        gnomeExtensions.caffeine # dont sleep
-        gnomeExtensions.blur-my-shell # modern background blur
-        gnomeExtensions.system-monitor # vitals on navbar
-        gnomeExtensions.user-themes
-        gnomeExtensions.dash-to-dock
-
-        # TODO customize which are enabled by default (for System extensions that aren't listed here)
-      ]
-    );
+        tiling-shell # helps tiling
+        caffeine # dont sleep
+        blur-my-shell # modern background blur
+        system-monitor # vitals on navbar
+        clipboard-history
+        user-themes
+        dash-to-dock
+      ]);
     # Exclude gnome default packages
     environment.gnome.excludePackages =
       (with pkgs; [
@@ -128,7 +125,8 @@ in
           "tilingshell@ferrarodomenico.com"
           "caffeine@patapon.info"
           "blur-my-shell@aunetx"
-          "system-monitor@paradoxxx.zero.gmail.com"
+          "system-monitor@gnome-shell-extensions.gcampax.github.com"
+          "clipboard-history@alexsaveau.dev"
         ];
         favorite-apps = [
           # TODO select favorites (pinned on the bottom bar)
