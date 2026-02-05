@@ -136,7 +136,7 @@ in
           "zen-beta.desktop"
           "org.gnome.Ptyxis.desktop"
           "org.gnome.Nautilus.desktop"
-          "brave.desktop" # TODO confirm brave's .desktop
+          "brave-browser.desktop"
           "virt-manager.desktop"
           "vmware-workstation.desktop"
           "org.gnome.Settings.desktop"
