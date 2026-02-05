@@ -7,6 +7,7 @@ let
 
   personalSystems = [
     zenSystem
+    zenVMSystem
     thetis
   ];
   serverSystems = [
@@ -57,7 +58,7 @@ mkSecrets [
   ])
 
   (mkSystem "zen"
-    [ zenSystem thetis ]
+    [ zenSystem zenVMSystem thetis ]
     [
       "nebulaCert"
       "nebulaKey"
