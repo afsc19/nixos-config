@@ -48,22 +48,33 @@ in
     # Optional but useful so user services are reliably started
     hm.systemd.user.startServices = true;
 
-    systemd.user.services =
+    hm.systemd.user.services =
       let
-        mkDistroboxService = box: {
-          name = "distrobox-${box.name}";
-          value = {
-            description = "Ensure distrobox '${box.name}' exists";
-            wantedBy = [ "default.target" ];
-            serviceConfig = {
-              Type = "oneshot";
+        mkDistroboxService =
+          box:
+          let
+            serviceName = "distrobox-${box.name}";
+          in
+          {
+            name = serviceName;
+            value = {
+              Unit = {
+                Description = "Ensure distrobox '${box.name}' exists";
+                After = [ "network-online.target" ];
+                Wants = [ "network-online.target" ];
+              };
+              Install = {
+                WantedBy = [ "default.target" ];
+              };
+              Service = {
+                Type = "oneshot";
+                ExecStart = "${pkgs.writeShellScript "create-distrobox-${box.name}" ''
+                  set -euo pipefail
+                  ${pkgs.distrobox}/bin/distrobox-create --name ${box.name} --image ${box.image} --yes || true
+                ''}";
+              };
             };
-            script = ''
-              set -euo pipefail
-              ${pkgs.distrobox}/bin/distrobox-create --name ${box.name} --image ${box.image} --yes || true
-            '';
           };
-        };
       in
       lib.listToAttrs (map mkDistroboxService cfg.defaultBoxes);
   };
