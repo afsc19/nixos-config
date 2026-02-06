@@ -2,7 +2,7 @@
 {
   config,
   lib,
-  unstable,
+  pkgs,
   ...
 }:
 let
@@ -14,7 +14,7 @@ in
 
   config = mkIf cfg.enable {
     # Unstable fixes the icon
-    hm.home.packages = with unstable; [
+    hm.home.packages = with pkgs.unstable; [
       equibop
     ];
   };
