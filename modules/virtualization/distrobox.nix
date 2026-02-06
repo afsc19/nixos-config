@@ -8,11 +8,36 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.modules.virtualization.distrobox;
 in
 {
-  options.modules.virtualization.distrobox.enable = mkEnableOption "distrobox";
+  options.modules.virtualization.distrobox = {
+    enable = mkEnableOption "distrobox";
+    defaultBoxes = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            name = mkOption {
+              type = types.str;
+              description = "Name of the distrobox container";
+            };
+            image = mkOption {
+              type = types.str;
+              description = "Image to use for the distrobox container";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "List of distroboxes to create automatically";
+    };
+  };
 
   config = mkIf cfg.enable {
     virtualisation.podman.enable = true;
@@ -21,31 +46,25 @@ in
       podman
     ]);
     # Optional but useful so user services are reliably started
-    # systemd.user.startServices = "sd-switch";
+    hm.systemd.user.startServices = true;
 
-    # TODO test first, how to ensure it will use podman instead of docker
-    # systemd.user.services."distrobox-arch" = {
-    #   description = "Ensure distrobox 'arch' exists";
-    #   wantedBy = [ "default.target" ];
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #   };
-    #   script = ''
-    #     set -euo pipefail
-    #     ${pkgs.distrobox}/bin/distrobox-create --name arch --image docker.io/library/archlinux:latest --yes || true
-    #   '';
-    # };
-
-    # systemd.user.services."distrobox-kali" = {
-    #   description = "Ensure distrobox 'kali' exists";
-    #   wantedBy = [ "default.target" ];
-    #   serviceConfig = {
-    #     Type = "oneshot";
-    #   };
-    #   script = ''
-    #     set -euo pipefail
-    #     ${pkgs.distrobox}/bin/distrobox-create --name kali --image docker.io/kalilinux/kali-rolling --yes || true
-    #   '';
-    # };
+    systemd.user.services =
+      let
+        mkDistroboxService = box: {
+          name = "distrobox-${box.name}";
+          value = {
+            description = "Ensure distrobox '${box.name}' exists";
+            wantedBy = [ "default.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+            };
+            script = ''
+              set -euo pipefail
+              ${pkgs.distrobox}/bin/distrobox-create --name ${box.name} --image ${box.image} --yes || true
+            '';
+          };
+        };
+      in
+      lib.listToAttrs (map mkDistroboxService cfg.defaultBoxes);
   };
 }

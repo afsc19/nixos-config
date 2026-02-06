@@ -53,6 +53,22 @@
       };
       zsh.enable = true;
     };
+    # Virtualization enabled in the laptop-virtualization profile
+    virtualization = {
+      distrobox = {
+        enable = true;
+        defaultBoxes = [
+          {
+            name = "arch";
+            image = "docker.io/library/archlinux:latest";
+          }
+          {
+            name = "kali";
+            image = "docker.io/kalilinux/kali-rolling";
+          }
+        ];
+      };
+    };
     personal.enable = true;
     thunderbolt.enable = true;
     xdg.enable = true;
