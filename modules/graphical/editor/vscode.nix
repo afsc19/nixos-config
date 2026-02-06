@@ -46,6 +46,10 @@ in
           bbenoist.nix
           jnoortheen.nix-ide
 
+          # Java
+          redhat.java
+          ms-vscode.cpptools
+
           # PDFs
           tomoki1207.pdf
 
@@ -67,6 +71,10 @@ in
           "workbench.colorTheme" = "Ayu Dark Bordered High Contrast"; # Custom theme
           "editor.fontSize" = 14;
           "files.refactoring.autoSave" = true;
+
+          "github.copilot.enable" = {
+            "*" = false;
+          };
           # TODO add more settings
         };
       };
