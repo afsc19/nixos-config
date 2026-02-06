@@ -50,6 +50,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # From diogotcorreia:
     # pwndbg has been removed from nixpkgs, so we use it here to
     # allow it to be cached and re-exported for my ctf flake
     # https://github.com/NixOS/nixpkgs/pull/380600
