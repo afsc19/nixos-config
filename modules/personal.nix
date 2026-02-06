@@ -5,6 +5,7 @@
   config,
   lib,
   secrets,
+  user,
   ...
 }:
 let
@@ -17,8 +18,14 @@ in
 
   config = mkIf cfg.enable {
     age.secrets = {
-      sylvaKey.file = secrets.personal.sylvaKey;
-      pwncollegeKey.file = secrets.personal.pwncollegeKey;
+      sylvaKey = {
+        file = secrets.personal.sylvaKey;
+        owner = user;
+      };
+      pwncollegeKey = {
+        file = secrets.personal.pwncollegeKey;
+        owner = user;
+      };
     };
 
 
