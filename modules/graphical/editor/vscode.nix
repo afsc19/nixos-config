@@ -32,6 +32,46 @@ let
        runHook postBuild;
     '';
   };
+
+  userSettings = {
+    "workbench.colorTheme" = "Ayu Dark Bordered High Contrast"; # Custom theme
+    "editor.fontSize" = 14;
+    "files.refactoring.autoSave" = true;
+    "files.autoSave" = "afterDelay";
+
+    "github.copilot.enable" = {
+      "*" = false;
+    };
+    "git.autofetch" = true;
+    "explorer.confirmDelete" = false;
+    "editor.acceptSuggestionOnEnter" = "off";
+    "explorer.confirmDragAndDrop" = false;
+    "C_Cpp.clang_format_fallbackStyle" = "{BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 80, AllowShortBlocksOnASingleLine: Empty, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLoopsOnASingleLine: False}";
+    "java.referencesCodeLens.enabled" = true;
+    "javascript.suggest.completeFunctionCalls" = true;
+    "editor.quickSuggestions" = {
+      "other" = "off";
+    };
+    "[java]" = {
+      "editor.defaultFormatter" = "redhat.java";
+    };
+    "[nix]" = {
+      "editor.defaultFormatter" = "jnoortheen.nix-ide";
+    };
+    "[c]" = {
+      "editor.defaultFormatter" = "ms-vscode.cpptools";
+    };
+    "[cpp]" = {
+      "editor.defaultFormatter" = "ms-vscode.cpptools";
+    };
+    "makefile.configureOnOpen" = true;
+    "editor.suggest.selectionMode" = "whenTriggerCharacter";
+    "chat.tools.terminal.autoApprove" = {
+      "zbarimg" = true;
+      "strings" = true;
+    };
+    # TODO add more settings
+  };
 in
 {
   options.modules.graphical.editor.vscode.enable = mkEnableOption "vscode";
@@ -67,17 +107,19 @@ in
           ayu-high-contrast
 
         ];
-        userSettings = {
-          "workbench.colorTheme" = "Ayu Dark Bordered High Contrast"; # Custom theme
-          "editor.fontSize" = 14;
-          "files.refactoring.autoSave" = true;
-
-          "github.copilot.enable" = {
-            "*" = false;
-          };
-          # TODO add more settings
-        };
+        inherit userSettings;
       };
+    };
+
+    hm.home.activation.vscodeSettings = {
+      after = [ "writeBoundary" ];
+      before = [ ];
+      data = ''
+        userDir=~/.config/Code/User
+        rm -f $userDir/settings.json
+        cat ${pkgs.writeText "vscode-settings" (builtins.toJSON userSettings)} | ${pkgs.jq}/bin/jq > $userDir/settings.json
+        chmod +w $userDir/settings.json
+      '';
     };
   };
 }
