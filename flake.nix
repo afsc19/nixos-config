@@ -11,7 +11,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # TODO https://wiki.nixos.org/wiki/Impermanence
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # we don't need to build docs, so we can get rid of it
+      inputs.nuschtosSearch.follows = "";
+    };
 
     agenix = {
       url = "github:ryantm/agenix/main";

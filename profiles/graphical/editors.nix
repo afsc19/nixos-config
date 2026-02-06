@@ -9,7 +9,6 @@
 
   modules.graphical.editor = {
     vscode.enable = true;
-    neovim.enable = true;
-
+    neovim.base.enable = true;
   };
 }

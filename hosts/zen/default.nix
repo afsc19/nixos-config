@@ -81,6 +81,7 @@
     graphical.discord
     graphical.editors
     graphical.games
+    graphical.neovim-personal
 
     mobile.android-tools
 
