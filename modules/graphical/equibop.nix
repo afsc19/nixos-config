@@ -2,7 +2,7 @@
 {
   config,
   lib,
-  pkgs,
+  unstable,
   ...
 }:
 let
