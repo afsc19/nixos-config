@@ -46,7 +46,13 @@ in
         };
 
         # Disable beep when no file is found, per example.
-        #initExtra = "unsetopt beep";
+        initExtra = ''
+          # unsetopt beep
+          bindkey "^[[1;5C" forward-word # Ctrl + Right Arrow
+          bindkey "^[[1;5D" backward-word # Ctrl + Left Arrow
+          bindkey '^H' backward-kill-word # Ctrl + Backspace
+          bindkey "^[[3;5~" kill-word # Ctrl + Delete
+        '';
 
         autosuggestion.enable = true;
         zplug = {
