@@ -13,7 +13,8 @@ in
   options.modules.graphical.equibop.enable = mkEnableOption "Equibop Discord";
 
   config = mkIf cfg.enable {
-    hm.home.packages = with pkgs; [
+    # Unstable fixes the icon
+    hm.home.packages = with unstable; [
       equibop
     ];
   };
