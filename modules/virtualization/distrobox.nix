@@ -52,11 +52,8 @@ in
       let
         mkDistroboxService =
           box:
-          let
-            serviceName = "distrobox-${box.name}";
-          in
           {
-            name = serviceName;
+            name = "distrobox-${box.name}";
             value = {
               Unit = {
                 Description = "Ensure distrobox '${box.name}' exists";
