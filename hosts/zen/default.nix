@@ -69,6 +69,7 @@
         ];
       };
     };
+    hardware.razer.enable = true;
     personal.enable = true;
     thunderbolt.enable = true;
     xdg.enable = true;
