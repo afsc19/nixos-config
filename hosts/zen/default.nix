@@ -80,6 +80,7 @@
   imports = with profiles; [
     graphical.browsers
     graphical.discord
+    graphical.disk-utils
     graphical.editors
     graphical.games
     graphical.neovim-personal

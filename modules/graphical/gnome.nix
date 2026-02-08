@@ -178,14 +178,6 @@ in
       };
     };
 
-    # Also use flatpak
-    hm.services.flatpak = {
-      enable = true;
-      packages = [
-        "org.gnome.baobab" # Usage Disk Analyzer
-      ];
-    };
-
     # Enabled by default.
     #polkit Auth Agent
     #systemd = {
