@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, config, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
   plymouthTheme = "glitch";
@@ -42,6 +42,7 @@ in
     efiSupport = true;
     useOSProber = true;
     default = "saved";
+    bootloaderId = "NixOS";
 
     dedsec-theme = {
       enable = true;
@@ -62,8 +63,8 @@ in
     gfxpayloadEfi = "keep";
 
     extraFiles = {
-      "shimx64.efi" = "${pkgs.shim-unsigned}/share/shim/shimx64.efi";
-      "mmx64.efi" = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
+      "EFI/NixOS/shimx64.efi" = "${pkgs.shim-unsigned}/share/shim/shimx64.efi";
+      "EFI/NixOS/mmx64.efi" = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
     };
     # Post-install hook: first-time key generation + MOK enrollment + signing (idempotent)
     extraInstallCommands = ''
@@ -86,7 +87,7 @@ in
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         if [ -f "${secureBootDir}/db.key" ]; then
           echo "[secureboot] Signing grubx64.efi"
-          ${pkgs.sbctl}/bin/sbctl sign /boot/efi/EFI/nixos/grubx64.efi || echo "[secureboot] grub signing failed (expected if keys not yet trusted)."
+          ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/NixOS/grubx64.efi || echo "[secureboot] grub signing failed (expected if keys not yet trusted)."
         else
           echo "[secureboot] grub unsigned but keys missing; will sign after keys exist."
         fi
@@ -104,7 +105,7 @@ in
     if [ -f "${secureBootDir}/db.key" ]; then
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         echo "[secureboot] Activation: signing grubx64.efi"
-        ${pkgs.sbctl}/bin/sbctl sign /boot/efi/EFI/nixos/grubx64.efi || echo "[secureboot] activation signing failed"
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/NixOS/grubx64.efi || echo "[secureboot] activation signing failed"
       fi
     fi
   '';
