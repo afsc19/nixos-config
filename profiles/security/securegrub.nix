@@ -1,8 +1,51 @@
+# Grub 2 configuration with secure boot (only for the latest config, secure boot must be disabled to boot older configs)
 { lib, pkgs, config, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
   secureBootEfiFolderName = "NixOS-boot"; # TODO make this a config option
   plymouthTheme = "glitch";
+
+  # --- Versioned signed-kernel logic ---
+  espMount = config.boot.loader.efi.efiSysMountPoint or "/boot";
+
+  # Short unique ID derived from kernel/initrd (avoids infinite recursion with toplevel)
+  buildId = builtins.substring 0 7 (builtins.hashString "sha256" (toString config.boot.kernelPackages.kernel + toString config.system.build.initialRamdisk));
+
+  # Versioned names
+  kernelName = "vmlinuz-${config.system.nixos.label}-${buildId}";
+  initrdName = "initrd-${config.system.nixos.label}-${buildId}";
+
+  destDir    = "${espMount}/EFI/nixos-signed";
+  kernelDest = "${destDir}/${kernelName}";
+  initrdDest = "${destDir}/${initrdName}";
+
+  copyAndSignScript = pkgs.writeShellScript "secure-boot-versioned" ''
+    set -e
+
+    # Only run if sbctl keys exist (you can relax this if you want)
+    if [ ! -f "${secureBootDir}/db/db.key" ] && [ ! -f "${secureBootDir}/db.key" ]; then
+      echo "[secureboot] No sbctl keys yet; skipping kernel signing."
+      exit 0
+    fi
+
+    mkdir -p "${destDir}"
+
+    # 1. Copy & sign kernel if missing
+    if [ ! -f "${kernelDest}" ]; then
+      echo ">>> [SecureBoot] Installing & Signing Kernel: ${kernelName}"
+      cp "${config.boot.kernelPackages.kernel}/bzImage" "${kernelDest}"
+      ${pkgs.sbctl}/bin/sbctl sign -s "${kernelDest}" || echo "[secureboot] kernel signing failed"
+    fi
+
+    # 2. Copy & sign initrd if missing
+    if [ ! -f "${initrdDest}" ]; then
+      echo ">>> [SecureBoot] Installing & Signing Initrd: ${initrdName}"
+      cp "${config.system.build.initialRamdisk}/initrd" "${initrdDest}"
+      ${pkgs.sbctl}/bin/sbctl sign -s "${initrdDest}" || echo "[secureboot] initrd signing failed"
+    fi
+
+    # Optional: cleanup of old versions could go here
+  '';
 in
 {
   # Plymouth:
@@ -51,10 +94,17 @@ in
       resolution = "1440p";
     };
 
-
     extraEntries = ''
       menuentry "UEFI Firmware Settings" {
         fwsetup
+      }
+
+      # Signed-current-generation entry
+      menuentry "NixOS (current, signed kernel)" {
+        search --file --no-floppy --set=esp /EFI/nixos-signed/${kernelName}
+        set root=($esp)
+        linux /EFI/nixos-signed/${kernelName} init=${config.system.build.bootStage2} ${toString config.boot.kernelParams}
+        initrd /EFI/nixos-signed/${initrdName}
       }
     '';
 
@@ -63,14 +113,15 @@ in
     gfxpayloadEfi = "keep";
 
     extraFiles = {
-      "EFI/NixOS-boot/shimx64.efi" = "${pkgs.shim-unsigned}/share/shim/shimx64.efi";
-      "EFI/NixOS-boot/mmx64.efi" = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
+      "EFI/${secureBootEfiFolderName}/shimx64.efi" = "${pkgs.shim-unsigned}/share/shim/shimx64.efi";
+      "EFI/${secureBootEfiFolderName}/mmx64.efi"   = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
     };
+
     # Post-install hook: first-time key generation + MOK enrollment + signing (idempotent)
     extraInstallCommands = ''
       set -e
       # First install detection: absence of db.key triggers key creation & mok enrollment
-      if [ ! -f "${secureBootDir}/dbdb.key" ]; then
+      if [ ! -f "${secureBootDir}/db/db.key" ] && [ ! -f "${secureBootDir}/db.key" ]; then
         echo "[secureboot] No Secure Boot keys detected. Creating and enrolling MOK..."
         ${pkgs.sbctl}/bin/sbctl create-keys
         # Automatic MOK enrollment scheduling (user still confirms at next boot screen)
@@ -83,12 +134,14 @@ in
         echo "[secureboot] Secure Boot keys already present; skipping creation & enrollment schedule."
       fi
 
-      # Attempt to sign grub if unsigned and keys exist (will fail gracefully if not enrolled yet)
-      if [ -f "${secureBootDir}/db/db.key" ]; then
-        echo "[secureboot] Signing grubx64.efi"
-        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi && ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/mmx64.efi && ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/shimx64.efi || echo "[secureboot] grub signing failed (expected if keys not yet trusted)."
+      # Attempt to sign grub + shim + mm if keys exist
+      if [ -f "${secureBootDir}/db/db.key" ] || [ -f "${secureBootDir}/db.key" ]; then
+        echo "[secureboot] Signing GRUB and shim binaries"
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi || true
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/mmx64.efi   || true
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/shimx64.efi || true
       else
-        echo "[secureboot] grub unsigned but keys missing; will sign after keys exist."
+        echo "[secureboot] grub/shim unsigned but keys missing; will sign after keys exist."
       fi
     '';
   };
@@ -98,13 +151,16 @@ in
     shim-unsigned
   ];
 
-  # Activation script: re-check & (re)sign after switch (covers grub path changes)
+  # Activation script: re-check & (re)sign GRUB after switch
   system.activationScripts.secureboot-resign = lib.stringAfter [ "users" ] ''
-    if [ -f "${secureBootDir}/db.key" ]; then
+    if [ -f "${secureBootDir}/db/db.key" ] || [ -f "${secureBootDir}/db.key" ]; then
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         echo "[secureboot] Activation: signing grubx64.efi"
-        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/NixOS-boot/grubx64.efi || echo "[secureboot] activation signing failed"
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi || echo "[secureboot] activation signing failed"
       fi
     fi
   '';
+
+  # Activation script: copy & sign versioned kernel/initrd
+  system.activationScripts.secureBootSignVersioned = lib.stringAfter [ "secureboot-resign" ] "${copyAndSignScript}";
 }
