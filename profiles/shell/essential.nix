@@ -26,6 +26,9 @@
     xz
     p7zip
 
+    # Disk
+    gparted
+    ncdu
 
     # Utils
     ripgrep
