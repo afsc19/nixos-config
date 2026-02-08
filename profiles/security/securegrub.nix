@@ -1,6 +1,7 @@
 { lib, pkgs, config, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
+  secureBootEfiFolderName = "NixOS-boot";
   plymouthTheme = "glitch";
 in
 {
@@ -69,7 +70,7 @@ in
     extraInstallCommands = ''
       set -e
       # First install detection: absence of db.key triggers key creation & mok enrollment
-      if [ ! -f "${secureBootDir}/db.key" ]; then
+      if [ ! -f "${secureBootDir}/dbdb.key" ]; then
         echo "[secureboot] No Secure Boot keys detected. Creating and enrolling MOK..."
         ${pkgs.sbctl}/bin/sbctl create-keys
         # Automatic MOK enrollment scheduling (user still confirms at next boot screen)
@@ -83,13 +84,11 @@ in
       fi
 
       # Attempt to sign grub if unsigned and keys exist (will fail gracefully if not enrolled yet)
-      if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
-        if [ -f "${secureBootDir}/db.key" ]; then
-          echo "[secureboot] Signing grubx64.efi"
-          ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/NixOS-boot/grubx64.efi || echo "[secureboot] grub signing failed (expected if keys not yet trusted)."
-        else
-          echo "[secureboot] grub unsigned but keys missing; will sign after keys exist."
-        fi
+      if [ -f "${secureBootDir}/db/db.key" ]; then
+        echo "[secureboot] Signing grubx64.efi"
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi && ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/mmx64.efi && ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/shimx64.efi || echo "[secureboot] grub signing failed (expected if keys not yet trusted)."
+      else
+        echo "[secureboot] grub unsigned but keys missing; will sign after keys exist."
       fi
     '';
   };
