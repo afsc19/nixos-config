@@ -22,7 +22,7 @@ let
   copyAndSignScript = pkgs.writeShellScript "secure-boot-versioned" ''
     set -e
 
-    # Only run if sbctl keys exist (you can relax this if you want)
+    # Only run if sbctl keys exist
     if [ ! -f "${secureBootDir}/db/db.key" ] && [ ! -f "${secureBootDir}/db.key" ]; then
       echo "[secureboot] No sbctl keys yet; skipping kernel signing."
       exit 0
@@ -32,19 +32,18 @@ let
 
     # 1. Copy & sign kernel if missing
     if [ ! -f "${kernelDest}" ]; then
-      echo ">>> [SecureBoot] Installing & Signing Kernel: ${kernelName}"
+      echo "[secureboot] Installing & Signing Kernel: ${kernelName}"
       cp "${config.boot.kernelPackages.kernel}/bzImage" "${kernelDest}"
       ${pkgs.sbctl}/bin/sbctl sign -s "${kernelDest}" || echo "[secureboot] kernel signing failed"
     fi
 
-    # 2. Copy & sign initrd if missing
+    # 2. Copy initrd (unsigned, because it's a CPIO archive, not a PE binary)
     if [ ! -f "${initrdDest}" ]; then
-      echo ">>> [SecureBoot] Installing & Signing Initrd: ${initrdName}"
+      echo "[secureboot] Installing Initrd: ${initrdName}"
       cp "${config.system.build.initialRamdisk}/initrd" "${initrdDest}"
-      ${pkgs.sbctl}/bin/sbctl sign -s "${initrdDest}" || echo "[secureboot] initrd signing failed"
     fi
 
-    # Optional: cleanup of old versions could go here
+    # TODO cleanup old versions
   '';
 in
 {
