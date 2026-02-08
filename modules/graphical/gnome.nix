@@ -98,7 +98,7 @@ in
         gtk-theme = "Catppuccin1-Yellow-Dark";
         icon-theme = "Papirus-Dark"; # or Catppuccin icons ?
         cursor-theme = "Bibata-Modern-Classic";
-        text-scaling-factor = 1.5;
+        # text-scaling-factor = 1.5;
       };
 
       "org/gnome/Ptyxis" = {

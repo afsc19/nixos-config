@@ -148,6 +148,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
+              backupFileExtension = "backup";
             };
           }
           # inputs.impermanence.nixosModules.impermanence
