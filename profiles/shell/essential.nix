@@ -32,6 +32,7 @@
     # Utils
     ripgrep
     gnugrep
+    binutils # strings
 
 
     # Misc
@@ -39,10 +40,9 @@
     file
     which
     tree
-    #gnused
-    #gnutar
-    #gawk
-    #zstd
+    gnused
+    gawk
+    zstd
     gnupg # TODO learn this
 
     # Networking tools
