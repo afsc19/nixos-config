@@ -175,7 +175,7 @@ in
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         name = "Open Terminal";
         command = "ptyxis --new-window"; # or "kgx", "alacritty", etc.
-        binding = "<Control><Alt>comma";
+        binding = "<Control><Shift>comma";
       };
     };
 
