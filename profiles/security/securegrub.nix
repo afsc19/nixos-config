@@ -1,7 +1,7 @@
 { lib, pkgs, config, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
-  secureBootEfiFolderName = "NixOS-boot";
+  secureBootEfiFolderName = "NixOS-boot"; # TODO make this a config option
   plymouthTheme = "glitch";
 in
 {
