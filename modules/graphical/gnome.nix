@@ -87,9 +87,6 @@ in
     services.gnome.gnome-browser-connector.enable = true;
 
     hm.dconf.settings = {
-      "org/gnome/mutter" = {
-        experimental-features = [ "scale-monitor-framebuffer" ];
-      };
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         picture-uri = wallpaper;
@@ -101,6 +98,7 @@ in
         gtk-theme = "Catppuccin1-Yellow-Dark";
         icon-theme = "Papirus-Dark"; # or Catppuccin icons ?
         cursor-theme = "Bibata-Modern-Classic";
+        text-scaling-factor = 1.5;
       };
 
       "org/gnome/Ptyxis" = {
