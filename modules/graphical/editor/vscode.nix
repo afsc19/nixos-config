@@ -99,6 +99,9 @@ in
           # CSV colors
           mechatroner.rainbow-csv
 
+          # TODO highlighter
+          Gruntfuggly.todo-tree
+
           # Themes
           teabyii.ayu
           # FranRuizSantaclara.high-contrast-theme
