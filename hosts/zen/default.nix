@@ -105,6 +105,7 @@
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
+  my.filesystem.bootPartitionName = "NixOS-boot";
   
 
   

@@ -1,8 +1,6 @@
 # Grub 2 configuration with fake secure boot (Only avoids secure boot violations)
 { lib, pkgs, config, ... }:
 let
-  secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
-  secureBootEfiFolderName = "NixOS-boot"; # TODO make this a config option
   plymouthTheme = "glitch";
 in
 {
@@ -66,15 +64,15 @@ in
     extraInstallCommands = ''
       set -e
       # Sign GRUB, Shim, and MM if keys exist
-      if [ -f "${secureBootDir}/db/db.key" ] || [ -f "${secureBootDir}/db.key" ]; then
+      if [ -f "${config.my.filesystem.secureBootKeysDir}/db/db.key" ] || [ -f "${config.my.filesystem.secureBootKeysDir}/db.key" ]; then
         echo "[secureboot] Patching GRUB to ignore Secure Boot..."
         # Patch "SecureBoot" -> "SecureB00t" (Both UTF-16LE and ASCII)
-        ${pkgs.perl}/bin/perl -0777 -pi -e 's/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x6F\x00\x6F\x00\x74/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x30\x00\x30\x00\x74/g' ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi
-        ${pkgs.perl}/bin/perl -0777 -pi -e 's/SecureBoot/SecureB00t/g' ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi
+        ${pkgs.perl}/bin/perl -0777 -pi -e 's/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x6F\x00\x6F\x00\x74/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x30\x00\x30\x00\x74/g' ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.my.filesystem.bootPartitionName}/grubx64.efi
+        ${pkgs.perl}/bin/perl -0777 -pi -e 's/SecureBoot/SecureB00t/g' ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.my.filesystem.bootPartitionName}/grubx64.efi
 
         echo "[secureboot] Signing all EFI binaries in ${config.boot.loader.efi.efiSysMountPoint}..."
         # Remove explicitly patched grub from db first (to avoid digest errors)
-        ${pkgs.sbctl}/bin/sbctl remove-file ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi || true
+        ${pkgs.sbctl}/bin/sbctl remove-file ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.my.filesystem.bootPartitionName}/grubx64.efi || true
         
         # Find and sign all .efi binaries and kernels
         ${pkgs.findutils}/bin/find ${config.boot.loader.efi.efiSysMountPoint} -type f \( -name "*.efi" -o -name "*bzImage" \) -exec ${pkgs.sbctl}/bin/sbctl sign -s {} \;
@@ -90,10 +88,10 @@ in
 
   # Re-sign GRUB on activation if needed
   system.activationScripts.secureboot-resign = lib.stringAfter [ "users" ] ''
-    if [ -f "${secureBootDir}/db/db.key" ] || [ -f "${secureBootDir}/db.key" ]; then
+    if [ -f "${config.my.filesystem.secureBootKeysDir}/db/db.key" ] || [ -f "${config.my.filesystem.secureBootKeysDir}/db.key" ]; then
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         echo "[secureboot] Activation: signing grubx64.efi"
-        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi || echo "[secureboot] activation signing failed"
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.my.filesystem.bootPartitionName}/grubx64.efi || echo "[secureboot] activation signing failed"
       fi
     fi
   '';
