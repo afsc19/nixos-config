@@ -99,8 +99,8 @@ in
           # CSV colors
           mechatroner.rainbow-csv
 
-          # TODO highlighter
-          Gruntfuggly.todo-tree
+          # TO DO highlighter
+          gruntfuggly.todo-tree
 
           # Themes
           teabyii.ayu
