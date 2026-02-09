@@ -70,7 +70,6 @@ let
       "zbarimg" = true;
       "strings" = true;
     };
-    # TODO add more settings
   };
 in
 {
@@ -110,7 +109,7 @@ in
           ayu-high-contrast
 
         ];
-        inherit userSettings;
+        # inherit userSettings;
       };
     };
 
