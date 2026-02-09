@@ -102,6 +102,7 @@ in
         gtk-theme = "Catppuccin1-Yellow-Dark";
         icon-theme = "Papirus-Dark"; # or Catppuccin icons ?
         cursor-theme = "Bibata-Modern-Classic";
+        clock-show-seconds = true;
         # text-scaling-factor = 1.5;
       };
 
