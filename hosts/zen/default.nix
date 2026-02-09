@@ -35,6 +35,7 @@
       gtk.enable = true;
       qt.enable = true;
       spotify.enable = true;
+      torrenting.enable = true;
     };
     laptop = {
       battery.enable = true;

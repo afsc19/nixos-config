@@ -1,4 +1,4 @@
-# Discord configuration
+# Torrenting
 {
   config,
   lib,
@@ -7,10 +7,10 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.modules.graphical.thunderbird;
+  cfg = config.modules.graphical.torrenting;
 in
 {
-  options.modules.graphical.thunderbird.enable = mkEnableOption "Thunderbird";
+  options.modules.graphical.torrenting.enable = mkEnableOption "Torrenting";
 
   config = mkIf cfg.enable {
     hm.home.packages = with pkgs; [
