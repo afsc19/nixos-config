@@ -1,50 +1,9 @@
-# Grub 2 configuration with secure boot (only for the latest config, secure boot must be disabled to boot older configs)
+# Grub 2 configuration with fake secure boot (Shim-based, ignore secure )
 { lib, pkgs, config, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
   secureBootEfiFolderName = "NixOS-boot"; # TODO make this a config option
   plymouthTheme = "glitch";
-
-  # --- Versioned signed-kernel logic ---
-  espMount = config.boot.loader.efi.efiSysMountPoint or "/boot";
-
-  # Short unique ID derived from kernel/initrd (avoids infinite recursion with toplevel)
-  buildId = builtins.substring 0 7 (builtins.hashString "sha256" (toString config.boot.kernelPackages.kernel + toString config.system.build.initialRamdisk));
-
-  # Versioned names
-  kernelName = "vmlinuz-${config.system.nixos.label}-${buildId}";
-  initrdName = "initrd-${config.system.nixos.label}-${buildId}";
-
-  destDir    = "${espMount}/EFI/nixos-signed";
-  kernelDest = "${destDir}/${kernelName}";
-  initrdDest = "${destDir}/${initrdName}";
-
-  copyAndSignScript = pkgs.writeShellScript "secure-boot-versioned" ''
-    set -e
-
-    # Only run if sbctl keys exist
-    if [ ! -f "${secureBootDir}/db/db.key" ] && [ ! -f "${secureBootDir}/db.key" ]; then
-      echo "[secureboot] No sbctl keys yet; skipping kernel signing."
-      exit 0
-    fi
-
-    mkdir -p "${destDir}"
-
-    # 1. Copy & sign kernel if missing
-    if [ ! -f "${kernelDest}" ]; then
-      echo "[secureboot] Installing & Signing Kernel: ${kernelName}"
-      cp "${config.boot.kernelPackages.kernel}/bzImage" "${kernelDest}"
-      ${pkgs.sbctl}/bin/sbctl sign -s "${kernelDest}" || echo "[secureboot] kernel signing failed"
-    fi
-
-    # 2. Copy initrd (unsigned, because it's a CPIO archive, not a PE binary)
-    if [ ! -f "${initrdDest}" ]; then
-      echo "[secureboot] Installing Initrd: ${initrdName}"
-      cp "${config.system.build.initialRamdisk}/initrd" "${initrdDest}"
-    fi
-
-    # TODO cleanup old versions
-  '';
 in
 {
   # Plymouth:
@@ -53,7 +12,7 @@ in
     theme = plymouthTheme;
     themePackages = with pkgs; [
       (adi1090x-plymouth-themes.override {
-        selected_themes = [ plymouthTheme ]; # Only install the selected theme
+        selected_themes = [ plymouthTheme ];
       })
     ];
   };
@@ -97,14 +56,6 @@ in
       menuentry "UEFI Firmware Settings" {
         fwsetup
       }
-
-      # Signed-current-generation entry
-      menuentry "NixOS (current, signed kernel)" {
-        search --file --no-floppy --set=esp /EFI/nixos-signed/${kernelName}
-        set root=($esp)
-        linux /EFI/nixos-signed/${kernelName} init=${config.system.build.bootStage2} ${toString config.boot.kernelParams}
-        initrd /EFI/nixos-signed/${initrdName}
-      }
     '';
 
     # Crucial for Plymouth: Pass the correct video mode from GRUB to the kernel
@@ -116,31 +67,20 @@ in
       "EFI/${secureBootEfiFolderName}/mmx64.efi"   = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
     };
 
-    # Post-install hook: first-time key generation + MOK enrollment + signing (idempotent)
     extraInstallCommands = ''
       set -e
-      # First install detection: absence of db.key triggers key creation & mok enrollment
-      if [ ! -f "${secureBootDir}/db/db.key" ] && [ ! -f "${secureBootDir}/db.key" ]; then
-        echo "[secureboot] No Secure Boot keys detected. Creating and enrolling MOK..."
-        ${pkgs.sbctl}/bin/sbctl create-keys
-        # Automatic MOK enrollment scheduling (user still confirms at next boot screen)
-        if ${pkgs.sbctl}/bin/sbctl enroll-keys -m -t; then
-          echo "[secureboot] Key enrollment scheduled. Reboot and accept the MOK manager prompt if needed."
-        else
-          echo "[secureboot] Failed to schedule key enrollment; ensure you are in Setup Mode or run 'sbctl enroll-keys --microsoft' manually."
-        fi
-      else
-        echo "[secureboot] Secure Boot keys already present; skipping creation & enrollment schedule."
-      fi
-
-      # Attempt to sign grub + shim + mm if keys exist
+      # Sign GRUB, Shim, and MM if keys exist
       if [ -f "${secureBootDir}/db/db.key" ] || [ -f "${secureBootDir}/db.key" ]; then
+        echo "[secureboot] Patching GRUB to ignore Secure Boot..."
+        # Patch "SecureBoot" -> "SecureB00t" (UTF-16LE) to disable shim_lock verification
+        # ${pkgs.perl}/bin/perl -pi -e 's/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x6F\x00\x6F\x00\x74/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x30\x00\x30\x00\x74/g' ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi
+
         echo "[secureboot] Signing GRUB and shim binaries"
         ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/grubx64.efi || true
         ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/mmx64.efi   || true
         ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${secureBootEfiFolderName}/shimx64.efi || true
       else
-        echo "[secureboot] grub/shim unsigned but keys missing; will sign after keys exist."
+        echo "[secureboot] keys missing; skipping signing."
       fi
     '';
   };
@@ -150,7 +90,7 @@ in
     shim-unsigned
   ];
 
-  # Activation script: re-check & (re)sign GRUB after switch
+  # Re-sign GRUB on activation if needed
   system.activationScripts.secureboot-resign = lib.stringAfter [ "users" ] ''
     if [ -f "${secureBootDir}/db/db.key" ] || [ -f "${secureBootDir}/db.key" ]; then
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
@@ -159,7 +99,4 @@ in
       fi
     fi
   '';
-
-  # Activation script: copy & sign versioned kernel/initrd
-  system.activationScripts.secureBootSignVersioned = lib.stringAfter [ "secureboot-resign" ] "${copyAndSignScript}";
 }
