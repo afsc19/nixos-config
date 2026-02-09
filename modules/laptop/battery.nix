@@ -7,8 +7,12 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.laptop.battery;
-  batteryPowered = config.my.hardware.batteryPowered;
   isGnome = config.modules.graphical.gnome.enable;
+  batteryPowered = config.my.hardware.batteryPowered;
+  batteryChargeLimit = config.my.hardware.batteryChargeLimit;
+
+  # This isn't implemented (it won't be declaratively set) to use with gnome power
+  batteryChargeThresholdRange = config.my.hardware.batteryChargeThresholdRange;
 in
 {
   options.modules.laptop.battery.enable = mkEnableOption "LAPTOP BATTERY";
@@ -28,8 +32,8 @@ in
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
         # Battery charge thresholds
-        STOP_CHARGE_THRESH_BAT0 = 80;
-        START_CHARGE_THRESH_BAT0 = 75;
+        STOP_CHARGE_THRESH_BAT0 = ${batteryChargeLimit};
+        START_CHARGE_THRESH_BAT0 = ${batteryChargeLimit}-${batteryChargeThresholdRange};
       };
     };
 
@@ -38,13 +42,13 @@ in
 
     # Set battery charge limit to 80% for gnome power
     systemd.services.battery-charge-limit = mkIf isGnome {
-      description = "Set battery charge limit to 80%";
+      description = "Set battery charge limit";
       wantedBy = [ "multi-user.target" "post-resume.target" ];
       after = [ "multi-user.target" "post-resume.target" ];
       serviceConfig = {
         Type = "oneshot";
         Restart = "on-failure";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'for bat in /sys/class/power_supply/BAT?; do if [ -e \"$bat/charge_control_end_threshold\" ]; then echo 80 > \"$bat/charge_control_end_threshold\"; fi; done'";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'for bat in /sys/class/power_supply/BAT?; do if [ -e \"$bat/charge_control_end_threshold\" ]; then echo ${batteryChargeLimit} > \"$bat/charge_control_end_threshold\"; fi; done'";
       };
     };
 

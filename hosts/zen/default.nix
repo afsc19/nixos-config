@@ -99,8 +99,12 @@
 
   my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
-  my.hardware.laptop = true;
-  # TODO add my....
+  my.hardware = {
+    laptop = true;
+    batteryPowered = true;
+    batteryChargeLimit = 75;
+    batteryChargeThresholdRange = 3;
+  }
   
 
   
