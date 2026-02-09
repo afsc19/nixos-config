@@ -1,4 +1,4 @@
-# Grub 2 configuration with fake secure boot (Shim-based, ignore secure )
+# Grub 2 configuration with fake secure boot (Only avoids secure boot violations)
 { lib, pkgs, config, ... }:
 let
   secureBootDir = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
@@ -62,10 +62,6 @@ in
     gfxmodeEfi = "auto";
     gfxpayloadEfi = "keep";
 
-    extraFiles = {
-      "EFI/${secureBootEfiFolderName}/shimx64.efi" = "${pkgs.shim-unsigned}/share/shim/shimx64.efi";
-      "EFI/${secureBootEfiFolderName}/mmx64.efi"   = "${pkgs.shim-unsigned}/share/shim/mmx64.efi";
-    };
 
     extraInstallCommands = ''
       set -e
@@ -90,7 +86,6 @@ in
 
   environment.systemPackages = with pkgs; [
     sbctl
-    shim-unsigned
   ];
 
   # Re-sign GRUB on activation if needed
