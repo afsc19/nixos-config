@@ -32,8 +32,8 @@ in
         CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
         # Battery charge thresholds
-        STOP_CHARGE_THRESH_BAT0 = ${batteryChargeLimit};
-        START_CHARGE_THRESH_BAT0 = ${batteryChargeLimit}-${batteryChargeThresholdRange};
+        STOP_CHARGE_THRESH_BAT0 = batteryChargeLimit;
+        START_CHARGE_THRESH_BAT0 = batteryChargeLimit - batteryChargeThresholdRange;
       };
     };
 
@@ -48,7 +48,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         Restart = "on-failure";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'for bat in /sys/class/power_supply/BAT?; do if [ -e \"$bat/charge_control_end_threshold\" ]; then echo ${batteryChargeLimit} > \"$bat/charge_control_end_threshold\"; fi; done'";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'for bat in /sys/class/power_supply/BAT?; do if [ -e \"$bat/charge_control_end_threshold\" ]; then echo ${toString batteryChargeLimit} > \"$bat/charge_control_end_threshold\"; fi; done'";
       };
     };
 

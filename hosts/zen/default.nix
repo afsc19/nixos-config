@@ -104,7 +104,7 @@
     batteryPowered = true;
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
-  }
+  };
   
 
   
