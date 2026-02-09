@@ -36,6 +36,18 @@ in
     # Enable power-profiles-daemon if we're using GNOME
     services.power-profiles-daemon.enable = lib.mkForce isGnome;
 
+    # Set battery charge limit to 80% for gnome power
+    systemd.services.battery-charge-limit = mkIf isGnome {
+      description = "Set battery charge limit to 80%";
+      wantedBy = [ "multi-user.target" "post-resume.target" ];
+      after = [ "multi-user.target" "post-resume.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        Restart = "on-failure";
+        ExecStart = "${pkgs.bash}/bin/bash -c 'for bat in /sys/class/power_supply/BAT?; do if [ -e \"$bat/charge_control_end_threshold\" ]; then echo 80 > \"$bat/charge_control_end_threshold\"; fi; done'";
+      };
+    };
+
     # Enable powertop
     powerManagement.powertop.enable = true;
 
