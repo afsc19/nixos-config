@@ -1,4 +1,4 @@
-# Discord configuration
+# Thunderbird configuration
 {
   config,
   lib,

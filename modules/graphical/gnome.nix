@@ -87,6 +87,7 @@ in
     services.gnome.gnome-browser-connector.enable = true;
 
     hm.dconf.settings = {
+      # Allow fractional scaling without blurring XWayland apps
       "org/gnome/mutter" = {
         experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
       };

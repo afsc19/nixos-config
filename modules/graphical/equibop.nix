@@ -1,4 +1,4 @@
-# Discord configuration
+# Equibop configuration
 {
   config,
   lib,

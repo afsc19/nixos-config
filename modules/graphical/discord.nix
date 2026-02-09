@@ -40,7 +40,7 @@ in
       discord-openasar
     ];
 
-    # Discord configuration
+    # Discord configuration file
     hm.xdg.configFile."discord/settings-override.json".source = settingsFile;
   };
 }
