@@ -88,7 +88,7 @@ in
 
     hm.dconf.settings = {
       "org/gnome/mutter" = {
-        experimental-features = [ "scale-monitor-framebuffer" ];
+        experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
       };
 
       "org/gnome/desktop/background" = {
