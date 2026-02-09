@@ -50,6 +50,10 @@ in {
         '';
       };
 
+      gtk3.bookmarks = [
+        "file:/// Root"
+      ];
+
       gtk4.extraConfig = {
         Settings = ''
           gtk-application-prefer-dark-theme=1
