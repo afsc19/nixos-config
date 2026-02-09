@@ -87,6 +87,10 @@ in
     services.gnome.gnome-browser-connector.enable = true;
 
     hm.dconf.settings = {
+      "org/gnome/mutter" = {
+        experimental-features = [ "scale-monitor-framebuffer" ];
+      };
+
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         picture-uri = wallpaper;
