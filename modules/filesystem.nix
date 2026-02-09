@@ -10,9 +10,9 @@ in
       default = "NixOS-boot";
       description = "The folder to which grub is usually deployed, in /boot/EFI/";
     };
-    secureBootKeysDir = mkOption {
+    pkiBundle = mkOption {
       type = types.str;
-      default = "/var/lib/sbctl/keys"; # sbctl default; created automatically by sbctl create-keys
+      default = "/var/lib/sbctl"; # sbctl default; created automatically by sbctl create-keys
       description = "The folder that contains the secure boot MOK keys.";
     };
   };

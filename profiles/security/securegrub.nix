@@ -64,7 +64,7 @@ in
     extraInstallCommands = ''
       set -e
       # Sign GRUB, Shim, and MM if keys exist
-      if [ -f "${config.my.filesystem.secureBootKeysDir}/db/db.key" ] || [ -f "${config.my.filesystem.secureBootKeysDir}/db.key" ]; then
+      if [ -f "${config.my.filesystem.pkiBundle}/keys/db/db.key" ]; then
         echo "[secureboot] Patching GRUB to ignore Secure Boot..."
         # Patch "SecureBoot" -> "SecureB00t" (Both UTF-16LE and ASCII)
         ${pkgs.perl}/bin/perl -0777 -pi -e 's/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x6F\x00\x6F\x00\x74/\x53\x00\x65\x00\x63\x00\x75\x00\x72\x00\x65\x00\x42\x00\x30\x00\x30\x00\x74/g' ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.my.filesystem.bootPartitionName}/grubx64.efi
@@ -88,7 +88,7 @@ in
 
   # Re-sign GRUB on activation if needed
   system.activationScripts.secureboot-resign = lib.stringAfter [ "users" ] ''
-    if [ -f "${config.my.filesystem.secureBootKeysDir}/db/db.key" ] || [ -f "${config.my.filesystem.secureBootKeysDir}/db.key" ]; then
+    if [ -f "${config.my.filesystem.pkiBundle}/keys/db/db.key" ]; then
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         echo "[secureboot] Activation: signing grubx64.efi"
         ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.my.filesystem.bootPartitionName}/grubx64.efi || echo "[secureboot] activation signing failed"
