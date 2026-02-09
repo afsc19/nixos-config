@@ -106,6 +106,10 @@ in
         # text-scaling-factor = 1.5;
       };
 
+      "org/gnome/desktop/peripherals/mouse" = {
+        accel-profile = "flat";
+      };
+
       "org/gnome/Ptyxis" = {
         default-profile-uuid = ptyxisProfileUUID;
         profile-uuids = [ ptyxisProfileUUID ];
