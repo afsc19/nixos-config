@@ -19,30 +19,15 @@ in
         enable = true;
     
         shellAliases = {
-          # Switches
-          #switchhypr = "sudo nixos-rebuild switch --flake .#hyprland";
-          #switchuhypr = "sudo nixos-rebuild switch --upgrade --flake .#hyprland";
-          switchgnome = "sudo nixos-rebuild switch --flake .#gnome";
-          switchugnome = "sudo nixos-rebuild switch --upgrade --flake .#gnome";
-
-
           clean = "sudo nix-collect-garbage -d";
           cleanold = "sudo nix-collect-garbage --delete-old";
           cleanboot = "sudo /run/current-system/bin/switch-to-configuration boot";
-
-          # TODO should I wrap my nvim?
-          #nvim="kitty @ set-spacing padding=0 && /etc/profiles/per-user/nomad/bin/nvim";
-
-          # TODO create and move to kubernetes module
-          k = "kubectl";
 
           # TODO create and move to cybersec module
           urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
           urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
 
           naut = "nautilus . 2>/dev/null &";
-          
-
         };
 
         # Disable beep when no file is found, per example.
