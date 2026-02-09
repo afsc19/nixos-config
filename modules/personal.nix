@@ -11,7 +11,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.personal;
-
+  isGnome = config.modules.graphical.gnome.enable;
 in
 {
   options.modules.personal.enable = mkEnableOption "Personal Configs";
@@ -97,7 +97,7 @@ in
       xkb.layout = "us,pt";
       xkb.options = "grp:win_space_toggle";
     };
-    hm.dconf.settings = {
+    hm.dconf.settings = mkIf isGnome {
       "org/gnome/desktop/input-sources" = {
         sources = [
           [ "xkb" "us" ]

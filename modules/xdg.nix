@@ -11,7 +11,6 @@ in
 {
   options.modules.xdg.enable = mkEnableOption "xdg";
 
-  # Home manager module
   config.hm = mkIf cfg.enable {
     xdg.enable = true;
   };

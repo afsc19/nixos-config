@@ -11,6 +11,11 @@ let
 in
 {
   options.my.hardware = {
+    laptop = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether this device is a laptop";
+    };
     batteryPowered = mkOption {
       type = types.bool;
       default = cfg.laptop;
@@ -26,11 +31,6 @@ in
       type = types.int;
       default = 3;
       description = "Battery charge percentage range to trigger device recharging (%)";
-    };
-    laptop = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether this device is a laptop";
     };
   };
 }
