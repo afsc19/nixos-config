@@ -3,6 +3,7 @@
   config,
   lib,
   secrets,
+  pkgs,
   ...
 }:
 let
@@ -165,5 +166,9 @@ in
         allowedTCPPorts = getPorts tcpPorts;
         allowedUDPPorts = getPorts udpPorts;
       };
+
+    environment.systemPackages = with pkgs; [
+      nebula
+    ];
   };
 }
