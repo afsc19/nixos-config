@@ -72,6 +72,10 @@
     };
     hardware.razer.enable = true;
     personal.enable = true;
+    plymouth = {
+      enable = true;
+      themeName = "glitch";
+    };
     thunderbolt.enable = true;
     xdg.enable = true;
   };
