@@ -1,4 +1,5 @@
-# Spotify configuration and themeing with Spicetify
+# Bluetooth configuration
+# TODO rename spotify comments
 {
   pkgs,
   config,

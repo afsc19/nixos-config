@@ -1,4 +1,4 @@
-# Spotify configuration and themeing with Spicetify
+# Easyeffects configuration with declarative presets
 {
   pkgs,
   config,

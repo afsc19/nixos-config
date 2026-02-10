@@ -1,4 +1,4 @@
-# Spotify configuration and themeing with Spicetify
+# Zen browser + extensions configuration
 {
   inputs,
   lib,
