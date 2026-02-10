@@ -57,11 +57,12 @@
 
   imports = with profiles; [
     security.agenix
-    security.lanzaboote
     
     services.ssh
     shell.essential
   ];
+
+  boot.loader.systemd-boot.enable = false;
 
 
   my.networking.wiredInterface = "eth1";
