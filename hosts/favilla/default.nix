@@ -62,7 +62,7 @@
     shell.essential
   ];
 
-  boot.loader.systemd-boot.enable = false;
+  boot.loader.systemd-boot.enable = true;
 
 
   my.networking.wiredInterface = "eth1";
