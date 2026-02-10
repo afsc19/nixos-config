@@ -18,7 +18,7 @@ in
   };
 
   # Required for "reboot --firmware-setup"
-  boot.loader.efi.canTouchEfiVariables = mkDefault true;
+  config.boot.loader.efi.canTouchEfiVariables = mkDefault true;
 
   # Already default
   # boot.loader.timeout = mkDefault 5;
