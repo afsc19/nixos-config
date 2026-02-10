@@ -38,6 +38,7 @@
       gtk.enable = true;
       qt.enable = true;
       spotify.enable = true;
+      torrenting.enable = true;
     };
     laptop = {
       battery.enable = true;
@@ -56,7 +57,28 @@
       };
       zsh.enable = true;
     };
+    # Virtualization enabled in the laptop-virtualization profile
+    virtualization = {
+      distrobox = {
+        enable = true;
+        defaultBoxes = [
+          {
+            name = "arch";
+            image = "docker.io/library/archlinux:latest";
+          }
+          {
+            name = "kali";
+            image = "docker.io/kalilinux/kali-rolling";
+          }
+        ];
+      };
+    };
+    hardware.razer.enable = true;
     personal.enable = true;
+    plymouth = {
+      enable = true;
+      themeName = "glitch";
+    };
     thunderbolt.enable = true;
     xdg.enable = true;
   };
@@ -66,14 +88,17 @@
   imports = with profiles; [
     graphical.browsers
     graphical.discord
+    graphical.disk-utils
     graphical.editors
     graphical.games
+    graphical.neovim-personal
 
     mobile.android-tools
 
     security.agenix
     security.securegrub
     
+    services.ssh
     shell.essential
     audio
     laptop-virtualization
@@ -81,8 +106,14 @@
 
   my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
-  my.hardware.laptop = true;
-  # TODO add my....
+  my.hardware = {
+    laptop = true;
+    batteryPowered = true;
+    batteryChargeLimit = 75;
+    batteryChargeThresholdRange = 3;
+  };
+  my.bootloader.bootPartitionName = "NixOS-boot";
+  boot.loader.timeout = 200;
   
 
   
