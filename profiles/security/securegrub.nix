@@ -62,7 +62,7 @@ in
     if [ -f "${config.my.bootloader.pkiBundle}/keys/db/db.key" ]; then
       if ${pkgs.sbctl}/bin/sbctl verify 2>/dev/null | ${pkgs.gnugrep}/bin/grep -q grubx64.efi | ${pkgs.gnugrep}/bin/grep -q UNSIGNED; then
         echo "[secureboot] Activation: signing grubx64.efi"
-        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/${config.boot.loader.grub.efiBootloaderId}/grubx64.efi || echo "[secureboot] activation signing failed"
+        ${pkgs.sbctl}/bin/sbctl sign ${config.boot.loader.efi.efiSysMountPoint}/EFI/*/grubx64.efi || echo "[secureboot] activation signing failed"
       fi
     fi
   '';
