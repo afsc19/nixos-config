@@ -2,7 +2,7 @@
 { lib, ... }:
 let
   sshKeys = [
-    "" # TODO add afsc ssh keys
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh9INLI4sUow/VZaBoZGwdlr3ZoYa8/j58ahzSK1LPE afsc@zen"
   ];
 in
 {
