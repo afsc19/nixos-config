@@ -1,10 +1,10 @@
-# Network configuration, from diogotcorreia
+# Bootloader options configuration
 { lib, ... }:
 let
-  inherit (lib) mkOption types;
+  inherit (lib) mkOption types mkDefault;
 in
 {
-  options.my.filesystem = {
+  options.my.bootloader = {
     bootPartitionName = mkOption {
       type = types.str;
       default = "NixOS-boot";
@@ -16,4 +16,10 @@ in
       description = "The folder that contains the secure boot MOK keys.";
     };
   };
+
+  # Required for "reboot --firmware-setup"
+  boot.loader.efi.canTouchEfiVariables = mkDefault true;
+
+  # Already default
+  # boot.loader.timeout = mkDefault 5;
 }
