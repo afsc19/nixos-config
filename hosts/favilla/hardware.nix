@@ -24,12 +24,6 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/mnt/usb_pen" =
-    { device = "/dev/disk/by-uuid/28F1-981B";
-      fsType = "vfat";
-      options = [ "fmask=0022" "dmask=0022" ];
-    };
-
   swapDevices =
     [ { device = "/dev/disk/by-uuid/3e8a4ac2-9a38-48bf-a647-f691dca4a6b9"; }
     ];
