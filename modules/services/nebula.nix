@@ -30,7 +30,13 @@ in
 
     firewall.outbound = mkOption {
       type = types.listOf types.attrs;
-      default = [ ];
+      default = [
+        {
+          port = "any";
+          proto = "any";
+          host = "any";
+        }
+      ];
       description = lib.mdDoc "Firewall rules for outbound traffic.";
       example = [
         {
