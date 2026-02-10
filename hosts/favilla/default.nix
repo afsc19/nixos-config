@@ -50,7 +50,7 @@
     virtualization = {
       docker.enable = true;
     };
-    plymouth.enable = true;
+    # plymouth.enable = true;
   };
 
 
