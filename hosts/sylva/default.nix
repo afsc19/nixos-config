@@ -112,7 +112,6 @@
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
-  my.bootloader.bootPartitionName = "NixOS-boot";
   boot.loader.timeout = 200;
   
 

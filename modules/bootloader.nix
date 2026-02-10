@@ -5,11 +5,6 @@ let
 in
 {
   options.my.bootloader = {
-    bootPartitionName = mkOption {
-      type = types.str;
-      default = "NixOS-boot";
-      description = "The folder to which grub is usually deployed, in /boot/EFI/";
-    };
     pkiBundle = mkOption {
       type = types.str;
       default = "/var/lib/sbctl"; # sbctl default; created automatically by sbctl create-keys
