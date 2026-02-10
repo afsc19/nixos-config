@@ -3,7 +3,8 @@ let
   zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh9INLI4sUow/VZaBoZGwdlr3ZoYa8/j58ahzSK1LPE";
   zenVMSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGBwzfN9ryebjm0PAKOGvfPSl1e9eeO7zgZL5qSkimUc";
   thetis = "age1fido2-hmac1qqpgqkdh6zc0q6cw5zwm9neeke0wgpj5pz7xrj8ewrl6hkav86ht50sp43tlvlvtwnjzesmwp7uyrf4f03auc9sq3psghzxem3yjplld4mmn6mj3klccuyaduqrgwvekfakam89f5qwsgag2utsa3vf32exe0vv756t4l9ym3078e257gju9eev4s4g9av4q5x5tvrc5r6l97aggn94cqnh40kgyn72fcrwg0p535wrx7898084tau2tq8stxg3g9c9wsvrlzwd";
-  sylva = ""; # TODO propagate to sylva
+  sylva = "";
+  favilla = "";
 
   personalSystems = [
     zenSystem
@@ -12,7 +13,7 @@ let
   ];
   serverSystems = [
     sylva
-    # TODO propagate to others
+    favilla
   ];
   thirdPartySystems = [
     # ?
@@ -66,7 +67,15 @@ mkSecrets [
   )
 
   (mkSystem "sylva"
-    [ zenSystem thetis ]
+    [ sylva zenSystem thetis ]
+    [
+      "nebulaCert"
+      "nebulaKey"
+    ]
+  )
+
+  (mkSystem "favilla"
+    [ favilla zenSystem thetis ]
     [
       "nebulaCert"
       "nebulaKey"
