@@ -34,15 +34,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Secure boot
-    # lanzaboote = {
-    #   url = "github:nix-community/lanzaboote?ref=v0.4.3";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    #   # only used for development, so we can get rid of it
-    #   inputs.pre-commit-hooks-nix.follows = "";
-    #   # only used for non-flake setups, so we can get rid of it
-    #   inputs.flake-compat.follows = "";
-    # };
+    # Secure boot systemd-boot
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote?ref=v0.4.3";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # only used for development, so we can get rid of it
+      inputs.pre-commit-hooks-nix.follows = "";
+      # only used for non-flake setups, so we can get rid of it
+      inputs.flake-compat.follows = "";
+    };
 
     # To inspect indexes
     nix-index-database = {
@@ -138,7 +138,6 @@
       pkgs = mkPkgs overlays;
       nixosConfigurations = mkHosts ./hosts {
         inherit extraArgs;
-        # TODO move to profiles
         extraModules = [
           {
             hardware.enableRedistributableFirmware = true;
@@ -152,7 +151,7 @@
             };
           }
           # inputs.impermanence.nixosModules.impermanence
-          # inputs.lanzaboote.nixosModules.lanzaboote
+          inputs.lanzaboote.nixosModules.lanzaboote
           inputs.dedsec-grub-theme.nixosModule
         ];
       };
@@ -166,7 +165,7 @@
       packages = {
         x86_64-linux = (lib.filterAttrs (_: v: lib.isDerivation v) pkgs.my) // {
           # inherit (pkgs);
-          # inherit (inputs.lanzaboote.packages.x86_64-linux) lzbt;
+          inherit (inputs.lanzaboote.packages.x86_64-linux) lzbt;
           inherit (inputs.pwndbg.packages.x86_64-linux) pwndbg;
         };
       };
