@@ -28,7 +28,7 @@
   modules = {
     # Audio enabled in the corresponding profile.
     # Nothing graphical except nvim
-    graphical.neovim.base.enable = true;
+    graphical.editor.neovim.base.enable = true;
     laptop = {
       battery.enable = true;
       bluetooth.enable = true;
@@ -79,7 +79,7 @@
       proto = "any";
       group = "afsc";
     }
-  ]
+  ];
   
 
   
