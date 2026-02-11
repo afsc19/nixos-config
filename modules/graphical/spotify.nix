@@ -27,7 +27,7 @@ in
       enable = true;
       spotifyPackage = pkgs.spotify;
 
-      theme = pkgs.spicetify.themes.text;
+      theme = pkgs.spicetify.themes.retroBlur;
       colorScheme = "Spotify";
 
       enabledExtensions = with pkgs.spicetify.extensions; [
