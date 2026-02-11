@@ -83,6 +83,33 @@
   ];
   
 
+  systemd.services.enable-screen = {
+    description = "Sets the screen brightness to 1 (minimum)";
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'echo 1 > /sys/class/backlight/*/brightness";
+    };
+  };
+
+  systemd.services.disable-screen = {
+    description = "Turns the screen off (sets brightness to 0)";
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'echo 1 > /sys/class/backlight/*/brightness";
+    };
+  };
+
+  systemd.timers.disable-screen = {
+    description = "Timer for disabling the screen";
+    timerConfig = {
+      OnBootSec = "2min";
+      Unit = "disable-screen.service";
+    };
+    wantedBy = [ "timers.target" ];
+  };
+
+
   
 
 
