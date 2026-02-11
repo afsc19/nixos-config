@@ -88,7 +88,7 @@
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'echo 1 > /sys/class/backlight/*/brightness";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'echo 1 > /sys/class/backlight/*/brightness'";
     };
   };
 
@@ -96,7 +96,7 @@
     description = "Turns the screen off (sets brightness to 0)";
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'echo 1 > /sys/class/backlight/*/brightness";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'echo 1 > /sys/class/backlight/*/brightness'";
     };
   };
 
