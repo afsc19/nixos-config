@@ -54,6 +54,9 @@
       };
       zsh.enable = true;
     };
+    util = {
+      python.enable = true;
+    };
     # Virtualization enabled in the laptop-virtualization profile
     virtualization = {
       distrobox = {
