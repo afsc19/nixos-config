@@ -19,6 +19,13 @@
       ];
     };
 
+    programs.steam = {
+      enable = true;
+      remotePlay.openFirewall = mkDefault false;
+      dedicatedServer.openFirewall = mkDefault true;
+      localNetworkGameTransfers.openFirewall = mkDefault false;
+    };
+
     home.packages = with pkgs; [
       lunar-client
     ];
