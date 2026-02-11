@@ -28,7 +28,7 @@ in
       spotifyPackage = pkgs.spotify;
 
       theme = pkgs.spicetify.themes.retroBlur;
-      colorScheme = "Spotify";
+      colorScheme = "purple";
 
       enabledExtensions = with pkgs.spicetify.extensions; [
         # TODO add extensions
