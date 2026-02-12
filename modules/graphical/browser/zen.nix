@@ -9,6 +9,9 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.graphical.browser.zen;
+  
+   # FIXME check if beta is available again
+  zenPackage = inputs.zen-browser.packages.${pkgs.system}.twilight;
 in
 {
 
@@ -21,6 +24,7 @@ in
 
     hm.programs.zen-browser = {
       enable = true;
+      package = zenPackage;
       policies =
         let
           mkExtensionSettings = builtins.mapAttrs (
@@ -66,7 +70,7 @@ in
       let
         value =
           let
-            zen-browser = inputs.zen-browser.packages.${pkgs.system}.twilight; # FIXME check if beta is available again
+            zen-browser = zenPackage;
           in
           zen-browser.meta.desktopFileName;
 
