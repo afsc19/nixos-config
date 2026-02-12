@@ -66,7 +66,7 @@ in
       let
         value =
           let
-            zen-browser = inputs.zen-browser.packages.${pkgs.system}.beta; # or twilight
+            zen-browser = inputs.zen-browser.packages.${pkgs.system}.twilight; # FIXME check if beta is available again
           in
           zen-browser.meta.desktopFileName;
 
