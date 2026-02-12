@@ -70,6 +70,9 @@
   my.hardware = {
     laptop = true;
     batteryPowered = true;
+
+    # This is redundant, since SP4 doesn't support charge thresholds.
+    # Remember to use "Battery Limit" in the BIOS to limit the battery to 50%.
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
