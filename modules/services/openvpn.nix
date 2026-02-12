@@ -18,7 +18,7 @@ in
       # Since we use NetworkManager and also for GNOME's GUI
       networkmanager-openvpn
       # nm-connection-editor, also for GNOME's GUI
-      network-manager-applet
+      networkmanagerapplet
     ];
   };
 }
