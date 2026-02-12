@@ -11,7 +11,7 @@ let
   cfg = config.modules.graphical.browser.zen;
   
    # FIXME check if beta is available again
-  zenPackage = inputs.zen-browser.packages.${pkgs.system}.twilight;
+  zenPackage = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
 in
 {
 
