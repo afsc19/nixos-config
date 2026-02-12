@@ -17,8 +17,10 @@ in
       openvpn
       # Since we use NetworkManager and also for GNOME's GUI
       networkmanager-openvpn
-      # nm-connection-editor, also for GNOME's GUI
-      networkmanagerapplet
     ];
+
+    # This is often the missing piece on NixOS for NetworkManager to actually 
+    # use the plugin binaries installed in the system environment.
+    networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
   };
 }
