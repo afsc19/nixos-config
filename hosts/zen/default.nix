@@ -63,7 +63,7 @@
     personal.enable = true;
     plymouth = {
       enable = true;
-      themeName = "deus_ex";
+      themeName = "glitch";
     };
     thunderbolt.enable = true;
     xdg.enable = true;
