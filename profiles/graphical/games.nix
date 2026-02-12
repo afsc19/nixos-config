@@ -5,10 +5,20 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) mkDefault;
+in
 {
   home-manager.sharedModules = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
   ];
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = mkDefault false;
+    dedicatedServer.openFirewall = mkDefault true;
+    localNetworkGameTransfers.openFirewall = mkDefault false;
+  };
 
   hm = {
     # Requires flatpak
@@ -17,13 +27,6 @@
       packages = [
         "org.vinegarhq.Sober"
       ];
-    };
-
-    programs.steam = {
-      enable = true;
-      remotePlay.openFirewall = mkDefault false;
-      dedicatedServer.openFirewall = mkDefault true;
-      localNetworkGameTransfers.openFirewall = mkDefault false;
     };
 
     home.packages = with pkgs; [
