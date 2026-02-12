@@ -30,6 +30,7 @@
     services = {
       # Nebula (VPN)
       nebula.enable = true;
+      openvpn.enable = true;
     };
     shell = {
       git.enable = true;
