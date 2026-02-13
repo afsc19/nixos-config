@@ -38,14 +38,14 @@ in
         "easyeffects/output/${myPresetName}.json".text = builtins.toJSON {
           output = {
             blocklist = [ ];
-            plugins_order = [ "convolverpx2" ];
+            plugins_order = [ "convolver" ];
             convolver = {
               autogain = true;
               bypass = false;
               input-gain = 0.0;
               output-gain = 0.0;
               # Important: EasyEffects looks for the filename in the 'irs' dir
-              kernel-name = "${myPresetName}.irs";
+              kernel-name = "${myPresetName}";
               ir-width = 100;
             };
           };
