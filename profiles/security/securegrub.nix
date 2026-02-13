@@ -1,7 +1,7 @@
 # Grub 2 configuration with fake secure boot (Only avoids secure boot violations)
 { lib, pkgs, config, ... }:
 let
-  inherit (lib) mkIf;
+  inherit (lib) mkIf mkDefault;
 in
 {
 
@@ -11,7 +11,7 @@ in
     enable = true;
     device = "nodev";
     efiSupport = true;
-    useOSProber = true;
+    useOSProber = mkDefault false;
     default = "saved";
 
     dedsec-theme = {
