@@ -1,12 +1,8 @@
-# Some games
+# A selection of personal use Browsers
 {
-  inputs,
-  lib,
-  pkgs,
   ...
 }:
 {
-
   modules.graphical.browser = {
     zen.enable = true;
     brave.enable = true;
