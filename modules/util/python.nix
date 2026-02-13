@@ -16,5 +16,16 @@ in
     environment.systemPackages = with pkgs; [
       python3
     ];
+
+    hm.programs.zsh.initExtra = ''
+      penv() {
+        if [[ -n "$VIRTUAL_ENV" ]]; then
+          deactivate
+        else
+          [[ -d .venv ]] || python3 -m venv .venv
+          source .venv/bin/activate
+        fi
+      }
+    '';
   };
 }

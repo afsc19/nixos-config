@@ -31,22 +31,12 @@ in
         };
 
         # Disable beep when no file is found, per example.
-        initContent = ''
+        initExtra = ''
           # unsetopt beep
           bindkey "^[[1;5C" forward-word # Ctrl + Right Arrow
           bindkey "^[[1;5D" backward-word # Ctrl + Left Arrow
           bindkey '^H' backward-kill-word # Ctrl + Backspace
           bindkey "^[[3;5~" kill-word # Ctrl + Delete
-
-
-          penv() {
-            if [[ -n "$VIRTUAL_ENV" ]]; then
-              deactivate
-            else
-              [[ -d .venv ]] || python3 -m venv .venv
-              source .venv/bin/activate
-            fi
-          }
         '';
 
         autosuggestion.enable = true;
