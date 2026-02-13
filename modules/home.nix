@@ -34,7 +34,7 @@ in
       isNormalUser = true;
       createHome = true;
       description = userFullName;
-      hashedPassword = "$y$j9T$vVRpPoXurWWg71gSMbO5w/$xE1ZYXazclijMgOjwO0K4SXBzFRumhNE2hSV7NdHso9";
+      hashedPassword = "$y$j9T$vVRpPoXurWWg71gSMbO5w/$xE1ZYXazclijMgOjwO0K4SXBzFRumhNE2hSV7NdHso9"; # TODO strengthen it up
       shell = pkgs.zsh;
       extraGroups = [ "wheel" ];
     };
