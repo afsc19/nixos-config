@@ -29,7 +29,7 @@ in
       # Enable EasyEffects
       services.easyeffects.enable = true;
 
-      xdg.configFile = {
+      xdg.dataFile = {
 
         # Link the Impulse Response file
         "easyeffects/irs/${myPresetName}.irs".source = impulseResponse;
