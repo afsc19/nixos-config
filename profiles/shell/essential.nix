@@ -43,7 +43,7 @@
     gnused
     gawk
     zstd
-    gnupg # TODO learn this
+    gnupg
 
     # Networking tools
     mtr # A network diagnostic tool

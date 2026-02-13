@@ -1,5 +1,4 @@
 # Bluetooth configuration
-# TODO rename spotify comments
 {
   pkgs,
   config,

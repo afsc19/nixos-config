@@ -12,8 +12,6 @@ in
 
   home.packages = with pkgs; [
 
-    # TODO Yazi dependencies?
-
     # File scraping
     # binwalk
     # foremost

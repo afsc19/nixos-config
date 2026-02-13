@@ -171,7 +171,7 @@
       };
 
       formatter = {
-        # TODO watchout the --edit for automatic removal
+        # Watchout the --edit for automatic removal
         # https://github.com/NixOS/nix/pull/11438#issuecomment-2343378813
         x86_64-linux = pkgs.writeShellScriptBin "formatter" ''
           # If no arguments are passed, default to formatting the whole project

@@ -31,11 +31,11 @@ in
       colorScheme = "purple";
 
       enabledExtensions = with pkgs.spicetify.extensions; [
-        # TODO add extensions
+        # Nothing for now
       ];
 
       enabledCustomApps = with pkgs.spicetify.apps; [
-        # TODO add custom apps
+        # Nothing for now
       ];
     };
   };
