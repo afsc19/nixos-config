@@ -89,6 +89,9 @@ in
           redhat.java
           ms-vscode.cpptools
 
+          # Python
+          ms-python.python
+
           # PDFs
           tomoki1207.pdf
 
