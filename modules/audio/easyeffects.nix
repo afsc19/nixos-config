@@ -39,7 +39,7 @@ in
           output = {
             blocklist = [ ];
             plugins_order = [ "convolverpx2" ];
-            convolverpx2 = {
+            convolver = {
               autogain = true;
               bypass = false;
               input-gain = 0.0;
