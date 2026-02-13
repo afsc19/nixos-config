@@ -10,8 +10,7 @@ let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.graphical.browser.zen;
   
-   # FIXME check if beta is available again
-  zenPackage = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
+  zenPackage = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta;
 in
 {
 
