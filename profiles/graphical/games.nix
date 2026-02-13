@@ -5,20 +5,12 @@
   pkgs,
   ...
 }:
-let
-  inherit (lib) mkDefault;
-in
 {
   home-manager.sharedModules = [
     inputs.nix-flatpak.homeManagerModules.nix-flatpak
   ];
 
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = mkDefault false;
-    dedicatedServer.openFirewall = mkDefault true;
-    localNetworkGameTransfers.openFirewall = mkDefault false;
-  };
+  modules.graphical.gaming.steam.enable = true;
 
   hm = {
     # Requires flatpak
