@@ -23,6 +23,7 @@
     home.packages = with pkgs; [
       lunar-client
       unstable.hydralauncher
+      moonlight-qt
     ];
   };
 
