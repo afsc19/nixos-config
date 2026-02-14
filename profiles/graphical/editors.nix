@@ -1,4 +1,4 @@
-# Some games
+# Text editors
 {
   ...
 }:
