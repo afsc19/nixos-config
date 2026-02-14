@@ -4,8 +4,11 @@
 }:
 {
   hm.home.packages = with pkgs; [
-    sonic-visualiser
     qsstv
+    ffmpeg
+
+    # Graphical
     audacity
+    sonic-visualiser
   ];
 }
