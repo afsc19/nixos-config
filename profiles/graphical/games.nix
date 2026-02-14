@@ -20,9 +20,9 @@
       ];
     };
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs.unstable; [
       lunar-client
-      unstable.hydralauncher
+      hydralauncher
       moonlight-qt
     ];
   };
