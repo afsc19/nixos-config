@@ -17,6 +17,9 @@
     tmux
 
 
+    # Nix
+    nixfmt
+
 
     # Archives
     zip
