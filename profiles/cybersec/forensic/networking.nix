@@ -1,5 +1,6 @@
 # Networking utils
 {
+  pkgs,
   ...
 }:
 {

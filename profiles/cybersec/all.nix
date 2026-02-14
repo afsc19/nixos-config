@@ -1,8 +1,8 @@
 # User everything for cybersec
-{ ... }:
+{ profiles, ... }:
 {
-  import = with profiles.cybersec; [
-    forenisc
+  imports = with profiles.cybersec; [
+    forensic-all
     pwn
     reverse
     web

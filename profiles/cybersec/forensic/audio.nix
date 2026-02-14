@@ -1,5 +1,6 @@
 # Audio utils
 {
+  pkgs,
   ...
 }:
 {

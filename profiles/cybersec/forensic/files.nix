@@ -1,10 +1,11 @@
 # File scraping utils
 {
+  pkgs,
   ...
 }:
 {
   hm.home.packages = with pkgs; [
-    strings # Redefined from shell/essential, just in case
+    binutils # For strings, also defined in modules.shell.essential
     binwalk
     foremost
     exiftool

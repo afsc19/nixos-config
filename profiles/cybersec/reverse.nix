@@ -8,7 +8,7 @@
   hm.home.packages = with pkgs.unstable; [
     # Manually download Ida PRO's binary
     ghidra
-    binary-ninja
+    binaryninja-free
     jadx
   ];
 }

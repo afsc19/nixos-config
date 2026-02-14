@@ -1,5 +1,6 @@
 # Miscellaneous utils
 {
+  pkgs,
   ...
 }:
 {

@@ -1,5 +1,6 @@
 # Disk utils
 {
+  pkgs,
   ...
 }:
 {

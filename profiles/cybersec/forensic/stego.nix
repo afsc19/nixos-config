@@ -1,5 +1,6 @@
 # Steganography utils
 {
+  pkgs,
   ...
 }:
 {

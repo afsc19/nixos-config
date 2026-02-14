@@ -12,7 +12,7 @@ in
   hm.home.packages = with pkgs.unstable; [
     gef # Enhanced gdb
     pwndbg
-  ]
+  ];
 
   hm.home.shellAliases = {
     gdb = "${pwndbg}/bin/pwndbg";
