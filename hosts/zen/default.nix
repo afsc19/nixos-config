@@ -61,7 +61,10 @@
         ];
       };
     };
-    hardware.razer.enable = true;
+    hardware = {
+      razer.enable = true;
+      intel.enable = true;
+    };
     personal.enable = true;
     plymouth = {
       enable = true;
