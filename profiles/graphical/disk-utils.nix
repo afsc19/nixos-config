@@ -16,7 +16,7 @@
       "org.gnome.baobab" # Usage Disk Analyzer
     ];
   };
-  
+
   environment.systemPackages = with pkgs; [
     gparted
   ];

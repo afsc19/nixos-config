@@ -1,7 +1,7 @@
-{ 
+{
   profiles,
   config,
-  ... 
+  ...
 }:
 {
   modules.graphical.editor.neovim = {

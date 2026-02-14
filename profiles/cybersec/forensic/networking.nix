@@ -14,5 +14,4 @@
     "dialout" # access USB TTY devices without sudo
   ];
 
-
 }

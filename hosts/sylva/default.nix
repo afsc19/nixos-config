@@ -2,10 +2,17 @@
 
 # Base yourself on this config:
 # Laptop PC
-{ configs, pkgs, lib, inputs, modulePaths, profiles, ... }:
+{
+  configs,
+  pkgs,
+  lib,
+  inputs,
+  modulePaths,
+  profiles,
+  ...
+}:
 
 {
-
 
   # --- Bootloader ---
   #boot.loader.systemd-boot.enable = false; # disable systemd-boot
@@ -17,16 +24,12 @@
   #boot.loader.efi.canTouchEfiVariables = true;
   #boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
-
   # --- Network ---
   # Defined in generators.nix - networking.hostName = "zen";
-  networking.networkmanager.enable = true; 
-
+  networking.networkmanager.enable = true;
 
   # --- Time ---
   time.timeZone = "Europe/Lisbon";
-
-
 
   modules = {
     # Audio enabled in the corresponding profile.
@@ -83,8 +86,6 @@
     xdg.enable = true;
   };
 
-
-
   imports = with profiles; [
     graphical.browsers
     graphical.discord
@@ -97,7 +98,7 @@
 
     security.agenix
     security.securegrub
-    
+
     services.ssh
     shell.essential
     audio
@@ -113,11 +114,6 @@
     batteryChargeThresholdRange = 3;
   };
   boot.loader.timeout = 200;
-  
-
-  
-
-
 
   # --- Firewall ---
   # Open ports in the firewall.
@@ -127,8 +123,6 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
-
-
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -136,8 +130,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-
-  
-
 
 }

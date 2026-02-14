@@ -14,7 +14,7 @@ in
   hm.home = {
     packages = with pkgs.unstable; [
       # Manually download portswigger and caido
-    
+
     ];
 
     shellAliases = mkIf hasPython {

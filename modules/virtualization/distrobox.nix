@@ -41,37 +41,38 @@ in
 
   config = mkIf cfg.enable {
     virtualisation.podman.enable = true;
-    environment.systemPackages = (with pkgs; [
-      distrobox
-      podman
-    ]);
+    environment.systemPackages = (
+      with pkgs;
+      [
+        distrobox
+        podman
+      ]
+    );
     # Optional but useful so user services are reliably started
     hm.systemd.user.startServices = true;
 
     hm.systemd.user.services =
       let
-        mkDistroboxService =
-          box:
-          {
-            name = "distrobox-${box.name}";
-            value = {
-              Unit = {
-                Description = "Ensure distrobox '${box.name}' exists";
-                After = [ "network-online.target" ];
-                Wants = [ "network-online.target" ];
-              };
-              Install = {
-                WantedBy = [ "default.target" ];
-              };
-              Service = {
-                Type = "oneshot";
-                ExecStart = "${pkgs.writeShellScript "create-distrobox-${box.name}" ''
-                  set -euo pipefail
-                  ${pkgs.distrobox}/bin/distrobox-create --name ${box.name} --image ${box.image} --yes || true
-                ''}";
-              };
+        mkDistroboxService = box: {
+          name = "distrobox-${box.name}";
+          value = {
+            Unit = {
+              Description = "Ensure distrobox '${box.name}' exists";
+              After = [ "network-online.target" ];
+              Wants = [ "network-online.target" ];
+            };
+            Install = {
+              WantedBy = [ "default.target" ];
+            };
+            Service = {
+              Type = "oneshot";
+              ExecStart = "${pkgs.writeShellScript "create-distrobox-${box.name}" ''
+                set -euo pipefail
+                ${pkgs.distrobox}/bin/distrobox-create --name ${box.name} --image ${box.image} --yes || true
+              ''}";
             };
           };
+        };
       in
       lib.listToAttrs (map mkDistroboxService cfg.defaultBoxes);
   };

@@ -1,13 +1,20 @@
 # Laptop PC used for server purposes (minimal, no graphical desktop)
-{ configs, pkgs, lib, inputs, modulePaths, profiles, ... }:
+{
+  configs,
+  pkgs,
+  lib,
+  inputs,
+  modulePaths,
+  profiles,
+  ...
+}:
 
 {
   # --- Network ---
-  networking.networkmanager.enable = true; 
+  networking.networkmanager.enable = true;
 
   # --- Time ---
   time.timeZone = "Atlantic/Azores";
-
 
   modules = {
     # Audio enabled in the corresponding profile.
@@ -37,16 +44,14 @@
     # plymouth.enable = true;
   };
 
-
   imports = with profiles; [
     security.agenix
-    
+
     services.ssh
     shell.essential
   ];
 
   boot.loader.systemd-boot.enable = true;
-
 
   my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
@@ -67,7 +72,6 @@
       group = "afsc";
     }
   ];
-  
 
   # --- Screen dimming services ---
   systemd.services.enable-screen = {
@@ -96,8 +100,6 @@
     wantedBy = [ "timers.target" ];
   };
 
-
-
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
@@ -105,7 +107,6 @@
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
-
 
   system.stateVersion = "25.11";
 }

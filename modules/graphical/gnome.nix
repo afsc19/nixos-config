@@ -49,7 +49,8 @@ in
         gnome-tweaks # tweak tool
         seahorse # GUI for keyring
         ptyxis
-      ]) ++ (with pkgs.gnomeExtensions; [
+      ])
+      ++ (with pkgs.gnomeExtensions; [
         # extensions
         tiling-shell # helps tiling
         caffeine # dont sleep
@@ -60,8 +61,9 @@ in
         dash-to-dock
       ]);
     # Exclude gnome default packages
-    environment.gnome.excludePackages =
-      (with pkgs; [
+    environment.gnome.excludePackages = (
+      with pkgs;
+      [
         # gnome-photos
         gnome-tour
         # cheese # webcam tool
@@ -82,14 +84,18 @@ in
         # gnome-logs
         # gnome-clocks
         gnome-contacts
-      ]);
+      ]
+    );
     # Manage shell extensions through the browser
     services.gnome.gnome-browser-connector.enable = true;
 
     hm.dconf.settings = {
       # Allow fractional scaling without blurring XWayland apps
       "org/gnome/mutter" = {
-        experimental-features = [ "scale-monitor-framebuffer" "xwayland-native-scaling" ];
+        experimental-features = [
+          "scale-monitor-framebuffer"
+          "xwayland-native-scaling"
+        ];
       };
 
       "org/gnome/desktop/background" = {

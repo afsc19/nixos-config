@@ -77,7 +77,6 @@ in
         belloff = "all";
       };
 
-
       # These packages are required by LazyVim and its default plugins
       extraPackages = with pkgs; [
         # Build tools for tree-sitter & plugins

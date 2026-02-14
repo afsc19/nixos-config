@@ -9,7 +9,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.graphical.browser.zen;
-  
+
   zenPackage = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta;
 in
 {

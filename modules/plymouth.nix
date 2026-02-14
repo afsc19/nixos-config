@@ -6,7 +6,12 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
   cfg = config.modules.plymouth;
 
 in
@@ -33,7 +38,7 @@ in
       ];
     };
 
-    # Enable systemd in initrd. This is required for the modern graphical 
+    # Enable systemd in initrd. This is required for the modern graphical
     # LUKS unlock prompt to integrate correctly with Plymouth.
     boot.initrd.systemd.enable = true;
 
@@ -50,6 +55,3 @@ in
     boot.consoleLogLevel = 0;
   };
 }
-
-
-

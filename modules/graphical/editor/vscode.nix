@@ -23,13 +23,13 @@ let
       chmod -R +w extension
       sourceRoot=extension
     '';
-    
+
     # Manually install the extension since there's no build process
     buildPhase = ''
-       runHook preBuild;
-       mkdir -p "$out/vscode/extensions/afsc19.ayu-high-contrast-themes"
-       cp -r * "$out/vscode/extensions/afsc19.ayu-high-contrast-themes"
-       runHook postBuild;
+      runHook preBuild;
+      mkdir -p "$out/vscode/extensions/afsc19.ayu-high-contrast-themes"
+      cp -r * "$out/vscode/extensions/afsc19.ayu-high-contrast-themes"
+      runHook postBuild;
     '';
   };
 
@@ -46,7 +46,8 @@ let
     "explorer.confirmDelete" = false;
     "editor.acceptSuggestionOnEnter" = "off";
     "explorer.confirmDragAndDrop" = false;
-    "C_Cpp.clang_format_fallbackStyle" = "{BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 80, AllowShortBlocksOnASingleLine: Empty, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLoopsOnASingleLine: False}";
+    "C_Cpp.clang_format_fallbackStyle" =
+      "{BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 80, AllowShortBlocksOnASingleLine: Empty, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLoopsOnASingleLine: False}";
     "java.referencesCodeLens.enabled" = true;
     "javascript.suggest.completeFunctionCalls" = true;
     "editor.quickSuggestions" = {

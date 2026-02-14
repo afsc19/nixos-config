@@ -1,4 +1,3 @@
-
 # Configurations for personal systems
 {
   pkgs,
@@ -28,20 +27,18 @@ in
       };
     };
 
-
     # ssh client config
     hm.programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
       matchBlocks = {
         "*" = { };
-        
+
         # Use if TERM isnt recognized on older  servers
         # "* !apollo !bacchus".setEnv = {
         #   TERM = "xterm-256color";
         # };
 
-        
         sylva = {
           hostname = "sylva.andrecadete.com";
           user = "ubuntu";
@@ -74,7 +71,6 @@ in
           };
         };
 
-
         pwncollege = {
           hostname = "pwn.college";
           user = "hacker";
@@ -100,8 +96,14 @@ in
     hm.dconf.settings = mkIf isGnome {
       "org/gnome/desktop/input-sources" = {
         sources = [
-          [ "xkb" "us" ]
-          [ "xkb" "pt" ]
+          [
+            "xkb"
+            "us"
+          ]
+          [
+            "xkb"
+            "pt"
+          ]
         ];
       };
     };
@@ -126,7 +128,6 @@ in
     services.locate.enable = true;
     # Enable CUPS to print documents.
     services.printing.enable = true;
-
 
   };
 }

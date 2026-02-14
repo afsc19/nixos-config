@@ -43,8 +43,14 @@ in
     # Set battery charge limit to 80% for gnome power
     systemd.services.battery-charge-limit = mkIf isGnome {
       description = "Set battery charge limit";
-      wantedBy = [ "multi-user.target" "post-resume.target" ];
-      after = [ "multi-user.target" "post-resume.target" ];
+      wantedBy = [
+        "multi-user.target"
+        "post-resume.target"
+      ];
+      after = [
+        "multi-user.target"
+        "post-resume.target"
+      ];
       serviceConfig = {
         Type = "oneshot";
         Restart = "on-failure";

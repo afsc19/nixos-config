@@ -28,7 +28,10 @@ in
         wifi.macAddress = "stable";
         dns = "none";
       };
-      nameservers = [ "1.1.1.1" "1.0.0.1" ];
+      nameservers = [
+        "1.1.1.1"
+        "1.0.0.1"
+      ];
     };
     usr.extraGroups = [ "networkmanager" ];
   };

@@ -17,7 +17,7 @@ in
     hm = {
       programs.zsh = {
         enable = true;
-    
+
         shellAliases = {
           clean = "sudo nix-collect-garbage -d";
           cleanold = "sudo nix-collect-garbage --delete-old";
@@ -40,7 +40,7 @@ in
           enable = true;
           plugins = [
             { name = "zsh-users/zsh-autosuggestions"; }
-            { name = "zsh-users/zsh-syntax-highlighting"; }	
+            { name = "zsh-users/zsh-syntax-highlighting"; }
           ];
         };
       };

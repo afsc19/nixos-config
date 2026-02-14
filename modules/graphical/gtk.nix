@@ -9,7 +9,8 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.graphical.gtk;
-in {
+in
+{
   options.modules.graphical.gtk.enable = mkEnableOption "GTK";
 
   config = mkIf cfg.enable {

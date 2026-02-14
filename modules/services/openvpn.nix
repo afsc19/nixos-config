@@ -19,7 +19,7 @@ in
       networkmanager-openvpn
     ];
 
-    # This is often the missing piece on NixOS for NetworkManager to actually 
+    # This is often the missing piece on NixOS for NetworkManager to actually
     # use the plugin binaries installed in the system environment.
     networking.networkmanager.plugins = [ pkgs.networkmanager-openvpn ];
   };

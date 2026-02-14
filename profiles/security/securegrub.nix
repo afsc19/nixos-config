@@ -1,5 +1,10 @@
 # Grub 2 configuration with fake secure boot (Only avoids secure boot violations)
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
   inherit (lib) mkIf mkDefault;
 in
@@ -30,7 +35,6 @@ in
     # Crucial for Plymouth: Pass the correct video mode from GRUB to the kernel
     gfxmodeEfi = "auto";
     gfxpayloadEfi = "keep";
-
 
     extraInstallCommands = ''
       set -e

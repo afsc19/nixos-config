@@ -20,7 +20,6 @@ in
         runAsRoot = true;
         swtpm.enable = true;
 
-
         # Now available by default
         # ovmf = {
         #   enable = true;

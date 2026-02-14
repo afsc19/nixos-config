@@ -33,10 +33,12 @@ in
   services.udev.packages = [ pkgs.libfido2 ];
 
   # Ensure the fido2-hmac plugin is available during activation/decryption
-  age.ageBin = let
-    ageWrapped = pkgs.writeShellScriptBin "age" ''
-      export PATH=${lib.makeBinPath [ pkgs.age-plugin-fido2-hmac ]}:$PATH
-      exec ${pkgs.age}/bin/age "$@"
-    '';
-  in "${ageWrapped}/bin/age";
+  age.ageBin =
+    let
+      ageWrapped = pkgs.writeShellScriptBin "age" ''
+        export PATH=${lib.makeBinPath [ pkgs.age-plugin-fido2-hmac ]}:$PATH
+        exec ${pkgs.age}/bin/age "$@"
+      '';
+    in
+    "${ageWrapped}/bin/age";
 }

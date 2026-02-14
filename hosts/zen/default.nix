@@ -1,14 +1,21 @@
 # Laptop PC
-{ configs, pkgs, lib, inputs, modulePaths, profiles, ... }:
+{
+  configs,
+  pkgs,
+  lib,
+  inputs,
+  modulePaths,
+  profiles,
+  ...
+}:
 
 {
 
   # --- Network ---
-  networking.networkmanager.enable = true; 
+  networking.networkmanager.enable = true;
 
   # --- Time ---
   time.timeZone = "Europe/Lisbon";
-
 
   modules = {
     # Audio enabled in the corresponding profile.
@@ -69,11 +76,9 @@
     xdg.enable = true;
   };
 
-
-
   imports = with profiles; [
     cybersec.all
-    
+
     graphical.browsers
     graphical.discord
     graphical.disk-utils
@@ -85,7 +90,7 @@
 
     security.agenix
     security.securegrub
-    
+
     services.ssh
     shell.essential
     audio
@@ -102,8 +107,6 @@
   };
   boot.loader.timeout = 200;
 
-
-
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
@@ -111,7 +114,6 @@
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
-
 
   system.stateVersion = "25.11";
 }
