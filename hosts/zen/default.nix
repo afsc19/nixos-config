@@ -72,6 +72,8 @@
 
 
   imports = with profiles; [
+    cybersec.all
+    
     graphical.browsers
     graphical.discord
     graphical.disk-utils
