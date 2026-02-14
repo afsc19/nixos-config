@@ -1,15 +1,9 @@
 {
-  config,
   inputs,
   lib,
   pkgs,
   ...
 }:
-let
-  # For Impermanence
-  #cfgPersist = config.modules.impermanence;
-  #systemRoot = lib.optionalString cfgPersist.enable cfgPersist.persistDirectory;
-in
 {
   imports = [
     inputs.agenix.nixosModules.default

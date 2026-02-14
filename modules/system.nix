@@ -1,6 +1,5 @@
 # System config common across all hosts, from diogotcorreia
 {
-  config,
   inputs,
   lib,
   ...

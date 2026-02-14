@@ -1,7 +1,6 @@
 # Easyeffects configuration with declarative presets
 # FIXME Easyeffects is crashing when I select the px2 preset
 {
-  pkgs,
   config,
   lib,
   configDir,

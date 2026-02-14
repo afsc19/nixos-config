@@ -1,7 +1,6 @@
 # Some games
 {
   inputs,
-  lib,
   pkgs,
   ...
 }:

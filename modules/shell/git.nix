@@ -2,8 +2,6 @@
 {
   lib,
   config,
-  configDir,
-  user,
   ...
 }:
 let

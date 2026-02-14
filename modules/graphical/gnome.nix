@@ -4,11 +4,10 @@
   config,
   lib,
   configDir,
-  user,
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf escapeShellArg;
+  inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.graphical.gnome;
 
   wallpaper = "file://${configDir}/wallpapers/dedsec1.jpg";

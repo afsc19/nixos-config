@@ -1,6 +1,5 @@
 # Bluetooth configuration
 {
-  pkgs,
   config,
   lib,
   ...

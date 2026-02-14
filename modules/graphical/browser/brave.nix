@@ -1,6 +1,5 @@
 # Just Brave Browser
 {
-  pkgs,
   config,
   lib,
   ...

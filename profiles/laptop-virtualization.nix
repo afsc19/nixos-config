@@ -1,6 +1,5 @@
 # Virtualization profile for laptop devices (docker+distrobox+vmware+kvm)
 {
-  pkgs,
   ...
 }:
 {

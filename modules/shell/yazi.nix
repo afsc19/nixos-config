@@ -46,19 +46,6 @@ let
       rm -f "$tmp"
     }
   '';
-
-  # fish shell variant
-  yFunctionFish = ''
-    function y
-      set -l tmp (mktemp -t yazi-cwd.XXXXXX)
-      yazi $argv --cwd-file=$tmp
-      set -l cwd (cat $tmp)
-      if test -n "$cwd" -a -d "$cwd"
-        cd "$cwd"
-      end
-      rm -f $tmp
-    end
-  '';
 in
 {
   options.modules.shell.yazi = {

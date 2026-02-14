@@ -1,6 +1,5 @@
 # Touchpad support
 {
-  pkgs,
   config,
   lib,
   ...

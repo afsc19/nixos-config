@@ -1,6 +1,5 @@
 # Tools for reverse engineering
 {
-  hm,
   pkgs,
   ...
 }:

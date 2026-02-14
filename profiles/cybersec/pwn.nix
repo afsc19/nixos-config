@@ -1,6 +1,5 @@
 # Pwn utils
 {
-  hm,
   pkgs,
   inputs,
   ...

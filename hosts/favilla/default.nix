@@ -1,10 +1,6 @@
 # Laptop PC used for server purposes (minimal, no graphical desktop)
 {
-  configs,
   pkgs,
-  lib,
-  inputs,
-  modulePaths,
   profiles,
   ...
 }:

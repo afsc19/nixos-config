@@ -3,11 +3,6 @@
 # Base yourself on this config:
 # Laptop PC
 {
-  configs,
-  pkgs,
-  lib,
-  inputs,
-  modulePaths,
   profiles,
   ...
 }:

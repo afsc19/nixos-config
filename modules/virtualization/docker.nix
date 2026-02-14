@@ -1,9 +1,7 @@
 # Docker configuration.
 {
-  pkgs,
   config,
   lib,
-  configDir,
   user,
   ...
 }:

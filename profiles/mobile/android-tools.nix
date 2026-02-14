@@ -1,7 +1,6 @@
 # Android tools
 {
   pkgs,
-  config,
   user,
   ...
 }:

@@ -1,6 +1,5 @@
 # zsh (with oh-my-zsh) configuration.
 {
-  pkgs,
   config,
   lib,
   ...

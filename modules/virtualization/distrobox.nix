@@ -3,8 +3,6 @@
   pkgs,
   config,
   lib,
-  configDir,
-  user,
   ...
 }:
 let

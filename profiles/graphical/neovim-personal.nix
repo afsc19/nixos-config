@@ -1,6 +1,4 @@
 {
-  profiles,
-  config,
   ...
 }:
 {

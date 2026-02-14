@@ -1,9 +1,7 @@
 # Thunderbolt configuration.
 {
-  pkgs,
   config,
   lib,
-  options,
   ...
 }:
 let
