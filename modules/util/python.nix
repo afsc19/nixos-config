@@ -17,7 +17,7 @@ in
       python3
     ];
 
-    hm.programs.zsh.initExtra = ''
+    hm.programs.zsh.initContent = ''
       penv() {
         if [[ -n "$VIRTUAL_ENV" ]]; then
           deactivate
