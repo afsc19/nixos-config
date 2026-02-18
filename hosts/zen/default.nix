@@ -83,6 +83,7 @@
     graphical.editors
     graphical.games
     graphical.neovim-personal
+    graphical.video
 
     mobile.android-tools
 
