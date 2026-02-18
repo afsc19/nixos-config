@@ -21,6 +21,7 @@
       gnome.enable = true;
       gtk.enable = true;
       qt.enable = true;
+      rstudio.enable = true;
       spotify.enable = true;
       torrenting.enable = true;
     };
