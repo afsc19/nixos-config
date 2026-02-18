@@ -24,6 +24,7 @@ in
     hm.programs.zen-browser = {
       enable = true;
       package = zenPackage;
+      suppressXdgMigrationWarning = true;
       policies =
         let
           mkExtensionSettings = builtins.mapAttrs (
