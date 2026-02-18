@@ -3,6 +3,7 @@
   pkgs,
   config,
   lib,
+  inputs,
   secrets,
   user,
   ...
@@ -96,11 +97,11 @@ in
     hm.dconf.settings = mkIf isGnome {
       "org/gnome/desktop/input-sources" = {
         sources = [
-          (lib.hm.gvariant.mkTuple [
+          (inputs.home.lib.hm.gvariant.mkTuple [
             "xkb"
             "us"
           ])
-          (lib.hm.gvariant.mkTuple [
+          (inputs.home.lib.hm.gvariant.mkTuple [
             "xkb"
             "pt"
           ])
