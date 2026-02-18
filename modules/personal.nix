@@ -96,15 +96,16 @@ in
     hm.dconf.settings = mkIf isGnome {
       "org/gnome/desktop/input-sources" = {
         sources = [
-          [
+          (lib.hm.gvariant.mkTuple [
             "xkb"
             "us"
-          ]
-          [
+          ])
+          (lib.hm.gvariant.mkTuple [
             "xkb"
             "pt"
-          ]
+          ])
         ];
+        xkb-options = [ "grp:win_space_toggle" ];
       };
     };
 
