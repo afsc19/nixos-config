@@ -34,7 +34,11 @@
       # Nebula (VPN)
       nebula.enable = true;
       openvpn.enable = true;
-      onedrive.enable = true;
+      onedrive = {
+        enable = true;
+        mountPoint = "OneDrive";
+        remoteName = "onedrive"; # This must match secrets/personal/rclone
+      };
     };
     shell = {
       git.enable = true;
