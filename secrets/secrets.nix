@@ -54,14 +54,6 @@ mkSecrets [
   ])
 
   (mkSystem "personal" personalSystems [
-    "githubKey"
-    "githubPub"
-    "rnlgitlabKey"
-    "rnlgitlabPub"
-    "pwncollegeKey"
-    "pwncollegePub"
-    "sylvaKey"
-    "sylvaPub"
     "rclone"
   ])
 
