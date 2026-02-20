@@ -34,6 +34,7 @@
       # Nebula (VPN)
       nebula.enable = true;
       openvpn.enable = true;
+      onedrive.enable = true;
     };
     shell = {
       git.enable = true;

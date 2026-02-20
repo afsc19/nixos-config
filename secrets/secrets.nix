@@ -56,6 +56,7 @@ mkSecrets [
     "pwncollegePub"
     "sylvaKey"
     "sylvaPub"
+    "rclone"
   ])
 
   (mkSystem "zen"
