@@ -61,7 +61,7 @@ in
             --config ${config.age.secrets.rclone.path} \
             --vfs-cache-mode full \
             --vfs-cache-max-size 10G \
-            --vfs-cache-timeout 1h \
+            --vfs-cache-max-age 1h \
             --vfs-read-chunk-size 64M \
             --vfs-read-chunk-size-limit 1G \
             --dir-cache-time 1000h \
