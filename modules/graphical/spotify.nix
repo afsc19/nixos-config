@@ -35,6 +35,7 @@ in
       ];
 
       enabledCustomApps = with pkgs.spicetify.apps; [
+        marketplace
         # Nothing for now
       ];
     };
