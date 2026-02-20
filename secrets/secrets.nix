@@ -1,18 +1,22 @@
 # Agenix secrets, heavily inspired on Diogotcorreia's dotfiles.
 let
   zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh9INLI4sUow/VZaBoZGwdlr3ZoYa8/j58ahzSK1LPE afsc@zen";
-  zenVMSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGBwzfN9ryebjm0PAKOGvfPSl1e9eeO7zgZL5qSkimUc afsc@zen";
+  # zenVMSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGBwzfN9ryebjm0PAKOGvfPSl1e9eeO7zgZL5qSkimUc afsc@zen"; No longer needed
   thetis = "age1fido2-hmac1qqpgqkdh6zc0q6cw5zwm9neeke0wgpj5pz7xrj8ewrl6hkav86ht50sp43tlvlvtwnjzesmwp7uyrf4f03auc9sq3psghzxem3yjplld4mmn6mj3klccuyaduqrgwvekfakam89f5qwsgag2utsa3vf32exe0vv756t4l9ym3078e257gju9eev4s4g9av4q5x5tvrc5r6l97aggn94cqnh40kgyn72fcrwg0p535wrx7898084tau2tq8stxg3g9c9wsvrlzwd";
-  sylva = "";
+  sylvaSystem = "";
   favillaSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLulyCMndsV54zdOmA4TjJ53kkkoW4n0UuL9DgL1VHC afsc@favilla";
+
+  # Keys that can decrypt/encrypt everything
+  universalKeys = [
+    zenSystem
+    thetis
+  ];
 
   personalSystems = [
     zenSystem
-    zenVMSystem
-    thetis
   ];
   serverSystems = [
-    sylva
+    sylvaSystem
     favillaSystem
   ];
   thirdPartySystems = [
@@ -21,11 +25,13 @@ let
   allSystems = personalSystems ++ serverSystems ++ thirdPartySystems;
 
   mkSystem =
-    dir: publicKeys: files:
+    dir: specificKeys: files:
     builtins.foldl' (
       acc: file:
       let
         filePrefix = if dir == null then "" else "${dir}/";
+        # Concatenate and deduplicate
+        publicKeys = builtins.foldl' (acc: x: if builtins.elem x acc then acc else acc ++ [ x ]) [ ] (specificKeys ++ universalKeys);
       in
       acc
       ++ [
@@ -60,7 +66,7 @@ mkSecrets [
   ])
 
   (mkSystem "zen"
-    [ zenSystem zenVMSystem thetis ]
+    [ zenSystem ]
     [
       "nebulaCert"
       "nebulaKey"
@@ -68,7 +74,7 @@ mkSecrets [
   )
 
   (mkSystem "sylva"
-    [ sylva zenSystem thetis ]
+    [ sylvaSystem ]
     [
       "nebulaCert"
       "nebulaKey"
