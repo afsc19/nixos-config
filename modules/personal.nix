@@ -17,16 +17,13 @@ in
   options.modules.personal.enable = mkEnableOption "Personal Configs";
 
   config = mkIf cfg.enable {
-    age.secrets = {
-      sylvaKey = {
-        file = secrets.personal.sylvaKey;
-        owner = user;
-      };
-      pwncollegeKey = {
-        file = secrets.personal.pwncollegeKey;
-        owner = user;
-      };
-    };
+    # For future use of dedicated keys
+    # age.secrets = {
+    #   sylvaKey = {
+    #     file = secrets.personal.sylvaKey;
+    #     owner = user;
+    #   };
+    # };
 
     # ssh client config
     hm.programs.ssh = {
@@ -43,7 +40,6 @@ in
         sylva = {
           hostname = "sylva.andrecadete.com";
           user = "ubuntu";
-          identityFile = [ "${config.age.secrets.sylvaKey.path}" ];
           extraOptions = {
             IdentitiesOnly = "yes";
           };
@@ -51,7 +47,6 @@ in
         "world.sylva sylva.world" = {
           hostname = "world.sylva.andrecadete.com";
           user = "ubuntu";
-          identityFile = [ "${config.age.secrets.sylvaKey.path}" ];
           extraOptions = {
             IdentitiesOnly = "yes";
           };
@@ -75,8 +70,6 @@ in
         pwncollege = {
           hostname = "pwn.college";
           user = "hacker";
-          identityFile = [ "${config.age.secrets.pwncollegeKey.path}" ];
-
           extraOptions = {
             IdentitiesOnly = "yes";
           };
