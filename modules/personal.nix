@@ -37,6 +37,14 @@ in
         #   TERM = "xterm-256color";
         # };
 
+        # A little fix to allow rsa keys for ocis
+        "instance-console.eu-madrid-1.oci.oraclecloud.com" = {
+          extraOptions = {
+            HostKeyAlgorithms = "+ssh-rsa";
+            PubkeyAcceptedAlgorithms = "+ssh-rsa";
+          };
+        };
+
         sylva = {
           hostname = "sylva.andrecadete.com";
           user = "ubuntu";
