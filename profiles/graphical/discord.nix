@@ -5,7 +5,8 @@
 {
 
   modules.graphical = {
-    equibop.enable = true;
+    # equibop.enable = true;
+    equicord.enable = true;
 
     # backup
     discord.enable = true;
