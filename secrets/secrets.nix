@@ -1,8 +1,9 @@
 # Agenix secrets, heavily inspired on Diogotcorreia's dotfiles.
 let
   zenKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHh9INLI4sUow/VZaBoZGwdlr3ZoYa8/j58ahzSK1LPE afsc@zen";
-  zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILUwEjCUp8iCU+pCvunxxP3Q1MqjuOulbOOQhxrBQqjM root@zen";
   thetis = "age1fido2-hmac1qqpgqkdh6zc0q6cw5zwm9neeke0wgpj5pz7xrj8ewrl6hkav86ht50sp43tlvlvtwnjzesmwp7uyrf4f03auc9sq3psghzxem3yjplld4mmn6mj3klccuyaduqrgwvekfakam89f5qwsgag2utsa3vf32exe0vv756t4l9ym3078e257gju9eev4s4g9av4q5x5tvrc5r6l97aggn94cqnh40kgyn72fcrwg0p535wrx7898084tau2tq8stxg3g9c9wsvrlzwd";
+
+  zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILUwEjCUp8iCU+pCvunxxP3Q1MqjuOulbOOQhxrBQqjM root@zen";
   sylvaSystem = "";
   favillaSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLulyCMndsV54zdOmA4TjJ53kkkoW4n0UuL9DgL1VHC afsc@favilla";
 

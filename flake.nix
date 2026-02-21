@@ -20,8 +20,6 @@
 
       # Input for Nixcord (Discord clients configs for NixOS/Home Manager)
     nixcord = {
-      # TODO: Should I use this temporary fix from @ang3lo-azevedo ?
-      # url = "github:PartlyAwesome/nixcord/fix-activation-scripts";
       url = "github:FlameFlag/nixcord";
 
       inputs.nixpkgs.follows = "nixpkgs";
