@@ -9,6 +9,6 @@
     equicord.enable = true;
 
     # backup
-    discord.enable = true;
+    # discord.enable = true;
   };
 }
