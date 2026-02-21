@@ -79,9 +79,9 @@ in
   config = mkIf cfg.enable {
     hm.programs.vscode = {
       enable = true;
-      package = pkgs.vscode;
+      package = pkgs.unstable.vscode;
       profiles.default = {
-        extensions = with pkgs.vscode-extensions; [
+        extensions = with pkgs.unstable.vscode-extensions; [
           # Nix
           bbenoist.nix
           jnoortheen.nix-ide
