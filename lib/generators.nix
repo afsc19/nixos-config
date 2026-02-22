@@ -24,10 +24,10 @@ let
     It then merges the overlays with the provided `argsPkgs` attribute set.
   */
   mkPkgs =
-    overlays:
+    system: overlays:
     let
       argsPkgs = {
-        system = "x86_64-linux";
+        inherit system;
         config.allowUnfree = true;
       };
     in
@@ -161,6 +161,8 @@ let
     {
       extraArgs ? { },
       extraModules ? [ ],
+      systems ? { },
+      overlays ? { },
       ...
     }:
     lib.pipe (builtins.readDir hostsDir) [
@@ -180,6 +182,10 @@ let
               (lib.filter (p: p != hostPath + "/configuration.nix") (listModulesRecursive' hostPath))
             else
               [ ];
+          
+          # mkPkgs with the correct arch
+          system = systems.${hostname} or "x86_64-linux";
+          hostPkgs = mkPkgs system overlays;
 
           # Merge default configuration with host configuration (if it exists)
           cfg = {
@@ -187,10 +193,11 @@ let
               extraArgs
               hostPath
               inputs
-              pkgs
               profiles
+              system
               ;
-            system = "x86_64-linux";
+            
+            pkgs = hostPkgs;
 
             extraModules = extraHostModules ++ extraModules;
           }

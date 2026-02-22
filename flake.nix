@@ -140,11 +140,14 @@
         };
 
       overlays = (mkOverlays ./overlays) // {
-        extraPkgs = _final: _prev: (extraPackages { inherit system; });
+        extraPkgs = _final: prev: (extraPackages { system = prev.stdenv.hostPlatform.system; });
       };
-      pkgs = mkPkgs overlays;
+      pkgs = mkPkgs system overlays;
       nixosConfigurations = mkHosts ./hosts {
         inherit extraArgs;
+        systems = {
+          sylva = "aarch64-linux";
+        };
         extraModules = [
           {
             hardware.enableRedistributableFirmware = true;
