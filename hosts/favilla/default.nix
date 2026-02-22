@@ -23,7 +23,16 @@
     };
     services = {
       # Nebula (VPN)
-      nebula.enable = true;
+      nebula = {
+        enable = true;
+        firewall.inbound = [
+          {
+            port = "any";
+            proto = "any";
+            group = "afsc";
+          }
+        ];
+      };
     };
     shell = {
       git.enable = true;
@@ -60,14 +69,6 @@
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
-
-  modules.services.nebula.firewall.inbound = [
-    {
-      port = "any";
-      proto = "any";
-      group = "afsc";
-    }
-  ];
 
   # --- Screen dimming services ---
   systemd.services.enable-screen = {

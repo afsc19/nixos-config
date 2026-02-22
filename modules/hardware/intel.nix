@@ -19,7 +19,7 @@ in
       extraPackages = with pkgs; [
         intel-media-driver # Required for modern Intel CPUs (iHD)
         intel-vaapi-driver # Fallback (i915)
-        libvdpau-va-gl     # Bridge for VDPAU
+        libvdpau-va-gl # Bridge for VDPAU
         intel-compute-runtime # OpenCL
         vpl-gpu-rt # Video Processing Library (replaces some older media-sdk parts)
       ];

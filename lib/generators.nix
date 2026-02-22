@@ -182,7 +182,7 @@ let
               (lib.filter (p: p != hostPath + "/configuration.nix") (listModulesRecursive' hostPath))
             else
               [ ];
-          
+
           # mkPkgs with the correct arch
           system = systems.${hostname} or "x86_64-linux";
           hostPkgs = mkPkgs system overlays;
@@ -196,7 +196,7 @@ let
               profiles
               system
               ;
-            
+
             pkgs = hostPkgs;
 
             extraModules = extraHostModules ++ extraModules;

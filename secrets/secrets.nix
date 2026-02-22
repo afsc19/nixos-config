@@ -32,7 +32,9 @@ let
       let
         filePrefix = if dir == null then "" else "${dir}/";
         # Concatenate and deduplicate
-        publicKeys = builtins.foldl' (acc: x: if builtins.elem x acc then acc else acc ++ [ x ]) [ ] (specificKeys ++ universalKeys);
+        publicKeys = builtins.foldl' (acc: x: if builtins.elem x acc then acc else acc ++ [ x ]) [ ] (
+          specificKeys ++ universalKeys
+        );
       in
       acc
       ++ [

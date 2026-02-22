@@ -54,7 +54,7 @@ in
         Type = "simple";
         # Force create mountpoint
         ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/${cfg.mountPoint}";
-        
+
         # rclone mount command with optimizations for reliability and performance
         ExecStart = ''
           ${pkgs.rclone}/bin/rclone mount ${cfg.remoteName}: %h/${cfg.mountPoint} \
@@ -74,11 +74,11 @@ in
 
         # Clean unmount on stop
         ExecStop = "/run/current-system/sw/bin/fusermount -u %h/${cfg.mountPoint}";
-        
+
         # Restart logic
         Restart = "on-failure";
         RestartSec = "10s";
-        
+
         # Prevent hanging the system on shutdown if mount is stuck
         TimeoutStopSec = "20s";
       };

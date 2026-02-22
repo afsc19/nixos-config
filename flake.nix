@@ -18,7 +18,7 @@
       inputs.nuschtosSearch.follows = "";
     };
 
-      # Input for Nixcord (Discord clients configs for NixOS/Home Manager)
+    # Input for Nixcord (Discord clients configs for NixOS/Home Manager)
     nixcord = {
       url = "github:FlameFlag/nixcord";
 

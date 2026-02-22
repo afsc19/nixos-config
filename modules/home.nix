@@ -37,7 +37,7 @@ in
 
       # Generate using: mkpasswd -m yescrypt
       hashedPassword = "$y$j9T$XP1FJbkdLdABy2zN51npy0$wt1a7R6A6s/habUfVh7.MNzLWMIb93CM3RqBc8bnkk6";
-      
+
       shell = pkgs.zsh;
       extraGroups = [ "wheel" ];
     };
