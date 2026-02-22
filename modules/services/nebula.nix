@@ -17,7 +17,7 @@ let
   cfg = config.modules.services.nebula;
 
   lighthouses = {
-    "192.168.100.1" = [ "nebula.andrecadete.com:4242" ];
+    "192.168.100.1" = [ "world.sylva.andrecadete.com:4242" ];
   };
 in
 {
@@ -137,7 +137,7 @@ in
         };
 
         relay = {
-          relays = lib.lists.optionals (!cfg.isLighthouse) (builtins.attrNames lighthouses);
+          relays = lib.lists.optionals (!cfg.isLighthouse) (attrNames lighthouses);
           use_relays = !cfg.isLighthouse;
         };
       };
