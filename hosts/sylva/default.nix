@@ -1,51 +1,35 @@
-# TODO propagate to sylva
-
-# Base yourself on this config:
-# Laptop PC
+# An arm64 VPS
 {
+  pkgs,
   profiles,
   ...
 }:
 
 {
-
-  # --- Bootloader ---
-  #boot.loader.systemd-boot.enable = false; # disable systemd-boot
-  #boot.loader.grub.enable = true;
-  #boot.loader.grub.version = 2;
-  #boot.loader.grub.device = "nodev"; # for UEFI systems
-  #boot.loader.grub.efiSupport = true;
-  #boot.loader.grub.useOSProber = true; # to detect Windows and Fedora automatically
-  #boot.loader.efi.canTouchEfiVariables = true;
-  #boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
   # --- Network ---
-  # Defined in generators.nix - networking.hostName = "zen";
   networking.networkmanager.enable = true;
 
   # --- Time ---
-  time.timeZone = "Europe/Lisbon";
+  time.timeZone = "Atlantic/Azores";
 
   modules = {
     # Audio enabled in the corresponding profile.
-    graphical = {
-      # Browsers enabled in the corresponding profile.
-      # Discord enabled in the corresponding profile.
-      # Editors enabled in the corresponding profile.
-      gnome.enable = true;
-      gtk.enable = true;
-      qt.enable = true;
-      spotify.enable = true;
-      torrenting.enable = true;
-    };
-    laptop = {
-      battery.enable = true;
-      bluetooth.enable = true;
-      touchpad.enable = true;
-    };
+    # Nothing graphical except nvim
+    graphical.editor.neovim.base.enable = true;
     services = {
       # Nebula (VPN)
-      nebula.enable = true;
+      nebula = {
+        enable = true;
+        isLighthouse = true;
+        firewall.inbound = [
+          {
+            port = "any";
+            proto = "any";
+            group = "afsc";
+          }
+        ];
+      };
+      # TODO automatic append-only backups
     };
     shell = {
       git.enable = true;
@@ -55,60 +39,30 @@
       };
       zsh.enable = true;
     };
-    # Virtualization enabled in the laptop-virtualization profile
+    util = {
+      python.enable = true;
+    };
     virtualization = {
-      distrobox = {
-        enable = true;
-        defaultBoxes = [
-          {
-            name = "arch";
-            image = "docker.io/library/archlinux:latest";
-          }
-          {
-            name = "kali";
-            image = "docker.io/kalilinux/kali-rolling";
-          }
-        ];
-      };
+      docker.enable = true;
     };
-    hardware.razer.enable = true;
-    personal.enable = true;
-    plymouth = {
-      enable = true;
-      themeName = "glitch";
-    };
-    thunderbolt.enable = true;
-    xdg.enable = true;
+    # plymouth.enable = true;
   };
 
   imports = with profiles; [
-    graphical.browsers
-    graphical.discord
-    graphical.disk-utils
-    graphical.editors
-    graphical.games
-    graphical.neovim-personal
-
-    mobile.android-tools
-
     security.agenix
-    security.securegrub
 
     services.ssh
     shell.essential
-    audio
-    laptop-virtualization
   ];
 
+  boot.loader.systemd-boot.enable = true;
+
   my.networking.wiredInterface = "eth1";
-  my.networking.wirelessInterface = "wlo1";
+  # No wireless interface
   my.hardware = {
-    laptop = true;
-    batteryPowered = true;
-    batteryChargeLimit = 75;
-    batteryChargeThresholdRange = 3;
+    laptop = false;
+    batteryPowered = false;
   };
-  boot.loader.timeout = 200;
 
   # --- Firewall ---
   # Open ports in the firewall.
@@ -118,12 +72,5 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
-
+  system.stateVersion = "25.11";
 }
