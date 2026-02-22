@@ -2,6 +2,7 @@
 {
   pkgs,
   profiles,
+  lib,
   ...
 }:
 
@@ -67,6 +68,11 @@
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = with lib.my.ports; [
+    ssh
+    http
+    https
+  ];
   # For Chromecast from chrome (defined in brave.nix)
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
