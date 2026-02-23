@@ -78,8 +78,6 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
-  hardware.enableRedistributableFirmware = true;
-
 
   system.stateVersion = "25.11";
 }
