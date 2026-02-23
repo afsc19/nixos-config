@@ -64,6 +64,7 @@
     laptop = false;
     batteryPowered = false;
   };
+  my.security.fido2.enable = false;
 
   # --- Firewall ---
   # Open ports in the firewall.

@@ -69,6 +69,7 @@
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
+  my.security.fido2.enable = true;
 
   # --- Screen dimming services ---
   systemd.services.enable-screen = {

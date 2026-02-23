@@ -110,6 +110,7 @@
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
+  my.security.fido2.enable = true;
   boot.loader.timeout = 200;
 
   # --- Firewall ---
