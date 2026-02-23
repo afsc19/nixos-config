@@ -144,7 +144,7 @@
       };
       pkgs = mkPkgs system overlays;
       nixosConfigurations = mkHosts ./hosts {
-        inherit extraArgs;
+        inherit extraArgs overlays;
         systems = {
           sylva = "aarch64-linux";
         };

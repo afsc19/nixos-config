@@ -117,6 +117,7 @@ let
     {
       hostPath,
       system,
+      pkgs,
       extraArgs ? { },
       extraModules ? [ ],
       ...
