@@ -57,7 +57,7 @@
 
   # Don't use network manager since oracle cloud poorly supports it
   networking.networkmanager.enable = lib.mkForce false;
-  networking.useDHCP = false;
+  networking.useDHCP = true;
   networking.useNetworkd = true;
   systemd.network.enable = true;
 
