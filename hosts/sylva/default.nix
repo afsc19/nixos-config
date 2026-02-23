@@ -5,10 +5,7 @@
   lib,
   ...
 }:
-
 {
-  # --- Network ---
-  networking.networkmanager.enable = true;
 
   # --- Time ---
   time.timeZone = "Atlantic/Azores";
@@ -55,10 +52,17 @@
     services.ssh
     shell.essential
   ];
-
+  
   boot.loader.systemd-boot.enable = true;
 
-  my.networking.wiredInterface = "eth1";
+  # Don't use network manager since oracle cloud poorly supports it
+  networking.networkmanager.enable = lib.mkForce false;
+  networking.useDHCP = false;
+  networking.useNetworkd = true;
+  systemd.network.enable = true;
+
+
+  # my.networking.wiredInterface = "eth1";
   # No wireless interface
   my.hardware = {
     laptop = false;
