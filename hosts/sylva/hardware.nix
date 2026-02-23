@@ -24,6 +24,12 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  # Fix no display output in serial consoles
+  boot.kernelParams = [
+    "console=ttyAMA0,115200" # Serial
+    "console=tty1" # Normal tty
+  ];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/3c865fd1-6fba-4aca-ba49-cd72f406982d";
     fsType = "ext4";
