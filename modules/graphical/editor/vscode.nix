@@ -102,6 +102,9 @@ in
           # CSV colors
           mechatroner.rainbow-csv
 
+          # Markdown
+          yzhang.markdown-all-in-one
+
           # TO DO highlighter
           gruntfuggly.todo-tree
 
