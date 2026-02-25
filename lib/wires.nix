@@ -4,23 +4,23 @@
     fleet = {
       "zen" = {
         ip = "10.100.0.4";
-        pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKKot140Ud5EhIcbu4+qy4+OgMWlx+F4NlZ53QdXyFqo uptime@zen";
+        pubkey = "fVubxabjJMY7YbR5OjQZ4GonLz+3RfvQkAbzHtao3Ss=";
         isHub = false;
       };
       "sylva" = {
         ip = "10.100.0.1";
-        pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEhFHgzZ4R/GIKUXEUYvpvbM7wQCZ4muZGFMzEzDBCeO uptime@sylva";
+        pubkey = "emtyNTcSh9ou/5uGSslPuEy9Lg66PRhAiTBtKu2L72c=";
         endpoint = "world.sylva.andrecadete.com";
         isHub = true;
       };
       "favilla" = {
         ip = "10.100.0.2";
-        pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMKG6jTfqQk8px1Ub4EPrseqv8vbpIeypWJ0mZRGbyZu uptime@favilla";
+        pubkey = "fspwH5bBnMyMlW+y6oIt7WI9KuSsPNOdzE4U+z35BUk=";
         isHub = false;
       };
       "calidor" = {
         ip = "10.100.0.3";
-        pubkey = "TODO add pubkey";
+        pubkey = "sGCMUVkFjCoAWYm8YdNQ6lfzwac99gdtj0MpoM3yS1A=";
         isHub = false;
       };
     };
