@@ -15,6 +15,7 @@
     # Nothing graphical except nvim
     graphical.editor.neovim.base.enable = true;
     services = {
+      monitor.uptimewire.enable = true;
       # Nebula (VPN)
       nebula = {
         enable = true;

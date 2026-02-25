@@ -16,28 +16,10 @@ let
     mapAttrsToList
     filterAttrs
     ;
-  cfg = config.modules.services.monitor.uptimewire;
-
-  fleet = {
-    "sylva" = {
-      ip = "10.100.0.1";
-      pubkey = "TODO add pubkey";
-      endpoint = "world.sylva.andrecadete.com:${toString my.ports.wireguardUptimeWire}";
-      isHub = true;
-    };
-    "favilla" = {
-      ip = "10.100.0.2";
-      pubkey = "TODO add pubkey";
-      isHub = false;
-    };
-    "calidor" = {
-      ip = "10.100.0.3";
-      pubkey = "TODO add pubkey";
-      isHub = false;
-    };
-  };
+  inherit (my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
-  allHubs = filterAttrs (name: data: data.isHub or false) fleet;
+
+  cfg = config.modules.services.monitor.uptimewire;
 in
 {
   options.modules.services.monitor.uptimewire = {
@@ -64,7 +46,7 @@ in
       peers = mapAttrsToList (name: data: {
         publicKey = data.pubkey;
         allowedIPs = [ "${data.ip}/32" ];
-        endpoint = data.endpoint or null;
+        endpoint = if data ? endpoint then "${data.endpoint}:${toString my.ports.wireguardUptimeWire}" else null;
 
         # Keepalives work spoke2hub and hub2hub (to keep punching NATs between hubs).
         persistentKeepalive = mkIf (data.isHub) 25;
