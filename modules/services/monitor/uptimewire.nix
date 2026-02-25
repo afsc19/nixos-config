@@ -34,12 +34,17 @@ in
       }
     ];
 
+    age.secrets.uptimewireKey = {
+      file = secrets.host.uptimewireKey;
+      owner = "systemd-network";
+    };
+
     networking.firewall.allowedUDPPorts = [ my.ports.wireguardUptimeWire ];
 
     networking.wireguard.interfaces.uptimeWire0 = {
       ips = [ "${thisNode.ip}/24" ];
       listenPort = my.ports.wireguardUptimeWire;
-      privateKeyFile = "/run/agenix/uptimewireKey";
+      privateKeyFile = config.age.secrets.uptimewireKey.path;
 
       # If we're a hub, map all excluding ourself.
       # Otherwise, only map hubs.
