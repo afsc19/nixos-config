@@ -1,4 +1,5 @@
 # GNOME dwm
+# TODO shouldn't this be a profile?
 {
   pkgs,
   config,
@@ -192,6 +193,22 @@ in
         command = "ptyxis --new-window"; # or "kgx", "alacritty", etc.
         binding = "<Control><Shift>comma";
       };
+
+      # Fallback - Set ptyxis as the default browser
+      "org/gnome/desktop/default-applications/terminal" = {
+        exec = "ptyxis";
+      };
+    };
+
+    # Set ptyxis as the default browser
+    xdg.terminal-exec = {
+      enable = true;
+      settings = {
+        default = [ "org.gnome.Ptyxis.desktop" ];
+      };
+    };
+    hm.home.sessionVariables = {
+      TERMINAL = "ptyxis";
     };
 
     # Enabled by default.
