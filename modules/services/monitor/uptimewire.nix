@@ -13,7 +13,6 @@ let
     types
     mkIf
     my
-    my.ports
     mapAttrsToList
     filterAttrs
     ;
