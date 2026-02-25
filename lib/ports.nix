@@ -7,5 +7,9 @@
     http = 80;
     https = 443;
     mdnsGoogleCast = 5353;
+
+    # 51820 is default, let's start at 30 to be sure
+    wireguardUptimeWire = 51830;
+
   };
 }
