@@ -65,6 +65,7 @@ mkSecrets [
     [
       "nebulaCert"
       "nebulaKey"
+      "uptimewireKey"
     ]
   )
 
@@ -73,6 +74,7 @@ mkSecrets [
     [
       "nebulaCert"
       "nebulaKey"
+      "uptimewireKey"
     ]
   )
 
@@ -81,6 +83,7 @@ mkSecrets [
     [
       "nebulaCert"
       "nebulaKey"
+      "uptimewireKey"
     ]
   )
 
