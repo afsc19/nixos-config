@@ -149,3 +149,4 @@ And it was also inspired by the following configurations:
  - [ang3lo-azevedo/dotfiles](https://github.com/ang3lo-azevedo/dotfiles)
  - [nomadics9/NixOS-Flake](https://github.com/nomadics9/NixOS-Flake)
  - [dnordstrom/dotfiles](https://github.com/dnordstrom/dotfiles)
+ - [rnl-dei/nixrnl](https://github.com/rnl-dei/nixrnl)
