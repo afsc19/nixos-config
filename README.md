@@ -19,9 +19,8 @@ This flake's structure is inspired by [diogotcorreia's NixOS dotfiles](https://g
  - [Distrobox](https://github.com/89luca89/distrobox) with pod pre-installation
  - [rclone](https://github.com/rclone/rclone) mount
  - [Easyeffects](https://github.com/wwmm/easyeffects) presets
- - Grub with secure boot
+ - Multi-arch compatibility
  - My personal collection of forensic tools
- - Aarch64-linux compatibility
   
 ## Machines:
 Machines follow a specific naming convention based on the fictional solar system from [ASTRONEER](https://astroneer.fandom.com/wiki/Astroneer_Wiki). Stationary system (those with a static physical location) are named after planets and moons.
@@ -29,8 +28,8 @@ Machines follow a specific naming convention based on the fictional solar system
 ### Zen - Personal Laptop (x86_64-linux)
 My daily driver for general use:
  - **Desktop**: GNOME with my personal flavor of themes, plugins, and GUI apps.
- - **Virtualization**: VMWare, KVM and Distroboxes with pods for CTFs.
- - **Boot**: Custom boot animation.
+ - **Virtualization**: VMWare, KVM and Distrobox with pods for CTFs.
+ - **Boot**: Custom boot animation using [Plymouth](https://packages.fedoraproject.org/pkgs/plymouth/).
  - **Security**: Uses fido2 for secrets, and skips secure boot on GRUB (workaround for now - what an hypocrisy).
  - **Gaming**: Steam, Proton-GE, Hydra, Roblox - packed for procrastination.
  - **Discord**: Equicord via Nixcord - thanks [ang3lo-azevedo](https://github.com/ang3lo-azevedo).
@@ -54,7 +53,7 @@ Named after Calidor's moon, this machine serves as Calidor's instancer and wakes
 ## Deployment
 
 ### *(Recommended)* Manual installation - From live installer to flake
-If you haven't already, boot into a NixOS live installer. <br>
+If you haven't already, boot into a [NixOS live installer](https://nixos.org/download/). <br>
 I strongly recommend using a graphical installer to use GUI tools to assist the process.<br>
 Use [netboot.xyz](https://github.com/netbootxyz/netboot.xyz) if you don't have access to a bootable USB/ISO, but have a network connection.
 1. Establish a network connection.
