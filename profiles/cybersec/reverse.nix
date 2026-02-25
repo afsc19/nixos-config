@@ -8,6 +8,6 @@
     # Manually download Ida PRO's binary
     ghidra
     binaryninja-free
-    jadx
+    pkgs.jadx
   ];
 }
