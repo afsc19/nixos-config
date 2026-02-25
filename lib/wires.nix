@@ -6,7 +6,7 @@
         ip = "10.100.0.4";
         pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKKot140Ud5EhIcbu4+qy4+OgMWlx+F4NlZ53QdXyFqo uptime@zen";
         isHub = false;
-      }
+      };
       "sylva" = {
         ip = "10.100.0.1";
         pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEhFHgzZ4R/GIKUXEUYvpvbM7wQCZ4muZGFMzEzDBCeO uptime@sylva";
