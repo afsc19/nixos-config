@@ -1,4 +1,8 @@
-# NixOS Flakes Configuration
+<div align="center">
+<img src="./logo.png" alt="NixOS Logo" width="50"/>
+    </div>
+<h1 align="center">afsc19 NixOS</h1>
+
 A NixOS flake providing system configurations for my personal computers and servers.
 
 This flake's structure is inspired by [diogotcorreia's NixOS dotfiles](https://github.com/diogotcorreia/dotfiles) and is organized into 8 primary directories:
