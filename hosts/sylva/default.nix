@@ -1,5 +1,6 @@
 # An arm64 VPS
 {
+  config,
   pkgs,
   profiles,
   lib,
@@ -74,7 +75,7 @@
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
-  networking.firewall.interfaces.${my.networking.wiredInterface}.allowedTCPPorts = with lib.my.ports; [
+  networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts = with lib.my.ports; [
     ssh
     http
     https
