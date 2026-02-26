@@ -6,8 +6,12 @@
     ssh = 22;
     http = 80;
     https = 443;
+
     mdnsGoogleCast = 5353;
-    prometheus = 9100;
+
+    # Monitoring
+    grafana = 3000;
+    prometheus = 9090;
 
     # 51820 is default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;

@@ -2,23 +2,15 @@
 {
   config,
   lib,
-  secrets,
-  pkgs,
   ...
 }:
 let
   inherit (lib)
-    mkEnableOption
-    mkOption
-    types
     mkIf
     my
     mapAttrsToList
-    filterAttrs
-    mkForce
-    optional
     ;
-  inherit (lib.my.uptimewire) fleet port;
+  inherit (lib.my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
 in
 {
