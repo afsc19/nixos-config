@@ -30,7 +30,7 @@ in
             name = "Prometheus";
             type = "prometheus";
             access = "proxy";
-            url = "http://127.0.0.1:${lib.my.ports.prometheus}";
+            url = "http://127.0.0.1:${toString lib.my.ports.prometheus}";
             isDefault = true;
           }
         ];
