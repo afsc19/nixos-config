@@ -16,8 +16,9 @@ let
     mapAttrsToList
     filterAttrs
     mkForce
+    optional
     ;
-  inherit (my.uptimewire) fleet port;
+  inherit (lib.my.uptimewire) fleet port;
   thisNode = fleet."${config.networking.hostName}" or null;
 
   cfg = config.modules.services.monitor.uptimewire;
@@ -46,12 +47,17 @@ in
     };
     networking.firewall.extraForwardRules = mkIf thisNode.isHub ''
       iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p icmp -j ACCEPT
+      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${toString my.ports.prometheus} -j ACCEPT
       iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${toString my.ports.ssh} -j ACCEPT
       iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -j DROP
     '';
 
     networking.firewall.allowedUDPPorts = [ port ];
-    networking.firewall.interfaces.uptimeWire0.allowedTCPPorts = [ my.ports.ssh ];
+
+    networking.firewall.interfaces.uptimeWire0.allowedTCPPorts = [
+      my.ports.prometheus
+      my.ports.ssh
+    ];
     networking.firewall.allowPing = true; # Just to be sure
 
     networking.wireguard.interfaces.uptimeWire0 = {
