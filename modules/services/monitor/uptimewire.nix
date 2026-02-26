@@ -15,8 +15,9 @@ let
     my
     mapAttrsToList
     filterAttrs
+    mkForce
     ;
-  inherit (my.uptimewire) fleet;
+  inherit (my.uptimewire) fleet port;
   thisNode = fleet."${config.networking.hostName}" or null;
 
   cfg = config.modules.services.monitor.uptimewire;
@@ -44,22 +45,27 @@ in
       "net.ipv4.ip_forward" = 1;
     };
     networking.firewall.extraForwardRules = mkIf thisNode.isHub ''
-      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -j ACCEPT
+      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p icmp -j ACCEPT
+      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport 22 -j ACCEPT
+      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -j DROP
     '';
 
-    networking.firewall.allowedUDPPorts = [ my.ports.wireguardUptimeWire ];
+    networking.firewall.allowedUDPPorts = [ port ];
+    networking.firewall.interfaces.uptimeWire0.allowedTCPPorts = [ my.ports.ssh ];
+    networking.firewall.allowPing = true; # Just to be sure
 
     networking.wireguard.interfaces.uptimeWire0 = {
       ips = [ "${thisNode.ip}/24" ];
-      listenPort = my.ports.wireguardUptimeWire;
+      listenPort = port;
       privateKeyFile = config.age.secrets.uptimewireKey.path;
 
       # If we're a hub, map all excluding ourself.
       # Otherwise, only map hubs.
       peers = mapAttrsToList (name: data: {
         publicKey = data.pubkey;
+        # Use 10.100.0.0/24 so the hub can forward the packets.
         allowedIPs = if (!thisNode.isHub && data.isHub) then [ "10.100.0.0/24" ] else [ "${data.ip}/32" ];
-        endpoint = if data ? endpoint then "${data.endpoint}:${toString my.ports.wireguardUptimeWire}" else null;
+        endpoint = if data ? endpoint then "${data.endpoint}:${toString port}" else null;
 
         # Keepalives work spoke2hub and hub2hub (to keep punching NATs between hubs).
         persistentKeepalive = mkIf (data.isHub) 25;
