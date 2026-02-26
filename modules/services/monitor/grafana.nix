@@ -32,7 +32,7 @@ in
             name = "Prometheus";
             type = "prometheus";
             access = "proxy";
-            url = "http://127.0.0.1:${toString lib.my.ports.prometheus}";
+            url = "http://127.0.0.1:${toString lib.my.ports.prometheusServer}";
             isDefault = true;
           }
         ];
@@ -50,7 +50,7 @@ in
                 {
                   id = 1;
                   title = "Fleet Status";
-                  type = "stat";
+                  type = "gauge";
                   datasource = "Prometheus";
                   targets = [
                     {
