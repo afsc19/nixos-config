@@ -56,6 +56,7 @@ in
 
     networking.firewall.interfaces.uptimeWire0.allowedTCPPorts = [
       my.ports.prometheus
+      my.ports.grafana
       my.ports.ssh
     ];
     networking.firewall.allowPing = true; # Just to be sure

@@ -13,6 +13,8 @@ in
 {
   # Automatically enable grafana if it's a hub.
   config = mkIf (thisNode != null && thisNode.isHub) {
+    networking.firewall.allowedTCPPorts = [ lib.my.ports.grafana ];
+
     services.grafana = {
       enable = true;
       
