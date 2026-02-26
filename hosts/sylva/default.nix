@@ -63,7 +63,7 @@
   systemd.network.enable = true;
 
 
-  # my.networking.wiredInterface = "eth1";
+  my.networking.wiredInterface = "enp0s6";
   # No wireless interface
   my.hardware = {
     laptop = false;
@@ -74,7 +74,7 @@
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
-  networking.firewall.allowedTCPPorts = with lib.my.ports; [
+  networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts = with lib.my.ports; [
     ssh
     http
     https
