@@ -50,6 +50,7 @@
       zsh.enable = true;
     };
     util = {
+      java.enable = true;
       python.enable = true;
     };
     # Virtualization enabled in the laptop-virtualization profile

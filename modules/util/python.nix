@@ -1,4 +1,4 @@
-# KVM/libvirt configuration
+# Python
 {
   pkgs,
   config,
