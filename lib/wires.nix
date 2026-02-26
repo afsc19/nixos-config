@@ -1,9 +1,10 @@
-{ ... }:
+{ lib, ... }:
 {
   uptimewire = {
+    # ip suffix is synced with nebula's
     fleet = {
       "zen" = {
-        ip = "10.100.0.4";
+        ip = "10.100.0.2";
         pubkey = "fVubxabjJMY7YbR5OjQZ4GonLz+3RfvQkAbzHtao3Ss=";
         isHub = false;
       };
@@ -14,7 +15,7 @@
         isHub = true;
       };
       "favilla" = {
-        ip = "10.100.0.2";
+        ip = "10.100.0.5";
         pubkey = "fspwH5bBnMyMlW+y6oIt7WI9KuSsPNOdzE4U+z35BUk=";
         isHub = false;
       };
