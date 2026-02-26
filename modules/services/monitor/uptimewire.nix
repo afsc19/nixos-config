@@ -46,7 +46,7 @@ in
     };
     networking.firewall.extraForwardRules = mkIf thisNode.isHub ''
       iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p icmp -j ACCEPT
-      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport 22 -j ACCEPT
+      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${my.ports.ssh} -j ACCEPT
       iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -j DROP
     '';
 
