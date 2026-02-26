@@ -39,6 +39,14 @@ in
       owner = "systemd-network";
     };
 
+    # TODO test ip forwarding
+    boot.kernel.sysctl = mkIf thisNode.isHub {
+      "net.ipv4.ip_forward" = 1;
+    };
+    networking.firewall.extraForwardRules = mkIf thisNode.isHub ''
+      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -j ACCEPT
+    '';
+
     networking.firewall.allowedUDPPorts = [ my.ports.wireguardUptimeWire ];
 
     networking.wireguard.interfaces.uptimeWire0 = {
@@ -50,7 +58,7 @@ in
       # Otherwise, only map hubs.
       peers = mapAttrsToList (name: data: {
         publicKey = data.pubkey;
-        allowedIPs = [ "${data.ip}/32" ];
+        allowedIPs = if (!thisNode.isHub && data.isHub) then [ "10.100.0.0/24" ] else [ "${data.ip}/32" ];
         endpoint = if data ? endpoint then "${data.endpoint}:${toString my.ports.wireguardUptimeWire}" else null;
 
         # Keepalives work spoke2hub and hub2hub (to keep punching NATs between hubs).

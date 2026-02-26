@@ -24,5 +24,6 @@
         isHub = false;
       };
     };
+    port = lib.my.ports.wireguardUptimeWire;
   };
 }
