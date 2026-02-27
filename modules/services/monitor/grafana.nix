@@ -228,7 +228,7 @@ in
                   {
                     id = 1;
                     title = "Fleet Status";
-                    type = "stats";
+                    type = "stat";
                     datasource = "Prometheus";
                     targets = [
                       {
