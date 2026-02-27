@@ -56,6 +56,13 @@ in
           policies.settings.policies = [
             {
               receiver = "Discord-Uptimewire";
+              routes = [
+                {
+                  receiver = "Discord-Uptimewire";
+                  object_matches = [ [ "alertname" "=" "CalidorOnline" ] ];
+                  continue = true;
+                }
+              ];
               # Match alerts with label alertname="CalidorOnline"
               matchers = [ "alertname = CalidorOnline" ];
             }
