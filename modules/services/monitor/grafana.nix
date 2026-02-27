@@ -53,19 +53,19 @@ in
               };
             }
           ];
-          policies.settings.policies = [
-            {
-              receiver = "Discord-Uptimewire";
-              group_by = [ "grafana_folder" "alertname" ];
-              routes = [
-                {
-                  receiver = "Discord-Uptimewire";
-                  matchers = [ "alertname = CalidorOnline" ];
-                  continue = true;
-                }
-              ];
-            }
-          ];
+          # policies.settings.policies = [
+          #   {
+          #     receiver = "Discord-Uptimewire";
+          #     group_by = [ "grafana_folder" "alertname" ];
+          #     routes = [
+          #       {
+          #         receiver = "Discord-Uptimewire";
+          #         matchers = [ "alertname = CalidorOnline" ];
+          #         continue = true;
+          #       }
+          #     ];
+          #   }
+          # ];
           rules.settings.groups = [
             {
               name = "Uptimewire-Alerts";
