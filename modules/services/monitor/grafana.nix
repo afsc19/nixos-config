@@ -56,15 +56,14 @@ in
           policies.settings.policies = [
             {
               receiver = "Discord-Uptimewire";
+              group_by = [ "grafana_folder" "alertname" ];
               routes = [
                 {
                   receiver = "Discord-Uptimewire";
-                  object_matches = [ [ "alertname" "=" "CalidorOnline" ] ];
+                  matchers = [ "alertname = CalidorOnline" ];
                   continue = true;
                 }
               ];
-              # Match alerts with label alertname="CalidorOnline"
-              matchers = [ "alertname = CalidorOnline" ];
             }
           ];
           rules.settings.groups = [
