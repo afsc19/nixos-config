@@ -74,7 +74,7 @@ in
           #     ];
           #   }
           # ];
-          rules.settings = builtins.fromJson ''
+          rules.settings = builtins.fromJSON ''
             {
                 "apiVersion": 1,
                 "groups": [
@@ -85,7 +85,7 @@ in
                         "interval": "1h",
                         "rules": [
                             {
-                                "uid": "bfejj5ypscjy8e",
+                                "uid": "calidor-up",
                                 "title": "calidor-up",
                                 "condition": "C",
                                 "data": [
@@ -95,7 +95,7 @@ in
                                             "from": 600,
                                             "to": 0
                                         },
-                                        "datasourceUid": "PBFA97CFB590B2093",
+                                        "datasourceUid": "prometheus",
                                         "model": {
                                             "editorMode": "builder",
                                             "expr": "up{alias=\"calidor\"}",
