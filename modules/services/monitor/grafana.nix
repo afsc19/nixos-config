@@ -228,11 +228,11 @@ in
                   {
                     id = 1;
                     title = "Fleet Status";
-                    type = "gauge";
+                    type = "stats";
                     datasource = "Prometheus";
                     targets = [
                       {
-                        expr = "up{job=\"uptimewire-fleet\"}";
+                        expr = "up{job=\"uptimewire-fleet\"} + up{job=\"uptimewire-fleet-nebula\"}";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -255,9 +255,14 @@ in
                                 index = 0;
                               };
                               "1" = {
+                                color = "orange";
+                                text = "MUMBLE";
+                                index = 1;
+                              };
+                              "2" = {
                                 color = "green";
                                 text = "UP";
-                                index = 1;
+                                index = 2;
                               };
                             };
                           }
@@ -273,8 +278,12 @@ in
                               value = null;
                             }
                             {
-                              color = "green";
+                              color = "orange";
                               value = 1;
+                            }
+                            {
+                              color = "green";
+                              value = 2;
                             }
                           ];
                         };

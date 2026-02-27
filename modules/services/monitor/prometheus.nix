@@ -23,6 +23,14 @@ in
         enabledCollectors = [ "systemd" ];
         port = lib.my.ports.prometheusExporter;
       };
+      # Allow prometheusExporter port in nebula's interface
+      modules.services.nebula.firewall.inbound = [
+        {
+          port = "${builtins.toString lib.my.ports.prometheusExporter}";
+          proto = "tcp";
+          group = "uptime";
+        }
+      ];
     })
 
     # 2. Enable Prometheus Server on hubs
@@ -42,8 +50,20 @@ in
               };
             }) fleet;
           }
+          {
+            job_name = "uptimewire-fleet-nebula";
+            static_configs = mapAttrsToList (name: data: {
+              # Considering hostname.andrecadete.com contains nebula's IP addresses.
+              targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusExporter}" ];
+              labels = {
+                alias = name;
+              };
+            }) fleet;
+          }
         ];
       };
+
+
     })
   ];
 }

@@ -9,7 +9,7 @@
 {
 
   # --- Time ---
-  time.timeZone = "Atlantic/Azores";
+  time.timeZone = "Europe/Madrid";
 
   modules = {
     # Audio enabled in the corresponding profile.
