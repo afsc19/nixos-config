@@ -13,6 +13,11 @@ in
 {
   # Automatically enable grafana if it's a hub.
   config = mkIf (thisNode != null && thisNode.isHub) {
+    age.secrets.grafanaDiscordWebhook = {
+      file = secrets.sylva.discordWebhook;
+      owner = "grafana";
+    };
+
     networking.firewall.allowedTCPPorts = [ lib.my.ports.grafana ];
 
     services.grafana = {
@@ -37,6 +42,60 @@ in
           }
         ];
         
+        alerting = {
+          contactPoints.settings.contactPoints = [
+            {
+              name = "Discord-Uptimewire";
+              type = "discord";
+              settings = {
+                url = "$__file{${config.age.secrets.grafanaDiscordWebhook.path}}";
+              };
+            }
+          ];
+          policies.settings.policies = [
+            {
+              receiver = "Discord-Uptimewire";
+              # Match alerts with label alertname="CalidorOnline"
+              matchers = [ "alertname = CalidorOnline" ];
+            }
+          ];
+          rules.settings.groups = [
+            {
+              name = "Uptimewire-Alerts";
+              folder = "Uptimewire";
+              interval = "1m";
+              rules = [
+                {
+                  uid = "calidor-online";
+                  title = "CalidorOnline";
+                  condition = "A";
+                  data = [
+                    {
+                      refId = "A";
+                      relativeTimeRange = { from = 600; to = 0; };
+                      datasourceUid = "Prometheus"; # Automatically resolves to the UID of the datasource named "Prometheus"
+                      model = {
+                        expr = "up{alias=\"calidor\"} == 1";
+                        intervalMs = 1000;
+                        maxDataPoints = 43200;
+                        refId = "A";
+                      };
+                    }
+                  ];
+                  # Fire immediately effectively
+                  for = "30s"; 
+                  annotations = {
+                    summary = "Calidor is ONLINE";
+                    description = "Calidor instance is reachable via Uptimewire.";
+                  };
+                  labels = {
+                    severity = "info";
+                  };
+                }
+              ];
+            }
+          ];
+        };
         dashboards.settings.providers = [
           {
             name = "Uptime Wire";
