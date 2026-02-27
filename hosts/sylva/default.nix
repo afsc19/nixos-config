@@ -85,6 +85,26 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
+  systemd.timers.check-calidor-wakeup = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "08:00";
+      Persistent = true;
+    };
+  };
+
+  systemd.services.check-calidor-wakeup = {
+    script = ''
+      
+      if ${pkgs.iputils}/bin/ping -c 1 ${lib.my.uptimewire.fleet.calidor.ip} >/dev/null; then
+        ${pkgs.curl}/bin/curl -H "Content-Type: application/json" \
+          -d '{"content": "✅ Calidor is UP at 8:00 AM"}' \
+          "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.grafanaDiscordWebhook.path})"
+      fi
+    '';
+    serviceConfig.Type = "oneshot";
+  };
+
 
   system.stateVersion = "25.11";
 }
