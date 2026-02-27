@@ -15,7 +15,7 @@ in
   # Automatically enable grafana if it's a hub.
   config = mkIf (thisNode != null && thisNode.isHub) {
     age.secrets.grafanaDiscordWebhook = {
-      file = secrets.sylva.discordWebhook;
+      file = secrets.sylva.grafanaDiscordWebhook;
       owner = "grafana";
     };
 
