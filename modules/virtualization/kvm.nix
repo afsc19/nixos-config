@@ -28,10 +28,8 @@ in
       };
     };
 
-    # Necessary for virt-manager to work
     programs.virt-manager.enable = true;
 
-    # Add user to the libvirtd/kvm group
     usr.extraGroups = [
       "libvirtd"
       "kvm"
