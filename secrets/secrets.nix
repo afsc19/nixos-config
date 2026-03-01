@@ -76,6 +76,7 @@ mkSecrets [
       "nebulaKey"
       "uptimewireKey"
       "grafanaDiscordWebhook"
+      "nginxVhosts"
     ]
   )
 

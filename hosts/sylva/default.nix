@@ -17,6 +17,22 @@
     graphical.editor.neovim.base.enable = true;
     services = {
       monitor.uptimewire.enable = true;
+      nginx = {
+        enable = true;
+        useEncryptedVhosts = builtins.pathExists ../../secrets/sylva/nginxVhosts.age;
+        acmeCerts = [
+          {
+            domain = "andrecadete.com";
+            extraDomainNames = [ "*.andrecadete.com" ];
+            dnsProvider = "cloudflare";
+          }
+          {
+            domain = "ctf.andrecadete.com";
+            extraDomainNames = [ "*.ctf.andrecadete.com" ];
+            dnsProvider = "cloudflare";
+          }
+        ];
+      };
       # Nebula (VPN)
       nebula = {
         enable = true;
@@ -54,13 +70,14 @@
     services.ssh
     shell.essential
   ];
-  
+
   boot.loader.systemd-boot.enable = true;
 
   # Don't use network manager since oracle cloud poorly supports it
   networking.networkmanager.enable = lib.mkForce false;
   networking.useDHCP = true;
   networking.useNetworkd = true;
+  
   systemd.network.enable = true;
 
 
@@ -84,6 +101,8 @@
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
+
+  security.acme.defaults.email = "afsc.dev@gmail.com";
 
   systemd.timers.check-calidor-wakeup = {
     wantedBy = [ "timers.target" ];

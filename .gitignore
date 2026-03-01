@@ -6,3 +6,5 @@ result-*
 .direnv
 
 flake.lock
+
+secrets/*/nginx.conf
