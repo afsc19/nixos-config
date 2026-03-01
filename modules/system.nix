@@ -102,6 +102,14 @@
       xz
       zstd
       glib
+      libGL
+      libglvnd
+      xorg.libX11
+      xorg.libXext
+      xorg.libXrender
+      xorg.libXi
+      xorg.libXrandr
+      xorg.libXfixes
     ];
   };
 
