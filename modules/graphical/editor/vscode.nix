@@ -92,6 +92,7 @@ in
 
           # Python
           ms-python.python
+          KevinRose.vsc-python-indent
 
           # PDFs
           tomoki1207.pdf
