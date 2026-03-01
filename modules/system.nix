@@ -2,6 +2,7 @@
 {
   inputs,
   lib,
+  pkgs,
   ...
 }:
 {
@@ -90,6 +91,19 @@
 
   # /tmp configuration
   boot.tmp.cleanOnBoot = true;
+
+  # Allow running dynamically linked Linux binaries not built by Nix
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      zlib
+      openssl
+      xz
+      zstd
+      glib
+    ];
+  };
 
   # dedup equal pages
   hardware.ksm = {
