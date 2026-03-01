@@ -104,12 +104,24 @@
       glib
       libGL
       libglvnd
+      libxkbcommon
+      dbus
+      fontconfig
+      freetype
       xorg.libX11
       xorg.libXext
       xorg.libXrender
       xorg.libXi
       xorg.libXrandr
       xorg.libXfixes
+      xorg.libxcb
+      xorg.xcbutil
+      xorg.xcbutilcursor
+      xorg.xcbutilimage
+      xorg.xcbutilkeysyms
+      xorg.xcbutilrenderutil
+      xorg.xcbutilwm
+      qt6.qtwayland
     ];
   };
 
