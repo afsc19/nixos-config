@@ -20,7 +20,15 @@ in
     hm.programs.zsh.initContent = ''
       penv() {
         if [[ -n "$VIRTUAL_ENV" ]]; then
-          deactivate
+          if typeset -f deactivate >/dev/null 2>&1; then
+            deactivate
+          else
+            source "$VIRTUAL_ENV/bin/activate" 2>/dev/null && deactivate || {
+              PATH="${PATH/#$VIRTUAL_ENV\/bin:/}"
+              unset VIRTUAL_ENV
+              hash -r
+            }
+          fi
         else
           [[ -d .venv ]] || python3 -m venv .venv
           source .venv/bin/activate
