@@ -13,7 +13,7 @@ in
   options.modules.util.python.enable = mkEnableOption "Python3";
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs.unstable; [
       python3
     ];
 
@@ -24,7 +24,7 @@ in
             deactivate
           else
             source "$VIRTUAL_ENV/bin/activate" 2>/dev/null && deactivate || {
-              PATH="${PATH/#$VIRTUAL_ENV\/bin:/}"
+              PATH="''${PATH/#$VIRTUAL_ENV\/bin:/}"
               unset VIRTUAL_ENV
               hash -r
             }

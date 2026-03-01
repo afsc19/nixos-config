@@ -92,7 +92,7 @@ in
 
           # Python
           ms-python.python
-          KevinRose.vsc-python-indent
+          ms-python.black-formatter
 
           # PDFs
           tomoki1207.pdf
