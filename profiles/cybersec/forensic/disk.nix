@@ -7,7 +7,7 @@
   hm.home.packages = with pkgs; [
     testdisk
 
-    sleuthkit
-    autopsy
+    unstable.sleuthkit
+    unstable.autopsy
   ];
 }
