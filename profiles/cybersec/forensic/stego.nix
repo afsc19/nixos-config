@@ -9,5 +9,8 @@
     zsteg
     steghide
     stegseek
+
+    # Also image editor
+    gimp
   ];
 }
