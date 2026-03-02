@@ -4,6 +4,7 @@
   pkgs,
   profiles,
   lib,
+  secrets,
   ...
 }:
 {
@@ -105,7 +106,15 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
+  age.secrets.cloudflareDnsApiToken = {
+    file = secrets.host.cloudflareDnsApiToken;
+    owner = "acme";
+    group = "acme";
+    mode = "0400";
+  };
+
   security.acme.defaults.email = "afsc.dev@gmail.com";
+  security.acme.defaults.environmentFile = config.age.secrets.cloudflareDnsApiToken.path;
 
   systemd.timers.check-calidor-wakeup = {
     wantedBy = [ "timers.target" ];

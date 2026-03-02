@@ -77,6 +77,7 @@ mkSecrets [
       "uptimewireKey"
       "grafanaDiscordWebhook"
       "nginxVhosts"
+      "cloudflareDnsApiToken"
     ]
   )
 
