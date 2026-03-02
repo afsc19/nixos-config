@@ -13,7 +13,12 @@ in
   hm.home = {
     packages = with pkgs.unstable; [
       # Manually download portswigger and caido
+      burpsuite
       ungoogled-chromium
+
+      # SQL
+      dbeaver-bin
+      sqlitebrowser
 
     ];
 
