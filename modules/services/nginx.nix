@@ -45,6 +45,10 @@ let
     map (cert: {
       name = cert.domain;
       value =
+        {
+          group = "nginx";
+        }
+        //
         (optionalAttrs (cert.extraDomainNames != [ ]) {
           inherit (cert) extraDomainNames;
         })
@@ -148,6 +152,8 @@ in
         ''
       );
     };
+
+    users.users.nginx.extraGroups = [ "acme" ];
 
     security.acme = {
       acceptTerms = true;
