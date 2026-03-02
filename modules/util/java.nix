@@ -16,5 +16,9 @@ in
     environment.systemPackages = with pkgs; [
       jdk
     ];
+
+    environment.sessionVariables = {
+      _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2.0";
+    };
   };
 }
