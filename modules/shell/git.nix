@@ -28,6 +28,9 @@ in
         rebase.autoStash = true; # stash/unstash automatically during rebase
         credential.helper = "cache --timeout=3600"; # cache credentials for 1h (gh can override)
         core.editor = "vim"; # fallback editor
+        commit.gpgsign = true;
+        gpg.format = "ssh";
+        user.signingkey = "~/.ssh/id_ed25519.pub";
       };
 
       # Aliases for convenience
