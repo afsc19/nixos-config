@@ -28,7 +28,10 @@
           }
           {
             domain = "ctf.andrecadete.com";
-            extraDomainNames = [ "*.ctf.andrecadete.com" ];
+            extraDomainNames = [
+              "*.ctf.andrecadete.com"
+              "*.chall.ctf.andrecadete.com"
+            ];
             dnsProvider = "cloudflare";
           }
         ];
