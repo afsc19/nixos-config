@@ -98,6 +98,9 @@ in
         ];
       };
 
+      # Fix failed geometry dimensions updating on XWayland
+      environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         picture-uri = wallpaper;
