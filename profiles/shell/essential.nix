@@ -57,6 +57,7 @@
     ipcalc # it is a calculator for the IPv4/v6 addresses
     iw    # Wireless interfaces
     tcpdump # To sniff tcp connections
+    openssl # To diagnose SSL/TLS
 
     # Monitoring tools
     btop # replacement of htop/nmon
