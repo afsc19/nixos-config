@@ -20,6 +20,7 @@
       # Editors enabled in the corresponding profile.
       gnome.enable = true;
       gtk.enable = true;
+      office.enable = true;
       qt.enable = true;
       rstudio.enable = true;
       spotify.enable = true;
