@@ -3,6 +3,7 @@
   config,
   lib,
   inputs,
+  pkgs,
   ...
 }:
 let
@@ -18,7 +19,10 @@ in
       enable = true;
       discord = {
         vencord.enable = false;
-        equicord.enable = true;
+        equicord = {
+          enable = true;
+          package = pkgs.unstable.equicord; # Follow global pkgs so I can use overlays
+        };
       };
       config = {
         autoUpdate = true;
