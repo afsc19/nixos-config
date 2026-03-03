@@ -71,6 +71,7 @@ let
       "zbarimg" = true;
       "strings" = true;
     };
+    "keyboard.dispatch" = "keyCode";
   };
 in
 {
