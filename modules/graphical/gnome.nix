@@ -89,6 +89,9 @@ in
     # Manage shell extensions through the browser
     services.gnome.gnome-browser-connector.enable = true;
 
+    # Fix failed geometry dimensions updating on XWayland
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
+    
     hm.dconf.settings = {
       # Allow fractional scaling without blurring XWayland apps
       "org/gnome/mutter" = {
@@ -97,9 +100,6 @@ in
           "xwayland-native-scaling"
         ];
       };
-
-      # Fix failed geometry dimensions updating on XWayland
-      environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
