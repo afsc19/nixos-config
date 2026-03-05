@@ -144,6 +144,14 @@ in
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
 
+      # Included server_name in the logs
+      commonHttpConfig = ''
+        log_format vhost '$host $server_name $remote_addr - $remote_user [$time_local] '
+                        '"$request" $status $body_bytes_sent '
+                        '"$http_referer" "$http_user_agent"';
+        access_log /var/log/nginx/access.log vhost;
+      '';
+
       virtualHosts = vhosts;
 
       appendHttpConfig = mkIf cfg.useEncryptedVhosts (
