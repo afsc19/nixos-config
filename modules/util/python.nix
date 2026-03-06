@@ -37,15 +37,7 @@ in
       penvd() {
         if [[ -n "$VIRTUAL_ENV" ]]; then
           VIRTUAL_ENV_TMP = $VIRTUAL_ENV
-          if typeset -f deactivate >/dev/null 2>&1; then
-            deactivate
-          else
-            source "$VIRTUAL_ENV/bin/activate" 2>/dev/null && deactivate || {
-              PATH="''${PATH/#$VIRTUAL_ENV\/bin:/}"
-              unset VIRTUAL_ENV
-              hash -r
-            }
-          fi
+          penv()
           rm -rf VIRTUAL_ENV_TMP
           unset VIRTUAL_ENV_TMP
         else
