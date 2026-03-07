@@ -23,6 +23,16 @@ in
     # Allow mDNS discovery of Google Cast devices
     networking.firewall.allowedUDPPorts = [ lib.my.ports.mdnsGoogleCast ];
 
+    # Run spotify in XWayland so it has GTK decorations instead of the ugly Mutter SSD
+    hm.xdg.desktopEntries.spotify = {
+      name = "Spotify";
+      exec = "env -u NIXOS_OZONE_WL spotify %U";
+      icon = "spotify-client";
+      terminal = false;
+      type = "Application";
+      categories = [ "Audio" "Music" "Player" "AudioVideo" ];
+    };
+
     hm.programs.spicetify = {
       enable = true;
       spotifyPackage = pkgs.spotify;
