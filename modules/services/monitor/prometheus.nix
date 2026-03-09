@@ -84,7 +84,7 @@ in
             params = {
               module = [ "http_2xx" ];
             };
-            static_configs = mapAttrsToList (target: {
+            static_configs = builtins.map (target: {
               targets = [ "${ctfchalls.prefix}${target}${ctfchalls.suffix}" ];
               labels.alias = target;
             }) ctfchalls.targets;
