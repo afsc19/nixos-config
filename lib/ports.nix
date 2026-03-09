@@ -13,6 +13,7 @@
     grafana = 3000;
     prometheusServer = 9090;
     prometheusExporter = 9100;
+    prometheusBlackbox = 9115;
 
     # 51820 is default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;

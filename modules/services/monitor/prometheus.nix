@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -18,10 +19,26 @@ in
   config = mkMerge [
     # Enable Node Exporter on all fleet members
     (mkIf (thisNode != null) {
-      services.prometheus.exporters.node = {
-        enable = true;
-        enabledCollectors = [ "systemd" ];
-        port = lib.my.ports.prometheusExporter;
+      services.prometheus.exporters = {
+        node = {
+          enable = true;
+          enabledCollectors = [ "systemd" ];
+          port = lib.my.ports.prometheusExporter;
+        };
+        blackbox = {
+          enable = true;
+          port = lib.my.ports.prometheusBlackbox;
+          configFile = pkgs.writeText "blackbox.yml" ''
+            modules:
+              http_2xx:
+                prober: http
+                timeout: 5s
+                http:
+                  valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+                  valid_status_codes: []  # Defaults to 2xx
+                  method: GET
+          '';
+        };
       };
       # Allow prometheusExporter port in nebula's interface
       modules.services.nebula.firewall.inbound = [
@@ -91,7 +108,7 @@ in
               }
               {
                 target_label = "__address__";
-                replacement = "127.0.0.1:${toString lib.my.ports.prometheusExporter}";
+                replacement = "127.0.0.1:${toString lib.my.ports.prometheusBlackbox}";
               }
             ];
           }
