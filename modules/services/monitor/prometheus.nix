@@ -13,6 +13,7 @@ let
     mapAttrsToList
     ;
   inherit (lib.my.uptimewire) fleet;
+  inherit (lib.my.blackbox) ctfchalls;
   thisNode = fleet."${config.networking.hostName}" or null;
 in
 {
@@ -83,20 +84,10 @@ in
             params = {
               module = [ "http_2xx" ];
             };
-            static_configs = [
-              {
-                targets = [
-                  "https://sqli1.chall.ctf.andrecadete.com"
-                  "https://sqli2.chall.ctf.andrecadete.com"
-                  "https://sqli3.chall.ctf.andrecadete.com"
-                  "https://cmd1.chall.ctf.andrecadete.com"
-                  "https://sxss1.chall.ctf.andrecadete.com"
-                  "https://sxss2.chall.ctf.andrecadete.com"
-                  "https://rxss1.chall.ctf.andrecadete.com"
-                  "https://rxss2.chall.ctf.andrecadete.com"
-                ];
-              }
-            ];
+            static_configs = mapAttrsToList (target: {
+              targets = [ "${ctfchalls.prefix}${target}${ctfchalls.suffix}" ];
+              labels.alias = target;
+            }) ctfchalls.targets;
             relabel_configs = [
               {
                 source_labels = [ "__address__" ];
