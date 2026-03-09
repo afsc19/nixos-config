@@ -26,7 +26,7 @@ in
       # Allow prometheusExporter port in nebula's interface
       modules.services.nebula.firewall.inbound = [
         {
-          port = "${builtins.toString lib.my.ports.prometheusExporter}";
+          port = lib.my.ports.prometheusExporter;
           proto = "tcp";
           group = "uptime";
         }
