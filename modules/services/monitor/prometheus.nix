@@ -60,6 +60,41 @@ in
               };
             }) fleet;
           }
+          {
+            job_name = "ctf-challs-https";
+            metrics_path = "/probe";
+            params = {
+              module = [ "http_2xx" ];
+            };
+            static_configs = [
+              {
+                targets = [
+                  "https://sqli1.chall.ctf.andrecadete.com"
+                  "https://sqli2.chall.ctf.andrecadete.com"
+                  "https://sqli3.chall.ctf.andrecadete.com"
+                  "https://cmd1.chall.ctf.andrecadete.com"
+                  "https://sxss1.chall.ctf.andrecadete.com"
+                  "https://sxss2.chall.ctf.andrecadete.com"
+                  "https://rxss1.chall.ctf.andrecadete.com"
+                  "https://rxss2.chall.ctf.andrecadete.com"
+                ];
+              }
+            ];
+            relabel_configs = [
+              {
+                source_labels = [ "__address__" ];
+                target_label = "__param_target";
+              }
+              {
+                source_labels = [ "__param_target" ];
+                target_label = "instance";
+              }
+              {
+                target_label = "__address__";
+                replacement = "127.0.0.1:${toString lib.my.ports.prometheusExporter}";
+              }
+            ];
+          }
         ];
       };
 
