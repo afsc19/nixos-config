@@ -14,7 +14,7 @@
         "rxss2"
       ];
       prefix = "https://";
-      suffix = ".challs.ctf.andrecadete.com";
+      suffix = ".chall.ctf.andrecadete.com";
     };
   };
 }
