@@ -294,6 +294,79 @@ in
               }
             );
           }
+          {
+            name = "CTF Challenges";
+            options.path = pkgs.writeTextDir "ctfchalls-overview.json" (
+              builtins.toJSON {
+                uid = "ctfchalls-overview";
+                title = "CTF Challenges Overview";
+                tags = [
+                  "ctfchalls"
+                  "infrastructure"
+                ];
+                timezone = "browser";
+                schemaVersion = 30;
+                panels = [
+                  {
+                    id = 1;
+                    title = "CTF Challenges Status";
+                    type = "stat";
+                    datasource = "Prometheus";
+                    targets = [
+                      {
+                        expr = "probe_success{job=\"ctf-challs-https\"}";
+                        legendFormat = "{{alias}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 0;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        mappings = [
+                          {
+                            type = "value";
+                            options = {
+                              "0" = {
+                                color = "red";
+                                text = "DOWN";
+                                index = 0;
+                              };
+                              "1" = {
+                                color = "green";
+                                text = "UP";
+                                index = 1;
+                              };
+                            };
+                          }
+                        ];
+                        color = {
+                          mode = "thresholds";
+                        };
+                        thresholds = {
+                          mode = "absolute";
+                          steps = [
+                            {
+                              color = "red";
+                              value = null;
+                            }
+                            {
+                              color = "green";
+                              value = 1;
+                            }
+                          ];
+                        };
+                      };
+                    };
+                  }
+                ];
+              }
+            );
+          }
         ];
       };
     };
