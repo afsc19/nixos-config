@@ -232,7 +232,7 @@ in
                     datasource = "Prometheus";
                     targets = [
                       {
-                        expr = "up{job=\"uptimewire-fleet\"} + up{job=\"uptimewire-fleet-nebula\"}";
+                        expr = "up{job=\"uptimewire-fleet\"} + on(alias) up{job=\"uptimewire-fleet-nebula\"}";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
