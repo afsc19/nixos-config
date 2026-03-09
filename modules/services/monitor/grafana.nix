@@ -310,7 +310,7 @@ in
                   {
                     id = 1;
                     title = "CTF Challenges Status";
-                    type = "stat";
+                    type = "gauge";
                     datasource = "Prometheus";
                     targets = [
                       {
@@ -320,7 +320,7 @@ in
                       }
                     ];
                     gridPos = {
-                      h = 8;
+                      h = 24;
                       w = 24;
                       x = 0;
                       y = 0;
