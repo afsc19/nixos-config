@@ -53,6 +53,7 @@
     util = {
       java.enable = true;
       python.enable = true;
+      veracrypt.enable = true;
     };
     # Virtualization enabled in the laptop-virtualization profile
     virtualization = {
