@@ -232,7 +232,7 @@ in
                     datasource = "Prometheus";
                     targets = [
                       {
-                        expr = "sum by (alias) (up{job=~"uptimewire-fleet|uptimewire-fleet-nebula"}) and on(alias) sum by (alias) (up{job=~"uptimewire-fleet|uptimewire-fleet-nebula"}) @ end()";
+                        expr = "sum by (alias) (up{job=~"uptimewire-fleet|uptimewire-fleet-nebula"})";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -315,7 +315,7 @@ in
                     targets = [
                       {
                         # Ignore old targets using 'and ... @ end()'
-                        expr = "probe_success{job=\"ctf-challs-https\"} and on(instance, alias) probe_success{job=\"ctf-challs-https\"} @ end()"; 
+                        expr = "probe_success{job=\"ctf-challs-https\"}"; 
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
