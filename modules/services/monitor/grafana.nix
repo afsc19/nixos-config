@@ -232,7 +232,7 @@ in
                     datasource = "Prometheus";
                     targets = [
                       {
-                        expr = "sum by (alias) (up{job=~"uptimewire-fleet|uptimewire-fleet-nebula"})";
+                        expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
