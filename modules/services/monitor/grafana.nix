@@ -348,6 +348,8 @@ in
                         color = {
                           mode = "thresholds";
                         };
+                        min = 0;
+                        max = 1;
                         thresholds = {
                           mode = "absolute";
                           steps = [
