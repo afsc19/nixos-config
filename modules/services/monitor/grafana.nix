@@ -223,6 +223,12 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
+                refresh =
+                  if config.services.prometheus.enable then
+                    config.services.prometheus.globalConfig.scrape_interval
+                  else
+                    "15s"
+                  ;
                 schemaVersion = 30;
                 panels = [
                   {
@@ -305,6 +311,12 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
+                refresh =
+                  if config.services.prometheus.enable then
+                    config.services.prometheus.globalConfig.scrape_interval
+                  else
+                    "15s"
+                  ;
                 schemaVersion = 30;
                 panels = [
                   {
