@@ -26,7 +26,7 @@ in
           enabledCollectors = [ "systemd" ];
           port = lib.my.ports.prometheusExporter;
         };
-        blackbox = {
+        blackbox = mkIf thisNode.isHub {
           enable = true;
           port = lib.my.ports.prometheusBlackbox;
           configFile = pkgs.writeText "blackbox.yml" ''
