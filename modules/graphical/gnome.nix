@@ -49,6 +49,7 @@ in
         gnome-tweaks # tweak tool
         seahorse # GUI for keyring
         ptyxis
+        wl-clipboard
       ])
       ++ (with pkgs.gnomeExtensions; [
         # extensions
