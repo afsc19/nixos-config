@@ -14,7 +14,10 @@ in
     packages = with pkgs.unstable; [
       # Manually download portswigger and caido
       burpsuite
+
+      # Browsers
       ungoogled-chromium
+      firefox
 
       # SQL
       dbeaver-bin
