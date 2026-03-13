@@ -171,6 +171,9 @@
     {
       inherit nixosConfigurations lib overlays;
 
+      # So I can use unfree or overlays by default in nix shells
+      legacyPackages.${system} = pkgs;
+
       # Packages are here so they are built by CI and cached
       packages = {
         x86_64-linux = (lib.filterAttrs (_: v: lib.isDerivation v) pkgs.my) // {
