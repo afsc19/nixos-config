@@ -24,6 +24,7 @@
       qt.enable = true;
       rstudio.enable = true;
       spotify.enable = true;
+      stremio.enable = true;
       torrenting.enable = true;
     };
     laptop = {
