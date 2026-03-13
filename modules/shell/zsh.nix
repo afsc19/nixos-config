@@ -24,7 +24,7 @@ in
 
           naut = "nautilus . 2>/dev/null &";
 
-          nixsh = "NIXPKGS_ALLOW_UNFREE=1 && nix shell --impure";
+          nixsh = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
         };
 
         # Disable beep when no file is found, per example.
