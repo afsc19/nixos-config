@@ -23,6 +23,8 @@ in
           cleanboot = "sudo /run/current-system/bin/switch-to-configuration boot";
 
           naut = "nautilus . 2>/dev/null &";
+
+          nixsh = "NIXPKGS_ALLOW_UNFREE=1 && nix shell --impure";
         };
 
         # Disable beep when no file is found, per example.
