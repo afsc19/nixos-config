@@ -52,13 +52,23 @@ in
 
       Service = {
         Type = "simple";
-        # Force create mountpoint
-        ExecStartPre = "/run/current-system/sw/bin/mkdir -p %h/${cfg.mountPoint}";
+        # Force create mountpoint and writable rclone config location
+        ExecStartPre = [
+          "/run/current-system/sw/bin/mkdir -p %h/${cfg.mountPoint}"
+          "/run/current-system/sw/bin/mkdir -p %h/.config/rclone"
+          ''
+            /run/current-system/sw/bin/sh -c '\
+              if [ ! -f %h/.config/rclone/onedrive-rclone.conf ]; then\
+                /run/current-system/sw/bin/cp ${config.age.secrets.rclone.path} %h/.config/rclone/onedrive-rclone.conf;\
+                /run/current-system/sw/bin/chmod 600 %h/.config/rclone/onedrive-rclone.conf;\
+              fi'
+          ''
+        ];
 
         # rclone mount command with optimizations for reliability and performance
         ExecStart = ''
           ${pkgs.rclone}/bin/rclone mount ${cfg.remoteName}: %h/${cfg.mountPoint} \
-            --config ${config.age.secrets.rclone.path} \
+            --config %h/.config/rclone/onedrive-rclone.conf \
             --vfs-cache-mode full \
             --vfs-cache-max-size 10G \
             --vfs-cache-max-age 1h \
