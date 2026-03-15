@@ -39,9 +39,6 @@ in
           messageLoggerEnhanced.enable = false;
           channelTabs.enable = false;
           showHiddenChannels.enable = true;
-          anammox = {
-            enable = true;
-          };
           summaries.enable = false; # No AI crap for now
           splitLargeMessages = {
             enable = true;
