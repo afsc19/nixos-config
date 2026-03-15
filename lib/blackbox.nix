@@ -12,6 +12,9 @@
         "sxss2"
         "rxss1"
         "rxss2"
+        "api1"
+        "csrf1"
+        "csrf1-hoster"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
