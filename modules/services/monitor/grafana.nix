@@ -246,8 +246,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (alias) (last_over_time(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}[5m]))";
-                        instant = true;
+                        expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
