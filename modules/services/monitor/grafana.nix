@@ -314,13 +314,13 @@ in
                     };
                     targets = [
                       {
-                        expr = "rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*\"}[5m]) * 8";
-                        legendFormat = "{{instance}} - Download";
+                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[5m]))) * 8";
+                        legendFormat = "{{alias}} - Download";
                         refId = "A";
                       }
                       {
-                        expr = "rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|wg.*\"}[5m]) * 8";
-                        legendFormat = "{{instance}} - Upload";
+                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[5m]))) * 8";
+                        legendFormat = "{{alias}} - Upload";
                         refId = "B";
                       }
                     ];
