@@ -238,7 +238,10 @@ in
                     id = 1;
                     title = "Fleet Status";
                     type = "stat";
-                    datasource = "Prometheus";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
                     targets = [
                       {
                         expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})";
@@ -326,7 +329,10 @@ in
                     id = 1;
                     title = "CTF Challenges Status";
                     type = "gauge";
-                    datasource = "Prometheus";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
                     targets = [
                       {
                         # Ignore old targets using 'and ... @ end()'
