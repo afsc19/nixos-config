@@ -28,6 +28,9 @@ in
         server = {
           http_addr = "0.0.0.0";
           http_port = lib.my.ports.grafana;
+
+          domain = "grafana.andrecadete.com";
+          root_url = "https://grafana.andrecadete.com/";
         };
       };
 
