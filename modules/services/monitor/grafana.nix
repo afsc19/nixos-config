@@ -42,6 +42,7 @@ in
             name = "Prometheus";
             type = "prometheus";
             access = "proxy";
+            isDefault = true;
             url = "http://127.0.0.1:${toString lib.my.ports.prometheusServer}";
           }
         ];
@@ -226,6 +227,7 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
+                time = { from = "now-6h"; to = "now"; };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
@@ -318,6 +320,7 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
+                time = { from = "now-6h"; to = "now"; };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
