@@ -244,7 +244,8 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})";
+                        expr = "sum by (alias) (last_over_time(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}[5m]))";
+                        instant = true;
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -336,7 +337,8 @@ in
                     targets = [
                       {
                         # Ignore old targets using 'and ... @ end()'
-                        expr = "probe_success{job=\"ctf-challs-https\"}"; 
+                        expr = "last_over_time(probe_success{job=\"ctf-challs-https\"}[5m])";
+                        instant = true;
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
