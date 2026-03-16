@@ -170,55 +170,11 @@ in
                     }
                 ]
             }'';
-          # rules.settings.groups = [
-          #   {
-          #     name = "up_checks_1h";
-          #     folder = "Uptimewire";
-          #     interval = "1h";
-          #     rules = [
-          #       {
-          #         uid = "calidor-up";
-          #         title = "calidor-up";
-          #         condition = "C";
-          #         data = [
-          #           {
-          #             refId = "A";
-          #             relativeTimeRange = { from = 600; to = 0; };
-          #             datasourceUid = "prometheus";
-          #             model = {
-          #               editorMode = "builder";
-          #               expr = "up{alias=\"calidor\"}";
-          #               instant = true;
-          #               intervalMs = 1000;
-          #               maxDataPoints = 43200;
-          #               range = false;
-          #               refId = "A";
-          #             };
-          #           }
-          #         ];
-          #         noDataState = "NoData";
-          #         execErrState = "Error";
-          #         for = "1h";
-          #         annotations = {
-          #           summary = "Calidor is UP!";
-          #           description = "Calidor instance is reachable via Uptimewire.";
-          #         };
-          #         isPaused = false;
-          #         notification_settings = {
-          #           receiver = "discord";
-          #         };
-          #         labels = {
-          #           severity = "info";
-          #         };
-          #       }
-          #     ];
-          #   }
-          # ];
         };
         dashboards.settings.providers = [
           {
             name = "Uptime Wire";
-            folder = "Uptime Wire";
+            folder = "Uptimewire";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
               builtins.toJSON {
                 uid = "uptimewire-overview";
