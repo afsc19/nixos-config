@@ -304,6 +304,45 @@ in
                       };
                     };
                   }
+                  {
+                    id = 2;
+                    title = "Bandwidth Usage";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*\"}[5m]) * 8";
+                        legendFormat = "{{instance}} - Download";
+                        refId = "A";
+                      }
+                      {
+                        expr = "rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|wg.*\"}[5m]) * 8";
+                        legendFormat = "{{instance}} - Upload";
+                        refId = "B";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "bps";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "smooth";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                      };
+                    };
+                  }
                 ];
               }
             );
