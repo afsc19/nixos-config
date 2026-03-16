@@ -218,6 +218,7 @@ in
         dashboards.settings.providers = [
           {
             name = "Uptime Wire";
+            folder = "Uptime Wire";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
               builtins.toJSON {
                 uid = "uptimewire-overview";
@@ -349,6 +350,7 @@ in
           }
           {
             name = "CTF Challenges";
+            folder = "CTF";
             options.path = pkgs.writeTextDir "ctfchalls-overview.json" (
               builtins.toJSON {
                 uid = "ctfchalls-overview";
