@@ -110,6 +110,9 @@ in
           # TO DO highlighter
           gruntfuggly.todo-tree
 
+          # Git tools
+          eamodio.gitlens
+
           # Themes
           teabyii.ayu
           # FranRuizSantaclara.high-contrast-theme
