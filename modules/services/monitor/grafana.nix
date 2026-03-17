@@ -184,7 +184,7 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
-                time = { from = "now-6h"; to = "now"; };
+                time = { from = "now-24h"; to = "now"; };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
@@ -317,7 +317,7 @@ in
                   "family"
                 ];
                 timezone = "browser";
-                time = { from = "now-6h"; to = "now"; };
+                time = { from = "now-24h"; to = "now"; };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
