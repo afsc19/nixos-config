@@ -167,6 +167,133 @@ in
                                 }
                             }
                         ]
+                    },
+                    {
+                        "orgId": 1,
+                        "name": "ctf_checks_15m",
+                        "folder": "CTF",
+                        "interval": "15m",
+                        "rules": [
+                            {
+                              "uid": "ctf_checks_15m",
+                              "title": "ctf_checks_15m",
+                              "condition": "C",
+                              "data": [
+                                  {
+                                      "refId": "A",
+                                      "relativeTimeRange": {
+                                          "from": 600,
+                                          "to": 0
+                                      },
+                                      "datasourceUid": "prometheus",
+                                      "model": {
+                                          "editorMode": "builder",
+                                          "expr": "probe_success{job=\"ctf-challs-https\"}",
+                                          "instant": false,
+                                          "intervalMs": 1000,
+                                          "legendFormat": "__auto",
+                                          "maxDataPoints": 43200,
+                                          "range": true,
+                                          "refId": "A"
+                                      }
+                                  },
+                                  {
+                                      "refId": "reducer",
+                                      "queryType": "expression",
+                                      "relativeTimeRange": {
+                                          "from": 0,
+                                          "to": 0
+                                      },
+                                      "datasourceUid": "__expr__",
+                                      "model": {
+                                          "conditions": [
+                                              {
+                                                  "evaluator": {
+                                                      "params": [
+                                                          0,
+                                                          0
+                                                      ],
+                                                      "type": "gt"
+                                                  },
+                                                  "operator": {
+                                                      "type": "and"
+                                                  },
+                                                  "query": {
+                                                      "params": []
+                                                  },
+                                                  "reducer": {
+                                                      "params": [],
+                                                      "type": "max"
+                                                  },
+                                                  "type": "query"
+                                              }
+                                          ],
+                                          "datasource": {
+                                              "name": "Expression",
+                                              "type": "__expr__",
+                                              "uid": "__expr__"
+                                          },
+                                          "expression": "A",
+                                          "intervalMs": 1000,
+                                          "maxDataPoints": 43200,
+                                          "reducer": "max",
+                                          "refId": "reducer",
+                                          "type": "reduce"
+                                      }
+                                  },
+                                  {
+                                      "refId": "C",
+                                      "relativeTimeRange": {
+                                          "from": 0,
+                                          "to": 0
+                                      },
+                                      "datasourceUid": "__expr__",
+                                      "model": {
+                                          "conditions": [
+                                              {
+                                                  "evaluator": {
+                                                      "params": [
+                                                          0
+                                                      ],
+                                                      "type": "eq"
+                                                  },
+                                                  "operator": {
+                                                      "type": "and"
+                                                  },
+                                                  "query": {
+                                                      "params": [
+                                                          "C"
+                                                      ]
+                                                  },
+                                                  "reducer": {
+                                                      "params": [],
+                                                      "type": "last"
+                                                  },
+                                                  "type": "query"
+                                              }
+                                          ],
+                                          "datasource": {
+                                              "type": "__expr__",
+                                              "uid": "__expr__"
+                                          },
+                                          "expression": "reducer",
+                                          "intervalMs": 1000,
+                                          "maxDataPoints": 43200,
+                                          "refId": "C",
+                                          "type": "threshold"
+                                      }
+                                  }
+                              ],
+                              "noDataState": "NoData",
+                              "execErrState": "Error",
+                              "annotations": {},
+                              "labels": {},
+                              "isPaused": false,
+                              "notification_settings": {
+                                  "receiver": "discord"
+                              }
+                          }
+                        ]
                     }
                 ]
             }'';
