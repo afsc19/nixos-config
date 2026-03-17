@@ -16,6 +16,8 @@
         "csrf1"
         "csrf1-hoster"
         "csrf2"
+        "csrf3"
+        "csrf3-hoster"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
