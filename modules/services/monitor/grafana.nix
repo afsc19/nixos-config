@@ -305,7 +305,7 @@ in
             );
           }
           {
-            name = "Uptime Wire";
+            name = "Uptime Wire Family";
             folder = "Uptimewire";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
               builtins.toJSON {
