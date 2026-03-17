@@ -306,7 +306,7 @@ in
           }
           {
             name = "Uptime Wire Family";
-            folder = "Uptimewire";
+            folder = "Uptimewire Family";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
               builtins.toJSON {
                 uid = "uptimewire-overview-family";
