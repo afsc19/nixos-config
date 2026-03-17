@@ -305,6 +305,139 @@ in
             );
           }
           {
+            name = "Uptime Wire";
+            folder = "Uptimewire";
+            options.path = pkgs.writeTextDir "uptimewire-overview.json" (
+              builtins.toJSON {
+                uid = "uptimewire-overview-family";
+                title = "Uptime Wire Overview Family";
+                tags = [
+                  "uptimewire"
+                  "infrastructure"
+                  "family"
+                ];
+                timezone = "browser";
+                time = { from = "now-6h"; to = "now"; };
+                refresh =
+                  if config.services.prometheus.enable then
+                    config.services.prometheus.globalConfig.scrape_interval
+                  else
+                    "15s"
+                  ;
+                schemaVersion = 30;
+                panels = [
+                  {
+                    id = 1;
+                    title = "Fleet Status";
+                    type = "stat";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",alias=~\"favilla|calidor\"})";
+                        legendFormat = "{{alias}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 0;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        mappings = [
+                          {
+                            type = "value";
+                            options = {
+                              "0" = {
+                                color = "red";
+                                text = "DOWN";
+                                index = 0;
+                              };
+                              "1" = {
+                                color = "orange";
+                                text = "MUMBLE";
+                                index = 1;
+                              };
+                              "2" = {
+                                color = "green";
+                                text = "UP";
+                                index = 2;
+                              };
+                            };
+                          }
+                        ];
+                        color = {
+                          mode = "thresholds";
+                        };
+                        thresholds = {
+                          mode = "absolute";
+                          steps = [
+                            {
+                              color = "red";
+                              value = null;
+                            }
+                            {
+                              color = "orange";
+                              value = 1;
+                            }
+                            {
+                              color = "green";
+                              value = 2;
+                            }
+                          ];
+                        };
+                      };
+                    };
+                  }
+                  {
+                    id = 2;
+                    title = "Bandwidth Usage";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\",alias=~\"favilla|calidor\"}[5m]))) * 8";
+                        legendFormat = "{{alias}} - Download";
+                        refId = "A";
+                      }
+                      {
+                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\",alias=~\"favilla|calidor\"}[5m]))) * 8";
+                        legendFormat = "{{alias}} - Upload";
+                        refId = "B";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "bps";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "smooth";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                      };
+                    };
+                  }
+                ];
+              }
+            );
+          }
+          {
             name = "CTF Challenges";
             folder = "CTF";
             options.path = pkgs.writeTextDir "ctfchalls-overview.json" (
