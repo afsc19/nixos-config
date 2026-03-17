@@ -253,7 +253,7 @@ in
                                               {
                                                   "evaluator": {
                                                       "params": [
-                                                          0
+                                                          1
                                                       ],
                                                       "type": "eq"
                                                   },
