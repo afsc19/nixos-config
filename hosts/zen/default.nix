@@ -18,6 +18,7 @@
       # Browsers enabled in the corresponding profile.
       # Discord enabled in the corresponding profile.
       # Editors enabled in the corresponding profile.
+      androidstudio.enable = true;
       gnome.enable = true;
       gtk.enable = true;
       office.enable = true;
