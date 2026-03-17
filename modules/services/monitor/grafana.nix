@@ -286,7 +286,10 @@ in
                               ],
                               "noDataState": "NoData",
                               "execErrState": "Error",
-                              "annotations": {},
+                              "annotations": {
+                                  "description": "One or more CTF Challenges aren't accessible via public https.",
+                                  "summary": "CTF Challenges DOWN!"
+                              },
                               "labels": {},
                               "isPaused": false,
                               "notification_settings": {
