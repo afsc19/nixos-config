@@ -94,7 +94,7 @@ in
     environment.sessionVariables = {
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
-    }
+    };
     
     hm.dconf.settings = {
       # Allow fractional scaling without blurring XWayland apps
