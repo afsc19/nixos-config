@@ -75,8 +75,8 @@
     services.ssh
     shell.essential
   ];
-
-  imports = with pkgs; [
+  
+  environment.systemPackages = with pkgs; [
     udev
   ];
 
