@@ -76,6 +76,10 @@
     shell.essential
   ];
 
+  imports = with pkgs; [
+    udev
+  ];
+
   boot.loader.systemd-boot.enable = true;
 
   # Don't use network manager since oracle cloud poorly supports it
