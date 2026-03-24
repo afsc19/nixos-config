@@ -94,6 +94,10 @@
   my.security.fido2.enable = false;
 
   # --- Firewall ---
+  # Block metadata IP for security on VPS
+  networking.firewall.extraCommands = ''
+    iptables -I OUTPUT -d 169.254.169.254 -j DROP
+  '';
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
   networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts = with lib.my.ports; [
