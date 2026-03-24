@@ -103,6 +103,8 @@
   networking.firewall.extraCommands = ''
     iptables -I OUTPUT -d 169.254.169.254 -j DROP
   '';
+
+  networking.firewall.allowedTCPPortRanges = [ { from = 25550; to = 25559; } ];
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
   networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts = with lib.my.ports; [
