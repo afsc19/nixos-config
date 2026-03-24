@@ -44,6 +44,7 @@
     gawk
     zstd
     gnupg
+    jq # json
 
     # Networking tools
     mtr # A network diagnostic tool
