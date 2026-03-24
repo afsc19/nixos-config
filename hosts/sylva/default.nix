@@ -60,6 +60,7 @@
       zsh.enable = true;
     };
     util = {
+      java.enable = true;
       python.enable = true;
     };
     virtualization = {
