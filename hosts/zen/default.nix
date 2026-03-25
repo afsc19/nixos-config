@@ -1,6 +1,7 @@
 # Laptop PC
 {
   profiles,
+  lib,
   ...
 }:
 
@@ -23,7 +24,7 @@
       gtk.enable = true;
       office.enable = true;
       qt.enable = true;
-      rstudio.enable = true;
+      rstudio.enable = false;
       spotify.enable = true;
       stremio.enable = true;
       torrenting.enable = true;
@@ -36,7 +37,16 @@
     services = {
       # Nebula (VPN)
       monitor.uptimewire.enable = true;
-      nebula.enable = true;
+      nebula = {
+        enable = true;
+        firewall.inbound = [
+          {
+            port = lib.my.ports.https;
+            proto = "any";
+            group = "any";
+          }
+        ];
+      };
       openvpn.enable = true;
       onedrive = {
         enable = true;
