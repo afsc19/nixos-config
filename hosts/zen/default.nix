@@ -39,13 +39,6 @@
       monitor.uptimewire.enable = true;
       nebula = {
         enable = true;
-        firewall.inbound = [
-          {
-            port = lib.my.ports.https;
-            proto = "any";
-            group = "any";
-          }
-        ];
       };
       openvpn.enable = true;
       onedrive = {
