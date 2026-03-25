@@ -104,11 +104,6 @@
     iptables -I OUTPUT -d 169.254.169.254 -j DROP
   '';
 
-  # Fenix mitm
-  networking.hosts = {
-    "192.168.100.2" = [ "fenix.tecnico.ulisboa.pt" ];
-  };
-
 
   networking.firewall.allowedTCPPortRanges = [ { from = 25550; to = 25559; } ];
   # Open ports in the firewall.
