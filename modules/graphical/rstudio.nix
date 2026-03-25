@@ -13,7 +13,7 @@ in
   options.modules.graphical.rstudio.enable = mkEnableOption "R Studio";
 
   config = mkIf cfg.enable {
-    hm.home.packages = with pkgs; [
+    hm.home.packages = with pkgs.unstable; [
       rstudio
     ];
   };
