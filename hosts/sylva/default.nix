@@ -120,7 +120,6 @@
 
   # Filesystem mounts
   # ytdl-material
-  {
   fileSystems."/mnt/ytdl-store" = {
     device = "/srv/ytdl.img";
     fsType = "ext4";
@@ -134,7 +133,6 @@
     "d /mnt/ytdl-store/users 0755 root root -"
     "d /mnt/ytdl-store/db 0755 root root -"
   ];
-}
 
 
   age.secrets.cloudflareDnsApiToken = {
