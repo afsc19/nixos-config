@@ -118,6 +118,25 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
+  # Filesystem mounts
+  # ytdl-material
+  {
+  fileSystems."/mnt/ytdl-store" = {
+    device = "/srv/ytdl.img";
+    fsType = "ext4";
+    options = [ "loop" ];
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /mnt/ytdl-store/audio 0755 root root -"
+    "d /mnt/ytdl-store/video 0755 root root -"
+    "d /mnt/ytdl-store/subscriptions 0755 root root -"
+    "d /mnt/ytdl-store/users 0755 root root -"
+    "d /mnt/ytdl-store/db 0755 root root -"
+  ];
+}
+
+
   age.secrets.cloudflareDnsApiToken = {
     file = secrets.host.cloudflareDnsApiToken;
     owner = "acme";
