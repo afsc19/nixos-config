@@ -22,6 +22,8 @@
         "ssrf1-hard"
         "ssrf2"
         "ssrf3"
+        "domxss1"
+        "pp1"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
