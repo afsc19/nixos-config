@@ -24,6 +24,8 @@
         "ssrf3"
         "domxss1"
         "pp1"
+        "pp-lab"
+        "pp2"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
