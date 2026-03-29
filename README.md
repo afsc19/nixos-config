@@ -27,7 +27,7 @@ This flake's structure is inspired by [diogotcorreia's NixOS dotfiles](https://g
  - My personal collection of forensic tools
   
 ## Machines:
-Machines follow a specific naming convention based on the fictional solar system from [ASTRONEER](https://astroneer.fandom.com/wiki/Astroneer_Wiki). Stationary system (those with a static physical location) are named after planets and moons.
+Machines follow a specific naming convention based on the fictional solar system from [ASTRONEER](https://astroneer.fandom.com/wiki/Astroneer_Wiki). Stationary systems (those with a static physical location) are named after planets and moons.
 
 ### Zen - Personal Laptop (x86_64-linux)
 My daily driver for general use:
