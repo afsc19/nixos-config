@@ -534,12 +534,12 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\",alias=~\"favilla|calidor\"}[5m]))) * 8";
+                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth*|docker*|wg.*|uptimeWire0|nebula.*\",alias=~\"favilla|calidor\"}[5m]))) * 8";
                         legendFormat = "{{alias}} - Download";
                         refId = "A";
                       }
                       {
-                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\",alias=~\"favilla|calidor\"}[5m]))) * 8";
+                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_transmit_bytes_total{device!~\"lo|veth*|docker*|wg.*|uptimeWire0|nebula.*\",alias=~\"favilla|calidor\"}[5m]))) * 8";
                         legendFormat = "{{alias}} - Upload";
                         refId = "B";
                       }
