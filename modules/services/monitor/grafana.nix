@@ -514,7 +514,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "100 * (1 - (node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}/node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}))";
+                        expr = "max by alias (100 * (1 - (node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}/node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})))";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -563,7 +563,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "100 * (
+                        expr = "max by (alias) (100 * (
   1 - (
     node_filesystem_avail_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
@@ -576,7 +576,7 @@ in
       fstype!~\"tmpfs|ramfs|overlay|squashfs\",
       mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\"
 }))";
-                        legendFormat = "{{alias}}";
+                        legend = "{{alias}} - {{mountpoint}}"
                         refId = "A";
                       }
                     ];
