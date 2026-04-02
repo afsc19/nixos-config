@@ -435,6 +435,239 @@ in
             );
           }
           {
+            name = "Uptime Wire Internals";
+            folder = "Uptimewire";
+            options.path = pkgs.writeTextDir "uptimewire-overview.json" (
+              builtins.toJSON {
+                uid = "uptimewire-internals";
+                title = "Uptime Wire internals";
+                tags = [
+                  "uptimewire"
+                  "infrastructure"
+                ];
+                timezone = "browser";
+                time = { from = "now-24h"; to = "now"; };
+                refresh =
+                  if config.services.prometheus.enable then
+                    config.services.prometheus.globalConfig.scrape_interval
+                  else
+                    "15s"
+                  ;
+                schemaVersion = 30;
+                panels = [
+                  {
+                    id = 1;
+                    title = "CPU Usage";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "100 - (avg by (alias)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\"}[30m])) * 100)";
+                        legendFormat = "{{alias}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "percent";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "linear";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                        min = 0;
+                        max = 100;
+                        thresholds = {
+                          mode = "absolute";
+                          steps = [
+                            {
+                              color = "green";
+                              value = 0;
+                            }
+                            {
+                              color = "red";
+                              value = 80;
+                            }
+                          ];
+                        };
+                      };
+                    };
+                  }
+                  {
+                    id = 2;
+                    title = "RAM Usage";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "100 * (1 - (node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}/node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}))";
+                        legendFormat = "{{alias}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "percent";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "linear";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                        min = 0;
+                        max = 100;
+                        thresholds = {
+                          mode = "absolute";
+                          steps = [
+                            {
+                              color = "green";
+                              value = 0;
+                            }
+                            {
+                              color = "red";
+                              value = 80;
+                            }
+                          ];
+                        };
+                      };
+                    };
+                  }
+                  {
+                    id = 3;
+                    title = "Disk Storage Usage";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "100 * (
+  1 - (
+    node_filesystem_avail_bytes{
+      job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
+      fstype!~\"tmpfs|ramfs|overlay|squashfs\",
+      mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\"
+    }
+    /
+    node_filesystem_size_bytes{
+      job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
+      fstype!~\"tmpfs|ramfs|overlay|squashfs\",
+      mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\"
+}))";
+                        legendFormat = "{{alias}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "percent";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "linear";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                        min = 0;
+                        max = 100;
+                        thresholds = {
+                          mode = "absolute";
+                          steps = [
+                            {
+                              color = "green";
+                              value = 0;
+                            }
+                            {
+                              color = "red";
+                              value = 80;
+                            }
+                          ];
+                        };
+                      };
+                    };
+                  }
+                                    {
+                    id = 4;
+                    title = "Disk Busy";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "max by (alias, device) (100 * rate(node_disk_io_time_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", device=~\"^(sd[a-z]+|vd[a-z]+|xvd[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+)$\"}[5m]))";
+                        legendFormat = "{{alias}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "percent";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "linear";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                        min = 0;
+                        max = 100;
+                        thresholds = {
+                          mode = "absolute";
+                          steps = [
+                            {
+                              color = "green";
+                              value = 0;
+                            }
+                            {
+                              color = "red";
+                              value = 80;
+                            }
+                          ];
+                        };
+                      };
+                    };
+                  }
+                ];
+              }
+            );
+          }
+          {
             name = "Uptime Wire Family";
             folder = "Uptimewire Family";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
