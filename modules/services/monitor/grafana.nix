@@ -888,6 +888,425 @@ in
               }
             );
           }
+          # NGINX
+          {
+            name = "NGINX";
+            folder = "NGINX";
+            options.path = pkgs.writeTextDir "nginx-overview.json" (
+              builtins.toJSON {
+                uid = "nginx-overview";
+                title = "NGINX Overview";
+                tags = [
+                  "nginx"
+                  "uptimewire"
+                  "infrastructure"
+                ];
+                timezone = "browser";
+                schemaVersion = 30;
+                version = 1;
+                editable = true;
+                graphTooltip = 1;
+                time = { from = "now-24h"; to = "now"; };
+                refresh =
+                  if config.services.prometheus.enable then
+                    config.services.prometheus.globalConfig.scrape_interval
+                  else
+                    "15s";
+
+                templating = {
+                  list = [
+                    {
+                      name = "instance";
+                      type = "query";
+                      datasource = {
+                        type = "prometheus";
+                        uid = "prometheus";
+                      };
+                      definition = "label_values(nginx_up{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\"}, instance)";
+                      query = {
+                        query = "label_values(nginx_up{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\"}, instance)";
+                        refId = "Prometheus-instance-Variable-Query";
+                      };
+                      refresh = 1;
+                      includeAll = true;
+                      multi = true;
+                      current = {
+                        selected = true;
+                        text = [ "All" ];
+                        value = [ "$__all" ];
+                      };
+                    }
+                  ];
+                };
+
+                panels = [
+                  {
+                    id = 1;
+                    title = "NGINX Up";
+                    type = "stat";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum(nginx_up{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = { h = 4; w = 6; x = 0; y = 0; };
+                    options = {
+                      reduceOptions = {
+                        values = false;
+                        calcs = [ "lastNotNull" ];
+                        fields = "";
+                      };
+                      orientation = "auto";
+                      textMode = "value";
+                      colorMode = "background";
+                      graphMode = "none";
+                      wideLayout = true;
+                    };
+                    fieldConfig.defaults = {
+                      mappings = [
+                        {
+                          type = "special";
+                          options = {
+                            match = "null";
+                            result = {
+                              text = "NO DATA";
+                              color = "gray";
+                            };
+                          };
+                        }
+                      ];
+                      color.mode = "thresholds";
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          { color = "red"; value = null; }
+                          { color = "orange"; value = 1; }
+                          { color = "green"; value = 2; }
+                        ];
+                      };
+                    };
+                  }
+
+                  {
+                    id = 2;
+                    title = "Request Rate";
+                    type = "stat";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum(rate(nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"}[5m]))";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = { h = 4; w = 6; x = 6; y = 0; };
+                    options = {
+                      reduceOptions = {
+                        values = false;
+                        calcs = [ "lastNotNull" ];
+                        fields = "";
+                      };
+                      orientation = "auto";
+                      textMode = "value";
+                      colorMode = "background";
+                      graphMode = "area";
+                      wideLayout = true;
+                    };
+                    fieldConfig.defaults = {
+                      unit = "reqps";
+                      decimals = 2;
+                      color.mode = "thresholds";
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          { color = "green"; value = null; }
+                          { color = "orange"; value = 100; }
+                          { color = "red"; value = 500; }
+                        ];
+                      };
+                    };
+                  }
+
+                  {
+                    id = 3;
+                    title = "Active Connections";
+                    type = "stat";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum(nginx_connections_active{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = { h = 4; w = 6; x = 12; y = 0; };
+                    options = {
+                      reduceOptions = {
+                        values = false;
+                        calcs = [ "lastNotNull" ];
+                        fields = "";
+                      };
+                      orientation = "auto";
+                      textMode = "value";
+                      colorMode = "background";
+                      graphMode = "area";
+                      wideLayout = true;
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      decimals = 0;
+                      color.mode = "thresholds";
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          { color = "green"; value = null; }
+                          { color = "orange"; value = 100; }
+                          { color = "red"; value = 500; }
+                        ];
+                      };
+                    };
+                  }
+
+                  {
+                    id = 4;
+                    title = "Handled / Accepted";
+                    type = "stat";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum(rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"}[5m])) / clamp_min(sum(rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"}[5m])), 0.0001)";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = { h = 4; w = 6; x = 18; y = 0; };
+                    options = {
+                      reduceOptions = {
+                        values = false;
+                        calcs = [ "lastNotNull" ];
+                        fields = "";
+                      };
+                      orientation = "auto";
+                      textMode = "value";
+                      colorMode = "background";
+                      graphMode = "none";
+                      wideLayout = true;
+                    };
+                    fieldConfig.defaults = {
+                      unit = "percentunit";
+                      decimals = 3;
+                      min = 0;
+                      max = 1;
+                      color.mode = "thresholds";
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          { color = "red"; value = null; }
+                          { color = "orange"; value = 0.95; }
+                          { color = "green"; value = 0.999; }
+                        ];
+                      };
+                    };
+                  }
+
+                  {
+                    id = 5;
+                    title = "Requests Over Time";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (instance) (rate(nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"}[5m]))";
+                        legendFormat = "{{instance}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = { h = 8; w = 12; x = 0; y = 4; };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "reqps";
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 2;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+
+                  {
+                    id = 6;
+                    title = "Connection States";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (instance) (nginx_connections_active{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        legendFormat = "{{instance}} active";
+                        refId = "A";
+                      }
+                      {
+                        expr = "sum by (instance) (nginx_connections_reading{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        legendFormat = "{{instance}} reading";
+                        refId = "B";
+                      }
+                      {
+                        expr = "sum by (instance) (nginx_connections_writing{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        legendFormat = "{{instance}} writing";
+                        refId = "C";
+                      }
+                      {
+                        expr = "sum by (instance) (nginx_connections_waiting{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        legendFormat = "{{instance}} waiting";
+                        refId = "D";
+                      }
+                    ];
+                    gridPos = { h = 8; w = 12; x = 12; y = 4; };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 2;
+                        fillOpacity = 8;
+                        gradientMode = "opacity";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+
+                  {
+                    id = 7;
+                    title = "Accepted vs Handled";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (instance) (rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"}[5m]))";
+                        legendFormat = "{{instance}} accepted/s";
+                        refId = "A";
+                      }
+                      {
+                        expr = "sum by (instance) (rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"}[5m]))";
+                        legendFormat = "{{instance}} handled/s";
+                        refId = "B";
+                      }
+                    ];
+                    gridPos = { h = 8; w = 12; x = 0; y = 12; };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "cps";
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 2;
+                        fillOpacity = 8;
+                        gradientMode = "opacity";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+
+                  {
+                    id = 8;
+                    title = "Total Requests";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (instance) (nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nginx-nebula\",instance=~\"$instance\"})";
+                        legendFormat = "{{instance}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = { h = 8; w = 12; x = 12; y = 12; };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 2;
+                        fillOpacity = 8;
+                        gradientMode = "opacity";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+                ];
+              }
+            );
+          }
         ];
       };
     };

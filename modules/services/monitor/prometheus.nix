@@ -11,6 +11,7 @@ let
     mkMerge
     my
     mapAttrsToList
+    optional
     ;
   inherit (lib.my.uptimewire) fleet;
   inherit (lib.my.blackbox) ctfchalls;
@@ -27,7 +28,7 @@ in
           port = lib.my.ports.prometheusExporter;
         };
         blackbox = mkIf thisNode.isHub {
-          enable = true;
+          enable = mkDefault false;
           port = lib.my.ports.prometheusBlackbox;
           configFile = pkgs.writeText "blackbox.yml" ''
             modules:
@@ -40,6 +41,13 @@ in
                   method: GET
           '';
         };
+
+        # Only for devices running nginx
+        nginx = mkIf config.services.nginx.enable {
+          enable = true;
+          port = lib.my.ports.prometheusNginx;
+          scrapeUri = "http://127.0.0.1:${lib.my.ports.nginxStubStatus}/stub_status";
+        };
       };
       # Allow prometheusExporter port in nebula's interface
       modules.services.nebula.firewall.inbound = [
@@ -48,10 +56,14 @@ in
           proto = "tcp";
           group = "uptime";
         }
-      ];
+      ] ++ optional config.services.nginx.enable {
+          port = lib.my.ports.nginxStubStatus;
+          proto = "tcp";
+          group = "uptime";
+        };
     })
 
-    # 2. Enable Prometheus Server on hubs
+    # Enable Prometheus Server on hubs
     (mkIf (thisNode != null && thisNode.isHub) {
       services.prometheus = {
         enable = true;

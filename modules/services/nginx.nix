@@ -159,6 +159,19 @@ in
           include ${config.age.secrets.nginxVhosts.path};
         ''
       );
+      services.nginx.appendHttpConfig = ''
+        server {
+          listen 127.0.0.1:${lib.my.ports.nginxStubStatus};
+          server_name localhost;
+
+          location = /stub_status {
+            stub_status;
+            allow 127.0.0.1;
+            allow ::1;
+            deny all;
+          }
+        }
+      '';
     };
 
     users.users.nginx.extraGroups = [ "acme" ];
