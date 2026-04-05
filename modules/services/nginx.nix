@@ -15,6 +15,7 @@ let
     mkIf
     mkOption
     types
+    mkMerge
     ;
   cfg = config.modules.services.nginx;
   hasEncryptedVhostsSecret = hasAttrByPath [ "host" "nginxVhosts" ] secrets;
@@ -154,24 +155,26 @@ in
 
       virtualHosts = vhosts;
 
-      appendHttpConfig = mkIf cfg.useEncryptedVhosts (
-        mkAfter ''
-          include ${config.age.secrets.nginxVhosts.path};
+      appendHttpConfig = mkMerge [
+        (mkIf cfg.useEncryptedVhosts (
+          mkAfter ''
+            include ${config.age.secrets.nginxVhosts.path};
+          ''
+        ))
         ''
-      );
-      services.nginx.appendHttpConfig = ''
-        server {
-          listen 127.0.0.1:${lib.my.ports.nginxStubStatus};
-          server_name localhost;
+          server {
+            listen 127.0.0.1:${toString lib.my.ports.nginxStubStatus};
+            server_name localhost;
 
-          location = /stub_status {
-            stub_status;
-            allow 127.0.0.1;
-            allow ::1;
-            deny all;
+            location = /stub_status {
+              stub_status;
+              allow 127.0.0.1;
+              allow ::1;
+              deny all;
+            }
           }
-        }
-      '';
+        ''
+      ];
     };
 
     users.users.nginx.extraGroups = [ "acme" ];

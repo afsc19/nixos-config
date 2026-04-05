@@ -12,6 +12,7 @@ let
     my
     mapAttrsToList
     optional
+    mkDefault
     ;
   inherit (lib.my.uptimewire) fleet;
   inherit (lib.my.blackbox) ctfchalls;
@@ -46,7 +47,7 @@ in
         nginx = mkIf config.services.nginx.enable {
           enable = true;
           port = lib.my.ports.prometheusNginx;
-          scrapeUri = "http://127.0.0.1:${lib.my.ports.nginxStubStatus}/stub_status";
+          scrapeUri = "http://127.0.0.1:${toString lib.my.ports.nginxStubStatus}/stub_status";
         };
       };
       # Allow prometheusExporter port in nebula's interface
