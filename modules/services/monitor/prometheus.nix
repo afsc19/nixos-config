@@ -29,7 +29,7 @@ in
           port = lib.my.ports.prometheusExporter;
         };
         blackbox = mkIf thisNode.isHub {
-          enable = mkDefault false;
+          enable = true;
           port = lib.my.ports.prometheusBlackbox;
           configFile = pkgs.writeText "blackbox.yml" ''
             modules:
