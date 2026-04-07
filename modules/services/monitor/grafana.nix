@@ -950,7 +950,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum(nginx_up{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias)(nginx_up{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\"})";
                         refId = "A";
                       }
                     ];
@@ -985,8 +985,7 @@ in
                         mode = "absolute";
                         steps = [
                           { color = "red"; value = null; }
-                          { color = "orange"; value = 1; }
-                          { color = "green"; value = 2; }
+                          { color = "green"; value = 1; }
                         ];
                       };
                     };
@@ -1002,7 +1001,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum(rate(nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m]))";
+                        expr = "max by (alias) (rate(nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m]))";
                         refId = "A";
                       }
                     ];
@@ -1044,7 +1043,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum(nginx_connections_active{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias) (nginx_connections_active{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
                         refId = "A";
                       }
                     ];
@@ -1086,7 +1085,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum(rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])) / clamp_min(sum(rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])), 0.0001)";
+                        expr = "max by (alias) (rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])) / clamp_min(sum(rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])), 0.0001)";
                         refId = "A";
                       }
                     ];
@@ -1130,8 +1129,8 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (instance) (rate(nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m]))";
-                        legendFormat = "{{instance}}";
+                        expr = "max by (alias) (sum by (instance) (rate(nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])))";
+                        legendFormat = "{{alias}}";
                         refId = "A";
                       }
                     ];
@@ -1171,22 +1170,22 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (instance) (nginx_connections_active{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias) (sum by (instance) (nginx_connections_active{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}))";
                         legendFormat = "{{instance}} active";
                         refId = "A";
                       }
                       {
-                        expr = "sum by (instance) (nginx_connections_reading{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias) (sum by (instance) (nginx_connections_reading{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}))";
                         legendFormat = "{{instance}} reading";
                         refId = "B";
                       }
                       {
-                        expr = "sum by (instance) (nginx_connections_writing{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias) (sum by (instance) (nginx_connections_writing{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}))";
                         legendFormat = "{{instance}} writing";
                         refId = "C";
                       }
                       {
-                        expr = "sum by (instance) (nginx_connections_waiting{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias) (sum by (instance) (nginx_connections_waiting{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}))";
                         legendFormat = "{{instance}} waiting";
                         refId = "D";
                       }
@@ -1227,12 +1226,12 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (instance) (rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m]))";
+                        expr = "max by (alias) (sum by (instance) (rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])))";
                         legendFormat = "{{instance}} accepted/s";
                         refId = "A";
                       }
                       {
-                        expr = "sum by (instance) (rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m]))";
+                        expr = "max by (alias) (sum by (instance) (rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])))";
                         legendFormat = "{{instance}} handled/s";
                         refId = "B";
                       }
@@ -1273,7 +1272,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "sum by (instance) (nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"})";
+                        expr = "max by (alias) (sum by (instance) (nginx_http_requests_total{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}))";
                         legendFormat = "{{instance}}";
                         refId = "A";
                       }
