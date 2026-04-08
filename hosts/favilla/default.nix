@@ -22,6 +22,7 @@
       touchpad.enable = true;
     };
     services = {
+      monitor.uptimewire.enable = true;
       # Nebula (VPN)
       nebula = {
         enable = true;
@@ -41,6 +42,9 @@
         installDependencies = true;
       };
       zsh.enable = true;
+    };
+    util = {
+      python.enable = true;
     };
     # Virtualization enabled in the laptop-virtualization profile
     virtualization = {
