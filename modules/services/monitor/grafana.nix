@@ -503,7 +503,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30m]))) * 100)";
+                        expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30m])) * 100)";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
