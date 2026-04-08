@@ -417,7 +417,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 2;
+                    maxPerRow = 4;
                     targets = [
                       {
                         expr = "sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) * 8";
@@ -706,6 +706,22 @@ in
                   else
                     "15s"
                   ;
+                templating = {
+                  list = [
+                    {
+                      name = "alias";
+                      type = "query";
+                      datasource = {
+                        type = "prometheus";
+                        uid = "prometheus";
+                      };
+                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}, alias)";
+                      refresh = 1;
+                      multi = true;
+                      includeAll = true;
+                    }
+                  ];
+                };
                 schemaVersion = 30;
                 panels = [
                   {
@@ -784,15 +800,18 @@ in
                       type = "prometheus";
                       uid = "prometheus";
                     };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
                     targets = [
                       {
-                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth*|docker*|wg.*|uptimeWire0|nebula.*\",alias=~\"favilla|calidor\"}[20s]))) * 8";
-                        legendFormat = "{{alias}} - Download";
+                        expr = "sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) * 8";
+                        legendFormat = "Download";
                         refId = "A";
                       }
                       {
-                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_transmit_bytes_total{device!~\"lo|veth*|docker*|wg.*|uptimeWire0|nebula.*\",alias=~\"favilla|calidor\"}[20s]))) * 8";
-                        legendFormat = "{{alias}} - Upload";
+                        expr = "sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) * 8";
+                        legendFormat = "Upload";
                         refId = "B";
                       }
                     ];
