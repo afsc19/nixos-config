@@ -420,12 +420,12 @@ in
                     maxPerRow = 2;
                     targets = [
                       {
-                        expr = "sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
+                        expr = "sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) * 8";
                         legendFormat = "Download";
                         refId = "A";
                       }
                       {
-                        expr = "sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
+                        expr = "sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) * 8";
                         legendFormat = "Upload";
                         refId = "B";
                       }
