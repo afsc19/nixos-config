@@ -409,7 +409,7 @@ in
                   }
                   {
                     id = 2;
-                    title = "Bandwidth Usage";
+                    title = "$alias Bandwidth Usage";
                     type = "timeseries";
                     datasource = {
                       type = "prometheus";
@@ -420,13 +420,13 @@ in
                     maxPerRow = 2;
                     targets = [
                       {
-                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
-                        legendFormat = "{{alias}} - Download";
+                        expr = "sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
+                        legendFormat = "Download";
                         refId = "A";
                       }
                       {
-                        expr = "sum by (alias) (max by (alias, device) (rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
-                        legendFormat = "{{alias}} - Upload";
+                        expr = "sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
+                        legendFormat = "Upload";
                         refId = "B";
                       }
                     ];
