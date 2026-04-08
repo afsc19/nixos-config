@@ -420,12 +420,12 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s])) * 8";
+                        expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
                         legendFormat = "Download";
                         refId = "A";
                       }
                       {
-                        expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s])) * 8";
+                        expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_sent_total{alias=~\"^$alias$\"}[30s]))) * 8";
                         legendFormat = "Upload";
                         refId = "B";
                       }
@@ -805,12 +805,12 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s])) * 8";
+                        expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
                         legendFormat = "Download";
                         refId = "A";
                       }
                       {
-                        expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s])) * 8";
+                        expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_sent_total{alias=~\"^$alias$\"}[30s]))) * 8";
                         legendFormat = "Upload";
                         refId = "B";
                       }
