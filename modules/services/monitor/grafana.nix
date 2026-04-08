@@ -1085,7 +1085,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "max by (alias) (rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])) / max by (alias)(clamp_min(sum(rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])), 0.0001))";
+                        expr = "max by (alias) (sum(rate(nginx_connections_handled{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])) / clamp_min(sum(rate(nginx_connections_accepted{job=~\"uptimewire-fleet-nginx|uptimewire-fleet-nebula-nginx\",instance=~\"$instance\"}[5m])), 0.0001))";
                         refId = "A";
                       }
                     ];
