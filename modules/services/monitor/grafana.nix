@@ -576,7 +576,7 @@ in
       fstype!~\"tmpfs|ramfs|overlay|squashfs\",
       mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\"
 })))";
-                        legend = "{{alias}} - {{mountpoint}}";
+                        legendFormat = "{{alias}} - {{mountpoint}}";
                         refId = "A";
                       }
                     ];
