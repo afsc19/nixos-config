@@ -794,7 +794,7 @@ in
                   }
                   {
                     id = 2;
-                    title = "Bandwidth Usage";
+                    title = "$alias Bandwidth Usage";
                     type = "timeseries";
                     datasource = {
                       type = "prometheus";
