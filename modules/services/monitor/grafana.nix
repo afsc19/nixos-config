@@ -322,6 +322,22 @@ in
                     "15s"
                   ;
                 schemaVersion = 30;
+                templating = {
+                  list = [
+                    {
+                      name = "alias";
+                      type = "query";
+                      datasource = {
+                        type = "prometheus";
+                        uid = "prometheus";
+                      };
+                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}, alias)";
+                      refresh = 1;
+                      multi = true;
+                      includeAll = true;
+                    }
+                  ];
+                };
                 panels = [
                   {
                     id = 1;
@@ -399,6 +415,9 @@ in
                       type = "prometheus";
                       uid = "prometheus";
                     };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 2;
                     targets = [
                       {
                         expr = "sum by (alias) (max by (alias, device) (rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|wg.*|nebula.*\"}[20s]))) * 8";
