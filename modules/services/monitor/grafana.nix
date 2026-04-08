@@ -715,7 +715,7 @@ in
                         type = "prometheus";
                         uid = "prometheus";
                       };
-                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}, alias)";
+                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"favilla|calidor\"}, alias)";
                       refresh = 1;
                       multi = true;
                       includeAll = true;
