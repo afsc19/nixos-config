@@ -473,18 +473,37 @@ in
                     "15s"
                   ;
                 schemaVersion = 30;
+                templating = {
+                  list = [
+                    {
+                      name = "alias";
+                      type = "query";
+                      datasource = {
+                        type = "prometheus";
+                        uid = "prometheus";
+                      };
+                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}, alias)";
+                      refresh = 1;
+                      multi = true;
+                      includeAll = true;
+                    }
+                  ];
+                };
                 panels = [
                   {
                     id = 1;
-                    title = "CPU Usage";
+                    title = "$alias CPU Usage";
                     type = "timeseries";
                     datasource = {
                       type = "prometheus";
                       uid = "prometheus";
                     };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
                     targets = [
                       {
-                        expr = "100 - (avg by (alias)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\"}[30m])) * 100)";
+                        expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30m]))) * 100)";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -525,15 +544,18 @@ in
                   }
                   {
                     id = 2;
-                    title = "RAM Usage";
+                    title = "$alias RAM Usage";
                     type = "timeseries";
                     datasource = {
                       type = "prometheus";
                       uid = "prometheus";
                     };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
                     targets = [
                       {
-                        expr = "max by (alias) (100 * (1 - (node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}/node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})))";
+                        expr = "max by (alias) (100 * (1 - (node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}/node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"})))";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -574,12 +596,15 @@ in
                   }
                   {
                     id = 3;
-                    title = "Disk Storage Usage";
+                    title = "$alias Disk Storage Usage";
                     type = "timeseries";
                     datasource = {
                       type = "prometheus";
                       uid = "prometheus";
                     };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
                     targets = [
                       {
                         expr = "max by (alias, mountpoint) (100 * (
@@ -587,13 +612,15 @@ in
     node_filesystem_avail_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
       fstype!~\"tmpfs|ramfs|overlay|squashfs\",
-      mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\"
+      mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\",
+      alias=~\"^$alias$\"
     }
     /
     node_filesystem_size_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
       fstype!~\"tmpfs|ramfs|overlay|squashfs\",
-      mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\"
+      mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\",
+      alias=~\"^$alias$\"
 })))";
                         legendFormat = "{{alias}} - {{mountpoint}}";
                         refId = "A";
@@ -635,15 +662,18 @@ in
                   }
                   {
                     id = 4;
-                    title = "Disk Busy";
+                    title = "$alias Disk Busy";
                     type = "timeseries";
                     datasource = {
                       type = "prometheus";
                       uid = "prometheus";
                     };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
                     targets = [
                       {
-                        expr = "max by (alias, device) (100 * rate(node_disk_io_time_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", device=~\"^(sd[a-z]+|vd[a-z]+|xvd[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+)$\"}[20s]))";
+                        expr = "max by (alias, device) (100 * rate(node_disk_io_time_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", device=~\"^(sd[a-z]+|vd[a-z]+|xvd[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+)$\"}[20s]))";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
