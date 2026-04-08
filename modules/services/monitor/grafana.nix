@@ -563,7 +563,7 @@ in
                     };
                     targets = [
                       {
-                        expr = "max by (alias) (100 * (
+                        expr = "max by (alias, mountpoint) (100 * (
   1 - (
     node_filesystem_avail_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
@@ -614,7 +614,7 @@ in
                       };
                     };
                   }
-                                    {
+                  {
                     id = 4;
                     title = "Disk Busy";
                     type = "timeseries";
