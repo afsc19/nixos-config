@@ -503,7 +503,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30m])) * 100)";
+                        expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s]) or irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) * 100)";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -555,7 +555,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "max by (alias) (100 * (1 - (node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}/node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"})))";
+                        expr = "max by (alias) (100 * (1 - ((node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_available_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"})/(node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_physical_total_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}))))";
                         legendFormat = "{{alias}}";
                         refId = "A";
                       }
@@ -607,22 +607,35 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "max by (alias, mountpoint) (100 * (
+                        expr = "max by (alias, mountpoint, volume) (100 * (
   1 - (
-    node_filesystem_avail_bytes{
+    (node_filesystem_avail_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
       fstype!~\"tmpfs|ramfs|overlay|squashfs\",
       mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\",
       alias=~\"^$alias$\"
     }
+    or
+    windows_logical_disk_free_bytes{
+      job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
+      volume!~\"HarddiskVolume.*\",
+      alias=~\"^$alias$\"
+    })
     /
-    node_filesystem_size_bytes{
+    (node_filesystem_size_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
       fstype!~\"tmpfs|ramfs|overlay|squashfs\",
       mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\",
       alias=~\"^$alias$\"
-})))";
-                        legendFormat = "{{alias}} - {{mountpoint}}";
+    }
+    or 
+    windows_logical_disk_size_bytes{
+      job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
+      volume!~\"HarddiskVolume.*\",
+      alias=~\"^$alias$\"
+    })
+  )))";
+                        legendFormat = "{{mountpoint}}{{volume}}";
                         refId = "A";
                       }
                     ];
@@ -673,8 +686,24 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "max by (alias, device) (100 * rate(node_disk_io_time_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", device=~\"^(sd[a-z]+|vd[a-z]+|xvd[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+)$\"}[30s]))";
-                        legendFormat = "{{alias}}";
+                        expr = "max by (alias, device, volume) (100 * (
+  rate(node_disk_io_time_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", device=~\"^(sd[a-z]+|vd[a-z]+|xvd[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+)$\"}[30s])
+  or
+  (
+    (rate(windows_logical_disk_read_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", volume!~\"HarddiskVolume.*\"}[30s])
+    +
+    rate(windows_logical_disk_write_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", volume!~\"HarddiskVolume.*\"}[30s])
+    )
+  /
+    (rate(windows_logical_disk_read_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", volume!~\"HarddiskVolume.*\"}[30s])
+    +
+    rate(windows_logical_disk_write_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", volume!~\"HarddiskVolume.*\"}[30s])
+    +
+    rate(windows_logical_disk_idle_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", volume!~\"HarddiskVolume.*\"}[30s])
+    )
+  )
+))";
+                        legendFormat = "{{device}}{{volume}}";
                         refId = "A";
                       }
                     ];
