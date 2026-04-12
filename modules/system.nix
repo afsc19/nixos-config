@@ -92,6 +92,11 @@
   # /tmp configuration
   boot.tmp.cleanOnBoot = true;
 
+  # C compiler
+  environment.systemPackages = with pkgs; [
+    gcc
+  ];
+
   # Allow running dynamically linked Linux binaries not built by Nix
   programs.nix-ld = {
     enable = true;
