@@ -95,6 +95,7 @@
   # C compiler
   environment.systemPackages = with pkgs; [
     gcc
+    glibc.static
   ];
 
   # Allow running dynamically linked Linux binaries not built by Nix
