@@ -26,6 +26,9 @@
         "pp1"
         "pp-lab"
         "pp2"
+        "sspp1"
+        "sspp2"
+        "sspp3"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
