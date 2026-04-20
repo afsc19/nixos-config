@@ -112,6 +112,12 @@
     ssh
     http
     https
+
+    # SINFO 2026
+    50401
+    50402
+    50403
+    50404
   ];
   # For Chromecast from chrome (defined in brave.nix)
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
