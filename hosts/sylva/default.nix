@@ -115,6 +115,7 @@
   networking.nat = {
     enable = true;
     externalInterface = config.my.networking.wiredInterface;
+    internalInterfaces = [ "nebula1" ];
     forwardPorts = [
       {
         sourcePort = 50400;
