@@ -32,6 +32,11 @@
             proto = "any";
             group = "afsc";
           }
+          {
+            port = "50400-50409";
+            proto = "tcp";
+            host = "sylva";
+          }
         ];
       };
     };
