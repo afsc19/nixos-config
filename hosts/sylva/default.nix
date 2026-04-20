@@ -133,6 +133,11 @@
         destination = "192.168.100.5:50403";
       }
     ];
+    extraCommands = ''
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50400 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50402 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50403 -j MASQUERADE
+    '';
   };
 
 
