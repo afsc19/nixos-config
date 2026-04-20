@@ -29,6 +29,8 @@
         "sspp1"
         "sspp2"
         "sspp3"
+        "llm1"
+        "llm2"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
