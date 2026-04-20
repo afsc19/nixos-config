@@ -119,17 +119,17 @@
       {
         sourcePort = 50400;
         proto = "tcp";
-        destination = "favilla.andrecadete.com:50400";
+        destination = "192.168.100.5:50400";
       }
       {
         sourcePort = 50402;
         proto = "tcp";
-        destination = "favilla.andrecadete.com:50402";
+        destination = "192.168.100.5:50402";
       }
       {
         sourcePort = 50403;
         proto = "tcp";
-        destination = "favilla.andrecadete.com:50403";
+        destination = "192.168.100.5:50403";
       }
     ];
   };
