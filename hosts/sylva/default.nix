@@ -123,6 +123,11 @@
         destination = "192.168.100.5:50400";
       }
       {
+        sourcePort = 50401;
+        proto = "tcp";
+        destination = "192.168.100.5:50401";
+      }
+      {
         sourcePort = 50402;
         proto = "tcp";
         destination = "192.168.100.5:50402";
@@ -135,6 +140,7 @@
     ];
     extraCommands = ''
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50400 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50401 -j MASQUERADE
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50402 -j MASQUERADE
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50403 -j MASQUERADE
     '';
