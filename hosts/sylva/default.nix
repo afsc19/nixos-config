@@ -109,18 +109,30 @@
   # Block metadata IP for security on VPS
   networking.firewall.extraCommands = ''
     iptables -I OUTPUT -d 169.254.169.254 -j DROP
-
-
-    
-    iptables -t nat -A PREROUTING -p tcp --dport 50400 -j DNAT --to-destination favilla.andrecadete.com:50400
-    iptables -t nat -A POSTROUTING -p tcp -d favilla.andrecadete.com --dport 50400 -j MASQUERADE
-
-    iptables -t nat -A PREROUTING -p tcp --dport 50402 -j DNAT --to-destination favilla.andrecadete.com:50402
-    iptables -t nat -A POSTROUTING -p tcp -d favilla.andrecadete.com --dport 50402 -j MASQUERADE
-
-    iptables -t nat -A PREROUTING -p tcp --dport 50403 -j DNAT --to-destination favilla.andrecadete.com:50403
-    iptables -t nat -A POSTROUTING -p tcp -d favilla.andrecadete.com --dport 50403 -j MASQUERADE
   '';
+
+
+  networking.nat = {
+    enable = true;
+    externalInterface = config.my.networking.wiredInterface;
+    forwardPorts = [
+      {
+        sourcePort = 50400;
+        proto = "tcp";
+        destination = "10.0.0.10:50400";
+      }
+      {
+        sourcePort = 50402;
+        proto = "tcp";
+        destination = "10.0.0.10:50402";
+      }
+      {
+        sourcePort = 50403;
+        proto = "tcp";
+        destination = "10.0.0.10:50403";
+      }
+    ];
+  };
 
 
   networking.firewall.allowedTCPPortRanges = [ { from = 25550; to = 25559; } ];
