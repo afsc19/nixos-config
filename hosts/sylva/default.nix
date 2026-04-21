@@ -137,12 +137,30 @@
         proto = "tcp";
         destination = "192.168.100.5:50403";
       }
+      {
+        sourcePort = 50409;
+        proto = "tcp";
+        destination = "192.168.100.5:50409";
+      }
+      {
+        sourcePort = 50410;
+        proto = "tcp";
+        destination = "192.168.100.5:50410";
+      }
+      {
+        sourcePort = 50411;
+        proto = "tcp";
+        destination = "192.168.100.5:50411";
+      }
     ];
     extraCommands = ''
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50400 -j MASQUERADE
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50401 -j MASQUERADE
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50402 -j MASQUERADE
       iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50403 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50409 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50410 -j MASQUERADE
+      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50411 -j MASQUERADE
     '';
   };
 
@@ -161,6 +179,22 @@
     50402
     50403
     50404
+    50405
+    50406
+    50407
+    50408
+    50409
+    50410
+    50411
+    50412
+    50413
+    50414
+    50415
+    50416
+    50417
+    50418
+    50419
+    50420
   ];
   # For Chromecast from chrome (defined in brave.nix)
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
