@@ -33,7 +33,7 @@
             group = "afsc";
           }
           {
-            port = "50400-50409";
+            port = "50400-50430";
             proto = "tcp";
             host = "sylva";
           }
