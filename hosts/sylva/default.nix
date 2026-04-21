@@ -106,9 +106,10 @@
   };
 
 
-  # Block metadata IP for security on VPS
+  # Block metadata IP for security on VPS (both host and forwarded/docker traffic)
   networking.firewall.extraCommands = ''
     iptables -I OUTPUT -d 169.254.169.254 -j DROP
+    iptables -I FORWARD -d 169.254.169.254 -j DROP
   '';
 
 
