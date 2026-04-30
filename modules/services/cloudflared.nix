@@ -65,7 +65,9 @@ in
           value = {
             credentialsFile = config.age.secrets."cloudflaredTunnel_${entry.tunnelName}".path;
             default = entry.default;
-
+            originRequest = {
+              noTLSVerify = true;
+            };
           };
         }) cfg.tunnels
       );
