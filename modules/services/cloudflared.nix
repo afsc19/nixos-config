@@ -3,10 +3,11 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkOption listToAttrs types;
   cfg = config.modules.services.cloudflared;
 in
 {
@@ -28,7 +29,7 @@ in
 
             default = mkOption {
               type = types.str;
-              default = "https://localhost:443"
+              default = "https://localhost:443";
               description = "Default tunnel routing target.";
             };
           };
@@ -40,17 +41,27 @@ in
   };
 
   config = mkIf cfg.enable {
+    age.secrets = listToAttrs (
+      map (entry: {
+        name = "cloudflaredTunnel_${entry.tunnelName}";
+        value = {
+          file = secrets.host."cloudflaredTunnel_${entry.tunnelName}";
+          owner = "cloudflared";
+        };
+      }) cfg.tunnels
+    );
+
     services.cloudflared = {
       enable = true;
       tunnels = listToAttrs (
         map (entry: {
-          "${entry.tunnelName}" = {
-            id = entry.tunnelID;
+          name = entry.tunnelID;
+          value = {
             credentialsFile = config.age.secrets."cloudflaredTunnel_${entry.tunnelName}".path;
-            default = entry.default
+            default = entry.default;
 
           };
-        }) tunnels
+        }) cfg.tunnels
       );
     };
   };
