@@ -41,6 +41,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    users.users.cloudflared = {
+      isSystemUser = true;
+      group = "cloudflared";
+    };
+    users.groups.cloudflared = {};
+
     age.secrets = listToAttrs (
       map (entry: {
         name = "cloudflaredTunnel_${entry.tunnelName}";
