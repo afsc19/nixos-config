@@ -18,6 +18,16 @@
     graphical.editor.neovim.base.enable = true;
     services = {
       monitor.uptimewire.enable = true;
+      cloudflared = {
+        enable = true;
+        tunnels = [
+          {
+            tunnelName = "sylva-andrecadete-com";
+            tunnelID = "00425117-9b58-410e-a793-de5560839cb1";
+            default = "https://localhost:443";
+          }
+        ];
+      };
       nginx = {
         enable = true;
         useEncryptedVhosts = builtins.pathExists ../../secrets/sylva/nginxVhosts.age;

@@ -78,6 +78,8 @@ mkSecrets [
       "grafanaDiscordWebhook"
       "nginxVhosts"
       "cloudflareDnsApiToken"
+      "cloudflaredCert"
+      "cloudflaredTunnel_sylva-andrecadete-com"
     ]
   )
 

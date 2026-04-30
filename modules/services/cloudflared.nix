@@ -1,0 +1,57 @@
+# Cloudflare Tunnel (cloudflared) Configuration
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  inherit (lib) mkEnableOption mkIf;
+  cfg = config.modules.services.cloudflared;
+in
+{
+  options.modules.services.cloudflared = {
+    enable = mkEnableOption "Cloudflared (Cloudflare Tunnel)";
+    tunnels = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            tunnelName = mkOption {
+              type = types.str;
+              description = "The Name of the tunnel.";
+            };
+
+            tunnelID = mkOption {
+              type = types.str;
+              description = "The ID of the tunnel.";
+            };
+
+            default = mkOption {
+              type = types.str;
+              default = "https://localhost:443"
+              description = "Default tunnel routing target.";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "The tunnels to activate.";
+    };
+  };
+
+  config = mkIf cfg.enable {
+    services.cloudflared = {
+      enable = true;
+      tunnels = listToAttrs (
+        map (entry: {
+          "${entry.tunnelName}" = {
+            id = entry.tunnelID;
+            credentialsFile = config.age.secrets."cloudflaredTunnel_${entry.tunnelName}".path;
+            default = entry.default
+
+          };
+        }) tunnels
+      );
+    };
+  };
+}
