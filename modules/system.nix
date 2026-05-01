@@ -89,6 +89,9 @@
   boot.loader.grub.configurationLimit = lib.mkDefault 20;
   boot.loader.systemd-boot.configurationLimit = lib.mkDefault 20;
 
+  # Temporary kernel bump to prevent copy.fail CVE-2026-31431
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # /tmp configuration
   boot.tmp.cleanOnBoot = true;
 
