@@ -261,7 +261,7 @@
 
 
   # Run other arch binaries using QEMU
-  boot.binfmt.emulatedSystems = [ "wasm32-wasi" ]; 
+  boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
 
   boot.binfmt.registrations = {
     # General pwn challenges
