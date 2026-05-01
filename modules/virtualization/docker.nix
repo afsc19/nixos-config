@@ -11,14 +11,16 @@ let
   cfg = config.modules.virtualization.docker;
 
   # Lightweight static qemu-user
-  qemu-user-static = pkgs.qemu-user.overrideAttrs (oldAttrs: {
-    configureFlags = (oldAttrs.configureFlags or []) ++ [
-      "--static"
-      "--disable-gnutls"
-      "--disable-nettle"
-      "--disable-gcrypt"
-    ];
-  });
+  qemu-user-static = pkgs.pkgsStatic.qemu-user.override {
+    gnutlsSupport = false;
+    nettleSupport = false;
+    
+    # fix the 'sysprof-capture-4' error by ensuring glib doesn't look for it
+    # and stripping down other dependencies that don't build statically on ARM64
+    glib = pkgs.pkgsStatic.glib.override { 
+      withIntrospection = false; 
+    };
+  };
 in
 {
   options.modules.virtualization.docker = {
