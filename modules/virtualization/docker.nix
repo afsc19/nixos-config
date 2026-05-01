@@ -45,8 +45,6 @@ in
     ];
     
     boot.binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
-      # Run other arch binaries using QEMU
-      emulatedSystems = [ "x86_64-linux" ];
 
       registrations = {
         # General pwn challenges
