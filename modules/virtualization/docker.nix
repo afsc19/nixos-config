@@ -14,7 +14,7 @@ let
     name = "qemu-x86_64-static";
     src = pkgs.fetchurl {
       url = "https://github.com/multiarch/qemu-user-static/releases/download/v7.2.0-1/qemu-x86_64-static";
-      sha256 = "sha256-mH9FvYq/K0VshlS4KmqU8Z2Yp6R9y6a/TclBIdtC32o=";
+      sha256 = "sha256-cTL/05rvccJtM0TMDH3/xTDhDj5yDFjIJ5qX72/dd4Q=";
     };
     phases = [ "installPhase" ];
     installPhase = ''
