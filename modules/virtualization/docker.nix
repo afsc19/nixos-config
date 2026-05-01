@@ -30,15 +30,9 @@ in
       docker-buildx
     ];
     
-    systemd.services.docker-binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
-      description = "Register binfmt emulators for Docker";
-      after = [ "network.target" "docker.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.docker}/bin/docker run --privileged --rm tonistiigi/binfmt --install all";
-        RemainAfterExit = true;
-      };
+    boot.binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
+      emulatedSystems = [ "x86_64-linux" ];
+      preferStaticEmulators = true; # Make it work with Docker
     };
 
   };
