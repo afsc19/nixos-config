@@ -3,6 +3,7 @@
   config,
   lib,
   user,
+  pkgs,
   ...
 }:
 let
@@ -17,7 +18,7 @@ in
       enable = true;
       rootless = {
         enable = true;
-        setSocketVarialbe = true;
+        setSocketVariable = true;
       };
     };
     users.users.${user}.extraGroups = [ "docker" ];
