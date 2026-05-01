@@ -260,5 +260,9 @@
   };
 
 
+  # Run x86_64 binaries using QEMU
+  boot.binfmt.emulatedSystems = [ "x86_64-linux" ];
+
+
   system.stateVersion = "25.11";
 }
