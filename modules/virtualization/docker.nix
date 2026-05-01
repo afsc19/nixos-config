@@ -15,5 +15,9 @@ in
   config = mkIf cfg.enable {
     virtualisation.docker.enable = true;
     users.users.${user}.extraGroups = [ "docker" ];
+
+    environment.systemPackages = with pkgs; [
+      docker-buildx
+    ];
   };
 }
