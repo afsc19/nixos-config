@@ -266,7 +266,7 @@
   boot.binfmt.registrations = {
     # General pwn challenges
     x86_64-linux = {
-      interpreter = "${pkgs.qemu-user}/bin/qemu-x86_64";
+      interpreter = "${pkgs.pkgsStatic.qemu-user}/bin/qemu-x86_64";
       fixBinary = true;
       wrapInterpreterInShell = false;
       magicOrExtension = ''\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x3e\x00'';
