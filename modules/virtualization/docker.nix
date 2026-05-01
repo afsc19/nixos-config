@@ -13,7 +13,13 @@ in
   options.modules.virtualization.docker.enable = mkEnableOption "docker";
 
   config = mkIf cfg.enable {
-    virtualisation.docker.enable = true;
+    virtualisation.docker = {
+      enable = true;
+      rootless = {
+        enable = true;
+        setSocketVarialbe = true;
+      };
+    };
     users.users.${user}.extraGroups = [ "docker" ];
 
     environment.systemPackages = with pkgs; [
