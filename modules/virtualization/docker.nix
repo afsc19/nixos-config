@@ -10,16 +10,18 @@ let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.virtualization.docker;
 
-  # Lightweight static qemu-user
-  qemu-user-static = pkgs.pkgsStatic.qemu-user.override {
-    gnutlsSupport = false;
-    nettleSupport = false;
-    
-    # fix the 'sysprof-capture-4' error by ensuring glib doesn't look for it
-    # and stripping down other dependencies that don't build statically on ARM64
-    glib = pkgs.pkgsStatic.glib.override { 
-      withIntrospection = false; 
+  qemu-x86_64-static = pkgs.stdenv.mkDerivation {
+    name = "qemu-x86_64-static";
+    src = pkgs.fetchurl {
+      url = "https://github.com/multiarch/qemu-user-static/releases/download/v7.2.0-1/qemu-x86_64-static";
+      sha256 = "sha256-mH9FvYq/K0VshlS4KmqU8Z2Yp6R9y6a/TclBIdtC32o=";
     };
+    phases = [ "installPhase" ];
+    installPhase = ''
+      mkdir -p $out/bin
+      cp $src $out/bin/qemu-x86_64
+      chmod +x $out/bin/qemu-x86_64
+    '';
   };
 in
 {
@@ -49,7 +51,7 @@ in
       registrations = {
         # General pwn challenges
         x86_64-linux = {
-          interpreter = "${qemu-user-static}/bin/qemu-x86_64";
+          interpreter = "${qemu-x86_64-static}/bin/qemu-x86_64";
           fixBinary = true;
           wrapInterpreterInShell = false;
           magicOrExtension = ''\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x3e\x00'';
