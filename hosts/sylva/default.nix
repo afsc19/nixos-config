@@ -126,51 +126,22 @@
   '';
 
 
-  networking.nat = {
-    enable = true;
-    externalInterface = config.my.networking.wiredInterface;
-    internalInterfaces = [ "nebula1" ];
-    forwardPorts = [
-      {
-        sourcePort = 50401;
-        proto = "tcp";
-        destination = "192.168.100.5:50401";
-      }
-      {
-        sourcePort = 50402;
-        proto = "tcp";
-        destination = "192.168.100.5:50402";
-      }
-      {
-        sourcePort = 50403;
-        proto = "tcp";
-        destination = "192.168.100.5:50403";
-      }
-      {
-        sourcePort = 50409;
-        proto = "tcp";
-        destination = "192.168.100.5:50409";
-      }
-      {
-        sourcePort = 50410;
-        proto = "tcp";
-        destination = "192.168.100.5:50410";
-      }
-      {
-        sourcePort = 50411;
-        proto = "tcp";
-        destination = "192.168.100.5:50411";
-      }
-    ];
-    extraCommands = ''
-      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50401 -j MASQUERADE
-      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50402 -j MASQUERADE
-      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50403 -j MASQUERADE
-      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50409 -j MASQUERADE
-      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50410 -j MASQUERADE
-      iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50411 -j MASQUERADE
-    '';
-  };
+  # NAT to favilla
+  # networking.nat = {
+  #   enable = true;
+  #   externalInterface = config.my.networking.wiredInterface;
+  #   internalInterfaces = [ "nebula1" ];
+  #   forwardPorts = [
+  #     {
+  #       sourcePort = 50400;
+  #       proto = "tcp";
+  #       destination = "192.168.100.5:50400";
+  #     }
+  #   ];
+  #   extraCommands = ''
+  #     iptables -t nat -A POSTROUTING -d 192.168.100.5 -p tcp --dport 50400 -j MASQUERADE
+  #   '';
+  # };
 
 
   networking.firewall.allowedTCPPortRanges = [ { from = 25550; to = 25559; } ];
