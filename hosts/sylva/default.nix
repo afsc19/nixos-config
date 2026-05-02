@@ -19,7 +19,7 @@
     services = {
       monitor = {
         portainer.enable = true;
-        rancher.enable = true;
+        rancher.enable = false;
         uptimewire.enable = true;
       };
       cloudflared = {
