@@ -19,6 +19,10 @@ in
   options.modules.services.monitor.rancher.enable = mkEnableOption "Rancher cluster monitor";
 
   config = mkIf cfg.enable {
+    systemd.tmpfiles.rules = [
+      "d /var/lib/rancher 0755 root root -"
+    ];
+
     virtualisation.oci-containers.containers."rancher-server" = {
       image = "rancher/rancher:latest";
       ports = [
