@@ -22,6 +22,9 @@ in
       rootless = {
         enable = true;
         setSocketVariable = true;
+        daemon.settings = {
+          dns = [ "1.1.1.1" "9.9.9.9" ];
+        };
       };
     };
     users.users.${user}.extraGroups = [ "docker" ];
