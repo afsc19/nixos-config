@@ -18,8 +18,9 @@
     graphical.editor.neovim.base.enable = true;
     services = {
       monitor = {
-        uptimewire.enable = true;
+        portainer.enable = true;
         rancher.enable = true;
+        uptimewire.enable = true;
       };
       cloudflared = {
         enable = true;
