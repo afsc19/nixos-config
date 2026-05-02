@@ -449,49 +449,8 @@ in
                       };
                     };
                   }
-                ];
-              }
-            );
-          }
-          {
-            name = "Uptime Wire Internals";
-            folder = "Uptimewire";
-            options.path = pkgs.writeTextDir "uptimewire-overview.json" (
-              builtins.toJSON {
-                uid = "uptimewire-internals";
-                title = "Uptime Wire internals";
-                tags = [
-                  "uptimewire"
-                  "infrastructure"
-                ];
-                timezone = "browser";
-                time = { from = "now-24h"; to = "now"; };
-                refresh =
-                  if config.services.prometheus.enable then
-                    config.services.prometheus.globalConfig.scrape_interval
-                  else
-                    "15s"
-                  ;
-                schemaVersion = 30;
-                templating = {
-                  list = [
-                    {
-                      name = "alias";
-                      type = "query";
-                      datasource = {
-                        type = "prometheus";
-                        uid = "prometheus";
-                      };
-                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}, alias)";
-                      refresh = 1;
-                      multi = true;
-                      includeAll = true;
-                    }
-                  ];
-                };
-                panels = [
                   {
-                    id = 1;
+                    id = 3;
                     title = "$alias CPU Usage";
                     type = "timeseries";
                     datasource = {
@@ -543,7 +502,7 @@ in
                     };
                   }
                   {
-                    id = 2;
+                    id = 4;
                     title = "$alias RAM Usage";
                     type = "timeseries";
                     datasource = {
@@ -595,7 +554,7 @@ in
                     };
                   }
                   {
-                    id = 3;
+                    id = 5;
                     title = "$alias Disk Storage Usage";
                     type = "timeseries";
                     datasource = {
@@ -674,7 +633,7 @@ in
                     };
                   }
                   {
-                    id = 4;
+                    id = 6;
                     title = "$alias Disk Busy";
                     type = "timeseries";
                     datasource = {
