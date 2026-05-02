@@ -19,10 +19,6 @@ in
   config = mkIf cfg.enable {
     virtualisation.docker = {
       enable = true;
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
       daemon.settings = {
         dns = [ "1.1.1.1" "9.9.9.9" ];
       };
