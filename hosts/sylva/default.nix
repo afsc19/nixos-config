@@ -17,7 +17,10 @@
     # Nothing graphical except nvim
     graphical.editor.neovim.base.enable = true;
     services = {
-      monitor.uptimewire.enable = true;
+      monitor = {
+        uptimewire.enable = true;
+        rancher.enable = true;
+      };
       cloudflared = {
         enable = true;
         tunnels = [
