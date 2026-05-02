@@ -29,6 +29,17 @@ in
     environment.systemPackages = with pkgs; [
       docker-buildx
     ];
+
+    nixpkgs.overlays = [
+      (final: prev: {
+        qemu-user = prev.qemu-user.overrideAttrs (old: {
+          configureFlags = (old.configureFlags or []) ++ [
+            "--disable-pie"
+          ];
+        });
+      })
+    ];
+
     
     boot.binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
       emulatedSystems = [ "x86_64-linux" ];
