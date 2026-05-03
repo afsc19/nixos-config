@@ -26,7 +26,7 @@ in
 
           nixsh = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
           nixup = "OLD_PATH=$PWD && cd ~/nixos-config && git pull && sudo nixos-rebuild switch --flake ~/nixos-config#$(uname -n) --show-trace && cd $OLD_PATH && unset OLD_PATH";
-          nixdev = "nix develop -c zsh";
+          nixdev = "nix develop path:. -c zsh";
         };
 
         # Disable beep when no file is found, per example.
