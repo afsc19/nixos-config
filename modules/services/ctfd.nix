@@ -17,6 +17,7 @@ let
 
   cfg = config.modules.services.ctfd;
   secretsFile = "${cfg.folder}/secrets.env";
+  backend = config.virtualisation.oci-containers.backend;
 in
 {
   options.modules.services.ctfd = {
@@ -32,10 +33,15 @@ in
 
     # virtualisation.oci-containers.backend = "podman";
 
-    # Hook into the DB container to generate the secrets before it starts
+    # Hook into the DB container to generate the secrets and the network before it starts
     # Because 'ctfd' depends on 'ctfd-db', this guarantees the file exists for both.
     systemd.services."${config.virtualisation.oci-containers.backend}-ctfd-db" = {
       preStart = ''
+        # network creation
+        ${pkgs."${backend}"}/bin/${backend} network exists ctfd_internal ||
+        ${pkgs."${backend}"}/bin/${backend} network create --internal ctfd_internal
+
+        # secrets creation
         mkdir -p ${cfg.folder}
         chmod 755 ${cfg.folder}
         
@@ -113,15 +119,15 @@ in
     };
 
     # network service if OCI doesn't auto-create
-    # systemd.services.podman-network-ctfd_internal = {
-    #   description = "CTFd internal network";
-    #   wantedBy = [ "multi-user.target" ];
-    #   serviceConfig.Type = "oneshot";
-    #   script = ''
-    #     ${pkgs.podman}/bin/podman network exists ctfd_internal ||
-    #       ${pkgs.podman}/bin/podman network create --internal ctfd_internal
-    #   '';
-    # };
+    systemd.services.podman-network-ctfd_internal = {
+      description = "CTFd internal network";
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig.Type = "oneshot";
+      script = ''
+        ${pkgs.podman}/bin/podman network exists ctfd_internal ||
+          ${pkgs.podman}/bin/podman network create --internal ctfd_internal
+      '';
+    };
   };
 }
 
