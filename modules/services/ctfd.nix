@@ -54,7 +54,7 @@ in
           cat <<EOF > ${secretsFile}
         MARIADB_ROOT_PASSWORD=$ROOT_PASS
         MARIADB_PASSWORD=$DB_PASS
-        DATABASE_URL=mysql+pymysql://ctfd:$DB_PASS@db/ctfd
+        DATABASE_URL=mysql+pymysql://ctfd:$DB_PASS@ctfd-db/ctfd
         SECRET_KEY=$SECRET_KEY
         EOF
           
@@ -97,7 +97,7 @@ in
       ctfd = {
         image = "ctfd/ctfd:latest";
         environment = {
-          # DATABASE_URL = "mysql+pymysql://ctfd:ctfd@db/ctfd";
+          # DATABASE_URL = "mysql+pymysql://ctfd:ctfd@ctfd-db/ctfd";
           REDIS_URL = "redis://cache:6379";
           UPLOAD_FOLDER = "/var/uploads";
           LOG_FOLDER = "/var/log/CTFd";
