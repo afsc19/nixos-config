@@ -21,6 +21,7 @@ in
   config = mkIf cfg.enable {
     systemd.tmpfiles.rules = [
       "d /var/lib/portainer 0755 root root -"
+      "d /run/podman 0755 root root -"
     ];
 
     virtualisation.oci-containers.containers."portainer" = {
@@ -29,6 +30,7 @@ in
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"
         "/var/lib/portainer:/data"
+        "/run/podman/podman.sock:/run/podman/podman.sock"
       ];
     };
   };
