@@ -39,8 +39,8 @@ in
         mkdir -p ${cfg.folder}
         chmod 755 ${cfg.folder}
         
-        if[ ! -f ${secretsFile} ]; then
-          # Generate the secrets using openssl
+        if [ ! -f ${secretsFile} ]; then
+          # generate the secrets using openssl
           ROOT_PASS=$(${pkgs.openssl}/bin/openssl rand -hex 24)
           DB_PASS=$(${pkgs.openssl}/bin/openssl rand -hex 24)
           SECRET_KEY=$(${pkgs.openssl}/bin/openssl rand -hex 64)
@@ -52,7 +52,7 @@ in
         SECRET_KEY=$SECRET_KEY
         EOF
           
-          # Secure the file
+          # secure the file
           chmod 600 ${secretsFile}
         fi
       '';
