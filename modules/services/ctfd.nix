@@ -106,7 +106,7 @@ in
           "${cfg.folder}/uploads:/var/uploads"
           "${cfg.folder}/logs:/var/log/CTFd"
         ];
-        ports = [ "127.0.0.1:50200:8000" ];
+        ports = [ "0.0.0.0:50200:8000" ];
         dependsOn = [ "ctfd-db" "ctfd-cache" ];
         extraOptions = [ "--network=ctfd_internal" "--network-alias=ctfd" ];
       };
