@@ -118,16 +118,6 @@ in
       };
     };
 
-    # network service if OCI doesn't auto-create
-    systemd.services.podman-network-ctfd_internal = {
-      description = "CTFd internal network";
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig.Type = "oneshot";
-      script = ''
-        ${pkgs.podman}/bin/podman network exists ctfd_internal ||
-          ${pkgs.podman}/bin/podman network create --internal ctfd_internal
-      '';
-    };
   };
 }
 
