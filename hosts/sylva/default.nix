@@ -32,6 +32,7 @@
           }
         ];
       };
+      ctfd.enable = true;
       nginx = {
         enable = true;
         useEncryptedVhosts = builtins.pathExists ../../secrets/sylva/nginxVhosts.age;
