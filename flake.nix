@@ -1,5 +1,5 @@
 {
-  description = "afsc gnome flake";
+  description = "AFSC19 flake";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
