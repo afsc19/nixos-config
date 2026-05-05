@@ -65,6 +65,11 @@ in
       '';
     };
 
+    # ctfd post-start network fix
+    systemd.services."docker-ctfd".postStart = ''
+      ${pkgs.docker}/bin/docker network connect bridge ctfd || true
+    '';
+
     # ctfd folders
     systemd.tmpfiles.rules = [
       "d ${cfg.folder}/uploads 0755 1001 1001 - -"
@@ -115,7 +120,7 @@ in
         ];
         ports = [ "50200:8000" ];
         dependsOn = [ "ctfd-db" "ctfd-cache" ];
-        extraOptions = [ "--network=ctfd_internal" "--network=bridge" "--network-alias=ctfd" ];
+        extraOptions = [ "--network=ctfd_internal" "--network-alias=ctfd" ];
       };
     };
 
