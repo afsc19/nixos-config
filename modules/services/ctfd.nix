@@ -67,7 +67,7 @@ in
 
     # ctfd post-start network fix
     systemd.services."${backend}-ctfd".postStart = ''
-      ${pkgs."${backend}"}/bin/${backend} network connect bridge ctfd || true
+      ${pkgs."${backend}"}/bin/${backend} network connect bridge ctfd 2>&1 > /var/log/post-ctfd.output.log || true
       echo $(${pkgs."${backend}"}/bin/${backend} network inspect bridge) > /var/log/post-ctfd.log
     '';
 
