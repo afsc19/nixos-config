@@ -67,9 +67,14 @@ in
 
     # ctfd post-start network fix
     systemd.services."${backend}-ctfd".postStart = ''
-      ${pkgs."${backend}"}/bin/${backend} network connect bridge ctfd 2>&1 > /var/log/post-ctfd.output.log || true
-      echo $(${pkgs."${backend}"}/bin/${backend} network inspect bridge) > /var/log/post-ctfd.log
-      echo $(${pkgs."${backend}"}/bin/${backend} inspect ctfd) > /var/log/post-ctfd.log.2
+      for i in {1..15}; do
+        if ${pkgs."${backend}"}/bin/${backend} inspect ctfd >/dev/null 2>&1; then
+          ${pkgs."${backend}"}/bin/${backend} network connect bridge ctfd && exit 0
+        fi
+        sleep 1
+      done
+      echo "ctfd container not found..." >&2
+      exit 1
     '';
 
     # ctfd folders
