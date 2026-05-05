@@ -31,7 +31,8 @@ in
 
   config = mkIf cfg.enable {
 
-    # virtualisation.oci-containers.backend = "podman";
+    # yep force docker because internal network name resolution doesnt work with podman
+    virtualisation.oci-containers.backend = "docker";
 
     # Hook into the DB container to generate the secrets and the network before it starts
     # Because 'ctfd' depends on 'ctfd-db', this guarantees the file exists for both.
