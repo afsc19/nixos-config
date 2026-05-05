@@ -115,7 +115,7 @@ in
         ];
         ports = [ "50200:8000" ];
         dependsOn = [ "ctfd-db" "ctfd-cache" ];
-        extraOptions = [ "--network=ctfd_internal" "--network-alias=ctfd" ];
+        extraOptions = [ "--network=ctfd_internal" "--network=bridge" "--network-alias=ctfd" ];
       };
     };
 
