@@ -36,7 +36,7 @@ in
 
     # Hook into the DB container to generate the secrets and the network before it starts
     # Because 'ctfd' depends on 'ctfd-db', this guarantees the file exists for both.
-    systemd.services."${config.virtualisation.oci-containers.backend}-ctfd-db" = {
+    systemd.services."${backend}-ctfd-db" = {
       preStart = ''
         # network creation
         ${pkgs."${backend}"}/bin/${backend} network exists ctfd_internal ||
@@ -66,8 +66,8 @@ in
     };
 
     # ctfd post-start network fix
-    systemd.services."docker-ctfd".postStart = ''
-      ${pkgs.docker}/bin/docker network connect bridge ctfd || true
+    systemd.services."${backend}-ctfd".postStart = ''
+      ${pkgs."${backend}"}/bin/${backend} network connect bridge ctfd || true
     '';
 
     # ctfd folders
