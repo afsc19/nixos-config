@@ -76,13 +76,15 @@ in
         KEY_FILE="/var/lib/crowdsec/firewall-bouncer.key"
         BOUNCER_NAME="nixos-firewall-bouncer"
 
+        CSCLI="/run/current-system/sw/bin/cscli"
+
         if [ ! -s "$KEY_FILE" ]; then
           echo "generating bouncer API key..."
           # stale database entries
-          cscli bouncers delete "$BOUNCER_NAME" 2>/dev/null || true
+          $CSCLI bouncers delete "$BOUNCER_NAME" 2>/dev/null || true
           
           API_KEY=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)
-          cscli bouncers add "$BOUNCER_NAME" -k "$API_KEY"
+          $CSCLI bouncers add "$BOUNCER_NAME" -k "$API_KEY"
           echo "$API_KEY" > "$KEY_FILE"
           chmod 0400 "$KEY_FILE"
           chown crowdsec:crowdsec "$KEY_FILE"
