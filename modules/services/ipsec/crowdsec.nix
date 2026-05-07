@@ -76,7 +76,7 @@ in
         KEY_FILE="/var/lib/crowdsec/firewall-bouncer.key"
         BOUNCER_NAME="nixos-firewall-bouncer"
 
-        if[ ! -s "$KEY_FILE" ]; then
+        if [ ! -s "$KEY_FILE" ]; then
           echo "generating bouncer API key..."
           # stale database entries
           cscli bouncers delete "$BOUNCER_NAME" 2>/dev/null || true
