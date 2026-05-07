@@ -39,7 +39,7 @@ in
     systemd.services."${backend}-ctfd-db" = {
       preStart = ''
         # network creation
-        ${pkgs."${backend}"}/bin/${backend} network exists ctfd_internal ||
+        ${pkgs."${backend}"}/bin/${backend} network inspect ctfd_internal ||
         ${pkgs."${backend}"}/bin/${backend} network create --internal ctfd_internal
 
         # secrets creation
