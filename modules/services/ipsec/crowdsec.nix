@@ -23,7 +23,16 @@ in
     services.crowdsec = {
       enable = true;
 
-      # Only fetch the crowdsecurity/nginx collection if Nginx is running
+      # use LAPI
+      settings = {
+        general.api.server = {
+          enable = true;
+          listen_uri = "127.0.0.1:8080";
+        };
+        lapi.credentialsFile = "/var/lib/crowdsec/local_api_credentials.yaml";
+        capi.credentialsFile = "/var/lib/crowdsec/online_api_credentials.yaml";
+      };
+
       hub.collections = [
         "crowdsecurity/linux"
       ] ++ optionals nginxEnabled [
