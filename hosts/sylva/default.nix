@@ -17,6 +17,9 @@
     # Nothing graphical except nvim
     graphical.editor.neovim.base.enable = true;
     services = {
+      ipsec = {
+        crowdsec.enable = true;
+      };
       monitor = {
         portainer.enable = true;
         rancher.enable = false;
