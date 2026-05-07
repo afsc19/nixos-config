@@ -20,6 +20,13 @@ in
   options.modules.services.ipsec.crowdsec.enable = mkEnableOption "CrowdSec IPS";
 
   config = mkIf cfg.enable {
+    # error fixing
+    systemd.tmpfiles.rules =[
+      "d /var/lib/crowdsec 0750 crowdsec crowdsec - -"
+      "f /var/lib/crowdsec/online_api_credentials.yaml 0640 crowdsec crowdsec - -"
+    ];
+
+
     services.crowdsec = {
       enable = true;
 
