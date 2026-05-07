@@ -59,8 +59,41 @@ in
 
     services.crowdsec-firewall-bouncer = {
       enable = true;
+      
+      registerBouncer.enable = false;
+      secrets.apiKeyPath = "/var/lib/crowdsec/firewall-bouncer.key";
     };
 
+    # register the bouncer with a non-DynamicUser
+    systemd.services.crowdsec-firewall-bouncer-setup = {
+      description = "Generate CrowdSec Firewall Bouncer API Key";
+      wants = [ "crowdsec.service" ];
+      after = [ "crowdsec.service" ];
+      before =[ "crowdsec-firewall-bouncer.service" ];
+      wantedBy =[ "crowdsec-firewall-bouncer.service" ];
+      path = [ pkgs.crowdsec pkgs.coreutils ];
+      script = ''
+        KEY_FILE="/var/lib/crowdsec/firewall-bouncer.key"
+        BOUNCER_NAME="nixos-firewall-bouncer"
+
+        if[ ! -s "$KEY_FILE" ]; then
+          echo "generating bouncer API key..."
+          # stale database entries
+          cscli bouncers delete "$BOUNCER_NAME" 2>/dev/null || true
+          
+          API_KEY=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 32)
+          cscli bouncers add "$BOUNCER_NAME" -k "$API_KEY"
+          echo "$API_KEY" > "$KEY_FILE"
+          chmod 0400 "$KEY_FILE"
+          chown crowdsec:crowdsec "$KEY_FILE"
+        fi
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        User = "root";
+        RemainAfterExit = true;
+      };
+    };
     users.users.crowdsec.extraGroups = mkIf nginxEnabled [ "nginx" ];
   };
 }
