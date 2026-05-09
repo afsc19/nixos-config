@@ -29,6 +29,7 @@ in
 
     services.crowdsec = {
       enable = true;
+      package = pkgs.unstable.crowdsec;
 
       # use LAPI
       settings = {
@@ -59,6 +60,7 @@ in
 
     services.crowdsec-firewall-bouncer = {
       enable = true;
+      package = pkgs.unstable.crowdsec-firewall-bouncer;
       
       registerBouncer.enable = false;
       secrets.apiKeyPath = "/var/lib/crowdsec/firewall-bouncer.key";
