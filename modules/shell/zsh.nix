@@ -29,6 +29,7 @@ in
           nixdev = "nix develop path:. -c zsh";
 
           docker = "sudo docker";
+          suz = "sudo -E zsh";
         };
 
         # Disable beep when no file is found, per example.
