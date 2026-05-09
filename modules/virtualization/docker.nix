@@ -23,7 +23,9 @@ in
         dns = [ "1.1.1.1" "9.9.9.9" ];
       };
     };
-    users.users.${user}.extraGroups = [ "docker" ];
+
+    # Disabled because this allows for privilege escalation
+    # users.users.${user}.extraGroups = [ "docker" ];
 
     environment.systemPackages = with pkgs; [
       docker-buildx
