@@ -99,6 +99,32 @@ in
       };
     };
     users.users.crowdsec.extraGroups = mkIf nginxEnabled [ "nginx" ];
+
+    # Whitelist local IPs to prevent CrowdSec from banning the host itself xD
+    environment.etc."crowdsec/parsers/s02-enrich/my-whitelist.yaml".text = ''
+      name: my/whitelist-local
+      description: "Whitelist local IPs to prevent self-banning"
+      whitelist:
+        reason: "Trust self crawling"
+        ip:
+          - "127.0.0.1"
+          - "::1"
+        cidr:
+          - "10.0.0.0/8"
+          - "172.16.0.0/12"
+          - "192.168.0.0/16"
+    '';
+
+    # whitelist self's external ip (postoverflow stage) (checks right before ban)
+    environment.etc."crowdsec/postoverflows/s01-whitelist/my-domain-whitelist.yaml".text = ''
+      name: my/whitelist-domains
+      description: "Whitelist self's external ip"
+      whitelist:
+        reason: "Trust self crawling"
+        expression:
+          # This does a DNS lookup of your domain and checks if the malicious IP matches it
+          - evt.Overflow.Alert.Source.IP in LookupHost("world.${config.networking.hostName}.andrecadete.com")
+    '';
   };
 }
 
