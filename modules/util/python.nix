@@ -47,9 +47,3 @@ in
     '';
   };
 }
-
-if [[ -n "$VIRTUAL_ENV" ]]; then
-echo "inside"
-        else
-          echo "outside"
-        fi
