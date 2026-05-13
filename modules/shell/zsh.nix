@@ -25,7 +25,7 @@ in
           naut = "nautilus . 2>/dev/null &";
 
           nixsh = "NIXPKGS_ALLOW_UNFREE=1 nix shell --impure";
-          nixup = "OLD_PATH=$PWD && cd ~/nixos-config && git pull && sudo nixos-rebuild switch --flake ~/nixos-config#$(uname -n) --show-trace && cd $OLD_PATH && unset OLD_PATH";
+          nixup = "(OLD_PATH=$PWD; trap \"cd $OLD_PATH; unset OLD_PATH\" EXIT; cd ~/nixos-config && git pull && sudo nixos-rebuild switch --flake ~/nixos-config#$(uname -n) --show-trace)";
           nixdev = "nix develop path:. -c zsh";
 
           docker = "sudo docker";
