@@ -36,10 +36,10 @@ in
       }
       penvd() {
         if [[ -n "$VIRTUAL_ENV" ]]; then
-          VIRTUAL_ENV_TMP = $VIRTUAL_ENV
+          VIRTUAL_ENV_TMP="$VIRTUAL_ENV"
           penv()
-          rm -rf VIRTUAL_ENV_TMP
-          unset VIRTUAL_ENV_TMP
+          rm -rf $VIRTUAL_ENV_TMP
+          unset $VIRTUAL_ENV_TMP
         else
           rm -rf .venv
         fi
@@ -47,3 +47,9 @@ in
     '';
   };
 }
+
+if [[ -n "$VIRTUAL_ENV" ]]; then
+echo "inside"
+        else
+          echo "outside"
+        fi
