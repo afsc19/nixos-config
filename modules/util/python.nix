@@ -39,7 +39,7 @@ in
           VIRTUAL_ENV_TMP="$VIRTUAL_ENV"
           penv()
           rm -rf $VIRTUAL_ENV_TMP
-          unset $VIRTUAL_ENV_TMP
+          unset VIRTUAL_ENV_TMP
         else
           rm -rf .venv
         fi
