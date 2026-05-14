@@ -102,10 +102,7 @@ in
 
     # prometheus
     systemd.services.crowdsec = {
-      preStart = let
-        # Define the port variable here for cleaner access
-        prometheusPort = toString lib.my.ports.prometheusCrowdsec;
-      in ''
+      preStart = ''
         CONFIG_FILE="/etc/crowdsec/config.yaml"
 
         if ! grep -q "^prometheus:" "$CONFIG_FILE"; then
