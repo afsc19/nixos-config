@@ -752,7 +752,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"}";
+                        expr = "sum(cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"})";
                         legendFormat = "Alerts";
                         refId = "A";
                       }
