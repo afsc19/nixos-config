@@ -700,6 +700,80 @@ in
                       };
                     };
                   }
+                  {
+                    id = 7;
+                    title = "$alias CrowdSec Bans";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
+                    targets = [
+                      {
+                        expr = "sum by (action) ({job=~"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec", alias=~\"^$alias$\", origin="crowdsec"})";
+                        legendFormat = "{{action}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "none";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "smooth";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                      };
+                    };
+                  }
+                  {
+                    id = 8;
+                    title = "$alias CrowdSec Alerts";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    repeat = "alias";
+                    repeatDirection = "h";
+                    maxPerRow = 4;
+                    targets = [
+                      {
+                        expr = "cs_alerts{job=~"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec", alias=~\"^$alias$\"}";
+                        legendFormat = "Alerts";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 24;
+                      x = 0;
+                      y = 8;
+                    };
+                    fieldConfig = {
+                      defaults = {
+                        unit = "none";
+                        custom = {
+                          drawStyle = "line";
+                          lineInterpolation = "smooth";
+                          lineWidth = 1;
+                          fillOpacity = 10;
+                          gradientMode = "opacity";
+                        };
+                      };
+                    };
+                  }
                 ];
               }
             );
