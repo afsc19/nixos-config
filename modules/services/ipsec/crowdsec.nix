@@ -13,13 +13,14 @@ let
     optionals
     ;
 
-  cfg = config.modules.services.ipsec.crowdsec;
+  cfg = lib.my.uptimewire.fleet."${config.networking.hostName}".crowdsec;
   nginxEnabled = config.modules.services.nginx.enable;
 in
 {
-  options.modules.services.ipsec.crowdsec.enable = mkEnableOption "CrowdSec IPS";
+  # Crowdsec is now declared in the uptimewire fleet
+  # options.modules.services.ipsec.crowdsec.enable = mkEnableOption "CrowdSec IPS";
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg {
     # error fixing
     systemd.tmpfiles.rules =[
       "d /var/lib/crowdsec 0750 crowdsec crowdsec - -"

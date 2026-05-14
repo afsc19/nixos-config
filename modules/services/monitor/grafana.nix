@@ -701,7 +701,7 @@ in
                         };
                       };
                     };
-                  }] ++ optionals config.modules.services.ipsec.crowdsec.enable [
+                  }] ++ optionals (lib.filterAttrs (_: host: host.crowdsec or false) lib.my.uptimewire.fleet != { }) [
                   {
                     id = 7;
                     title = "$alias CrowdSec Bans";

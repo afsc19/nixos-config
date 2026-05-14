@@ -17,6 +17,7 @@ let
     ;
   inherit (lib.my.uptimewire) fleet;
   inherit (lib.my.blackbox) ctfchalls;
+  crowdsecFleet = lib.filterAttrs (_: host: host.crowdsec or false) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
 in
 {
@@ -63,7 +64,7 @@ in
           proto = "tcp";
           group = "uptime";
         }
-        ++ optional config.modules.services.ipsec.crowdsec.enable {
+        ++ optional thisNode.crowdsec {
           port = lib.my.ports.prometheusCrowdsec;
           proto = "tcp";
           group = "uptime";
@@ -117,7 +118,7 @@ in
               };
             }) fleet;
           }
-        ] ++ optionals config.modules.services.ipsec.crowdsec.enable [
+        ] ++ optionals (crowdsecFleet != { }) [
           {
             job_name = "uptimewire-fleet-crowdsec";
             static_configs = mapAttrsToList (name: data: {
@@ -125,7 +126,7 @@ in
               labels = {
                 alias = name;
               };
-            }) fleet;
+            }) crowdsecFleet;
           }
           {
             job_name = "uptimewire-fleet-nebula-crowdsec";
@@ -135,7 +136,7 @@ in
               labels = {
                 alias = name;
               };
-            }) fleet;
+            }) crowdsecFleet;
           }] ++ [
           {
             job_name = "ctf-challs-https";
