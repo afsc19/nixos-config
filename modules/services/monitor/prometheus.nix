@@ -11,6 +11,7 @@ let
     mkMerge
     my
     mapAttrsToList
+    optionals
     optional
     mkDefault
     ;
@@ -96,6 +97,7 @@ in
               };
             }) fleet;
           }
+        ] ++ optionals config.modules.services.nginx.enable [
           {
             job_name = "uptimewire-fleet-nginx";
             static_configs = mapAttrsToList (name: data: {
@@ -115,6 +117,7 @@ in
               };
             }) fleet;
           }
+        ] ++ optionals config.modules.services.ipsec.crowdsec.enable [
           {
             job_name = "uptimewire-fleet-crowdsec";
             static_configs = mapAttrsToList (name: data: {
@@ -133,7 +136,7 @@ in
                 alias = name;
               };
             }) fleet;
-          }
+          }] ++ [
           {
             job_name = "ctf-challs-https";
             metrics_path = "/probe";
