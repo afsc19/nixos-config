@@ -62,7 +62,7 @@ in
           proto = "tcp";
           group = "uptime";
         }
-        ++ optional config.services.ipsec.crowdsec.enable {
+        ++ optional config.services.crowdsec.settings.general.prometheus.enabled {
           port = lib.my.ports.prometheusCrowdsec;
           proto = "tcp";
           group = "uptime";
