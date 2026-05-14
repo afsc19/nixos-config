@@ -9,7 +9,7 @@
 let
   inherit (lib)
     mkIf
-    optional;
+    optionals;
   inherit (lib.my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
 in
@@ -701,7 +701,7 @@ in
                         };
                       };
                     };
-                  }] ++ optional config.modules.services.ipsec.crowdsec.enable [
+                  }] ++ optionals config.modules.services.ipsec.crowdsec.enable [
                   {
                     id = 7;
                     title = "$alias CrowdSec Bans";
