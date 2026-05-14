@@ -37,6 +37,12 @@ in
           enable = true;
           listen_uri = "127.0.0.1:8080";
         };
+        prometheus = {
+          enabled = true;
+          level = "full";
+          listen_addr = "127.0.0.1";
+          listen_port = lib.my.ports.prometheusCrowdsec;
+        };
         lapi.credentialsFile = "/var/lib/crowdsec/local_api_credentials.yaml";
         capi.credentialsFile = "/var/lib/crowdsec/online_api_credentials.yaml";
       };

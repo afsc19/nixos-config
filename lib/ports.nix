@@ -11,6 +11,7 @@
 
     # Monitoring
     grafana = 3000;
+    prometheusCrowdsec = 6060;
     prometheusServer = 9090;
     prometheusExporter = 9100;
     prometheusBlackbox = 9115;

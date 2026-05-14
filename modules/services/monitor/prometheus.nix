@@ -101,6 +101,15 @@ in
             }) fleet;
           }
           {
+            job_name = "uptimewire-fleet-crowdsec";
+            static_configs = mapAttrsToList (name: data: {
+              targets = [ "${data.ip}:${toString lib.my.ports.prometheusCrowdsec}" ];
+              labels = {
+                alias = name;
+              };
+            }) fleet;
+          }
+          {
             job_name = "uptimewire-fleet-nebula-nginx";
             static_configs = mapAttrsToList (name: data: {
               # Considering hostname.andrecadete.com contains nebula's IP addresses.
