@@ -41,7 +41,7 @@ in
           prometheus = {
             enabled = true;
             level = "full";
-            listen_addr = "127.0.0.1";
+            listen_addr = "0.0.0.0";
             listen_port = lib.my.ports.prometheusCrowdsec;
           };
         };

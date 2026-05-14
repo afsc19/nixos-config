@@ -61,6 +61,11 @@ in
           port = lib.my.ports.nginxStubStatus;
           proto = "tcp";
           group = "uptime";
+        }
+        ++ optional config.services.ipsec.crowdsec.enable {
+          port = lib.my.ports.prometheusCrowdsec;
+          proto = "tcp";
+          group = "uptime";
         };
     })
 
