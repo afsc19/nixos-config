@@ -33,9 +33,17 @@ in
 
       # use LAPI
       settings = {
-        general.api.server = {
-          enable = true;
-          listen_uri = "127.0.0.1:8080";
+        general = {
+          api.server = {
+            enable = true;
+            listen_uri = "127.0.0.1:8080";
+          };
+          prometheus = {
+            enabled = true;
+            level = "full";
+            listen_addr = "127.0.0.1";
+            listen_port = lib.my.ports.prometheusCrowdsec;
+          };
         };
         lapi.credentialsFile = "/var/lib/crowdsec/local_api_credentials.yaml";
         capi.credentialsFile = "/var/lib/crowdsec/online_api_credentials.yaml";
@@ -99,31 +107,6 @@ in
       };
     };
     users.users.crowdsec.extraGroups = mkIf nginxEnabled [ "nginx" ];
-
-    # prometheus
-    systemd.services.crowdsec = {
-      preStart = let
-        prometheusPort = toString lib.my.ports.prometheusCrowdsec;
-      in ''
-        CONFIG_FILE="/etc/crowdsec/config.yaml"
-        echo PRE_RAN > /etc/crowdsec/config.yaml.log
-
-        if ! grep -q "^prometheus:" "$CONFIG_FILE"; then
-          echo "appending prometheus configuration to $CONFIG_FILE"
-          cat <<EOF >> "$CONFIG_FILE"
-prometheus:
-  enabled: true
-  level: full
-  listen_addr: 127.0.0.1
-  listen_port: ${prometheusPort}
-EOF
-        else
-          # update port in case its needed
-          echo "updating prometheus port in $CONFIG_FILE"
-          sed -i "s/^  listen_port: .*/  listen_port: ${prometheusPort}/" "$CONFIG_FILE"
-        fi
-      '';
-    };
 
     # Whitelist local IPs to prevent CrowdSec from banning the host itself xD
     environment.etc."crowdsec/parsers/s02-enrich/my-whitelist.yaml".text = ''
