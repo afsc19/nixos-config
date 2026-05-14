@@ -8,11 +8,11 @@
 }:
 let
   inherit (lib) mkEnableOption mkIf;
-  cfg = config.modules.graphical.spotify;
+  cfg = config.modules.graphical.music.spotify;
 
 in
 {
-  options.modules.graphical.spotify.enable = mkEnableOption "Spicified Spotify";
+  options.modules.graphical.music.spotify.enable = mkEnableOption "Spicified Spotify";
 
   config = mkIf cfg.enable {
 

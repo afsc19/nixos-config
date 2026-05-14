@@ -19,13 +19,16 @@
       # Browsers enabled in the corresponding profile.
       # Discord enabled in the corresponding profile.
       # Editors enabled in the corresponding profile.
+      music = {
+        spotify.enable = true;
+        hiresti.enable = true;
+      };
       androidstudio.enable = true;
       gnome.enable = true;
       gtk.enable = true;
       office.enable = true;
       qt.enable = true;
       rstudio.enable = true;
-      spotify.enable = true;
       stremio.enable = true;
       torrenting.enable = true;
     };

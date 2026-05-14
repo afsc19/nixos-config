@@ -89,6 +89,11 @@
       url = "gitlab:VandalByte/dedsec-grub-theme";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hires-ti = {
+      url = "github:yelanxin/hiresTI";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
