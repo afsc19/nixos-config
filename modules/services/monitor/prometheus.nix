@@ -106,6 +106,16 @@ in
             }) fleet;
           }
           {
+            job_name = "uptimewire-fleet-nebula-nginx";
+            static_configs = mapAttrsToList (name: data: {
+              # Considering hostname.andrecadete.com contains nebula's IP addresses.
+              targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusNginx}" ];
+              labels = {
+                alias = name;
+              };
+            }) fleet;
+          }
+          {
             job_name = "uptimewire-fleet-crowdsec";
             static_configs = mapAttrsToList (name: data: {
               targets = [ "${data.ip}:${toString lib.my.ports.prometheusCrowdsec}" ];
@@ -115,10 +125,10 @@ in
             }) fleet;
           }
           {
-            job_name = "uptimewire-fleet-nebula-nginx";
+            job_name = "uptimewire-fleet-nebula-crowdsec";
             static_configs = mapAttrsToList (name: data: {
               # Considering hostname.andrecadete.com contains nebula's IP addresses.
-              targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusNginx}" ];
+              targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusCrowdsec}" ];
               labels = {
                 alias = name;
               };
