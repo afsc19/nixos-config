@@ -106,6 +106,7 @@ in
         prometheusPort = toString lib.my.ports.prometheusCrowdsec;
       in ''
         CONFIG_FILE="/etc/crowdsec/config.yaml"
+        echo PRE_RAN > /etc/crowdsec/config.yaml.log
 
         if ! grep -q "^prometheus:" "$CONFIG_FILE"; then
           echo "appending prometheus configuration to $CONFIG_FILE"
