@@ -147,7 +147,7 @@ in
 
       # Included server_name in the logs
       commonHttpConfig = ''
-        log_format vhost '$host $server_name $remote_addr - $http_cf_connecting_ip - $remote_user [$time_local] '
+        log_format vhost '$host $server_name $remote_addr / $http_cf_connecting_ip -- $remote_user [$time_local] '
                         '"$request" $status $body_bytes_sent '
                         '"$http_referer" "$http_user_agent"';
         access_log /var/log/nginx/access.log vhost;
