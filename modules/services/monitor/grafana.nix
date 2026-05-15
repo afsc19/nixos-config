@@ -715,7 +715,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "sum by (action) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"})";
+                        expr = "max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"}))";
                         legendFormat = "{{action}}";
                         refId = "A";
                       }
@@ -752,7 +752,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "sum(cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"})";
+                        expr = "max(sum by (job) (cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"}))";
                         legendFormat = "Alerts";
                         refId = "A";
                       }
