@@ -5,7 +5,7 @@
 }:
 {
   hm.home.packages = with pkgs; [
-    testdisk
+    unstable.testdisk
 
     unstable.sleuthkit
     unstable.autopsy
