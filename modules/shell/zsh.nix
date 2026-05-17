@@ -30,6 +30,7 @@ in
 
           docker = "sudo docker";
           suz = "sudo -E zsh";
+          
         };
 
         # Disable beep when no file is found, per example.
@@ -39,6 +40,28 @@ in
           bindkey "^[[1;5D" backward-word # Ctrl + Left Arrow
           bindkey '^H' backward-kill-word # Ctrl + Backspace
           bindkey "^[[3;5~" kill-word # Ctrl + Delete
+
+          initctfflake() {
+            if [[ -f flake.nix ]] then
+              echo "flake.nix already exists"
+            else
+              cat <<EOF > flake.nix
+{
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  outputs = { nixpkgs, ... }: let 
+    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+  in {
+    devShells.x86_64-linux.default = pkgs.mkShell {
+      packages = with pkgs; [
+        (python313.withPackages (ps: [ ps.numpy ps.matplotlib ps.scipy ]))
+      ];
+    };
+  };
+}
+EOF
+              echo "flake.nix created"
+            fi
+          }
         '';
 
         autosuggestion.enable = true;
