@@ -14,7 +14,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
-      jdk
+      jdk25
     ];
 
     environment.sessionVariables = {
