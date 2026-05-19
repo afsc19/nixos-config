@@ -58,7 +58,7 @@ in
       ];
 
       shellHook = \'\'
-        ln -sfn ${pythonEnv} .venv
+        ln -sfn \$\{pythonEnv\} .venv
       \'\';
     };
   };
