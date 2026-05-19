@@ -157,6 +157,8 @@
     http
     https
 
+    mc
+
     # SINFO 2026
     50400
     50401

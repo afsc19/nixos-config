@@ -20,6 +20,8 @@
     # A more reserved alternative to 8080
     nginxStubStatus = 18080;
 
+    mc = 25565;
+
     # 51820 is default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;
   };
