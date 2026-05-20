@@ -93,7 +93,7 @@
     services.ssh
     shell.essential
   ];
-  
+
   environment.systemPackages = with pkgs; [
     udev
   ];
@@ -104,9 +104,8 @@
   networking.networkmanager.enable = lib.mkForce false;
   networking.useDHCP = true;
   networking.useNetworkd = true;
-  
-  systemd.network.enable = true;
 
+  systemd.network.enable = true;
 
   my.networking.wiredInterface = "enp0s6";
   # No wireless interface
@@ -123,13 +122,11 @@
     "net.ipv4.ip_forward" = lib.mkForce 1;
   };
 
-
   # Block metadata IP for security on VPS (both host and forwarded/docker traffic)
   networking.firewall.extraCommands = ''
     iptables -I OUTPUT -d 169.254.169.254 -j DROP
     iptables -I FORWARD -d 169.254.169.254 -j DROP
   '';
-
 
   # NAT to favilla
   # networking.nat = {
@@ -148,40 +145,45 @@
   #   '';
   # };
 
-
-  networking.firewall.allowedTCPPortRanges = [ { from = 25550; to = 25559; } ];
+  networking.firewall.allowedTCPPortRanges = [
+    {
+      from = 25550;
+      to = 25559;
+    }
+  ];
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
-  networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts = with lib.my.ports; [
-    ssh
-    http
-    https
+  networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts =
+    with lib.my.ports; [
+      ssh
+      http
+      https
 
-    mc
+      mc
 
-    # SINFO 2026
-    50400
-    50401
-    50402
-    50403
-    50404
-    50405
-    50406
-    50407
-    50408
-    50409
-    50410
-    50411
-    50412
-    50413
-    50414
-    50415
-    50416
-    50417
-    50418
-    50419
-    50420
-  ];
+      # SINFO 2026
+      50400
+      50401
+      50402
+      50403
+      50404
+      50405
+      50406
+      50407
+      50408
+      50409
+      50410
+      50411
+      50412
+      50413
+      50414
+      50415
+      50416
+      50417
+      50418
+      50419
+      50420
+    ];
   # For Chromecast from chrome (defined in brave.nix)
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
@@ -203,7 +205,6 @@
     "d /mnt/ytdl-store/db 0755 root root -"
   ];
 
-
   age.secrets.cloudflareDnsApiToken = {
     file = secrets.host.cloudflareDnsApiToken;
     owner = "acme";
@@ -224,7 +225,7 @@
 
   systemd.services.check-calidor-wakeup = {
     script = ''
-      
+
       if ${pkgs.iputils}/bin/ping -c 1 ${lib.my.uptimewire.fleet.calidor.ip} >/dev/null; then
         ${pkgs.curl}/bin/curl -H "Content-Type: application/json" \
           -d '{"content": "✅ Calidor is UP at 8:00 AM"}' \
@@ -233,7 +234,6 @@
     '';
     serviceConfig.Type = "oneshot";
   };
-
 
   system.stateVersion = "25.11";
 }

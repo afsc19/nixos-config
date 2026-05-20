@@ -30,43 +30,43 @@ in
 
           docker = "sudo docker";
           suz = "sudo -E zsh";
-          
+
         };
 
         # Disable beep when no file is found, per example.
         initContent = ''
-          # unsetopt beep
-          bindkey "^[[1;5C" forward-word # Ctrl + Right Arrow
-          bindkey "^[[1;5D" backward-word # Ctrl + Left Arrow
-          bindkey '^H' backward-kill-word # Ctrl + Backspace
-          bindkey "^[[3;5~" kill-word # Ctrl + Delete
+                    # unsetopt beep
+                    bindkey "^[[1;5C" forward-word # Ctrl + Right Arrow
+                    bindkey "^[[1;5D" backward-word # Ctrl + Left Arrow
+                    bindkey '^H' backward-kill-word # Ctrl + Backspace
+                    bindkey "^[[3;5~" kill-word # Ctrl + Delete
 
-          initctfflake() {
-            if [[ -f flake.nix ]] then
-              echo "flake.nix already exists"
-            else
-              cat <<EOF > flake.nix
-{
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-  outputs = { nixpkgs, ... }: let 
-    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    pythonEnv = (python313.withPackages (ps: [ ps.numpy ps.matplotlib ]));
-  in {
-    devShells.x86_64-linux.default = pkgs.mkShell {
-      packages = with pkgs; [
-        pythonEnv
-      ];
+                    initctfflake() {
+                      if [[ -f flake.nix ]] then
+                        echo "flake.nix already exists"
+                      else
+                        cat <<EOF > flake.nix
+          {
+            inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+            outputs = { nixpkgs, ... }: let 
+              pkgs = nixpkgs.legacyPackages.x86_64-linux;
+              pythonEnv = (python313.withPackages (ps: [ ps.numpy ps.matplotlib ]));
+            in {
+              devShells.x86_64-linux.default = pkgs.mkShell {
+                packages = with pkgs; [
+                  pythonEnv
+                ];
 
-      shellHook = \'\'
-        ln -sfn \$\{pythonEnv\} .venv
-      \'\';
-    };
-  };
-}
-EOF
-              echo "flake.nix created"
-            fi
+                shellHook = \'\'
+                  ln -sfn \$\{pythonEnv\} .venv
+                \'\';
+              };
+            };
           }
+          EOF
+                        echo "flake.nix created"
+                      fi
+                    }
         '';
 
         autosuggestion.enable = true;

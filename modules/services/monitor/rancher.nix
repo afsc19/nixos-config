@@ -1,4 +1,3 @@
-
 # A Rancher configuration
 {
   config,
@@ -39,5 +38,3 @@ in
     };
   };
 }
-
-

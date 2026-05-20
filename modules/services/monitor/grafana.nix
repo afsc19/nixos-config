@@ -9,7 +9,8 @@
 let
   inherit (lib)
     mkIf
-    optionals;
+    optionals
+    ;
   inherit (lib.my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
 in
@@ -316,13 +317,15 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
-                time = { from = "now-24h"; to = "now"; };
+                time = {
+                  from = "now-24h";
+                  to = "now";
+                };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
                   else
-                    "15s"
-                  ;
+                    "15s";
                 schemaVersion = 30;
                 templating = {
                   list = [
@@ -701,7 +704,9 @@ in
                         };
                       };
                     };
-                  }] ++ optionals (lib.filterAttrs (_: host: host.crowdsec or false) lib.my.uptimewire.fleet != { }) [
+                  }
+                ]
+                ++ optionals (lib.filterAttrs (_: host: host.crowdsec or false) lib.my.uptimewire.fleet != { }) [
                   {
                     id = 7;
                     title = "$alias CrowdSec Bans";
@@ -793,13 +798,15 @@ in
                   "family"
                 ];
                 timezone = "browser";
-                time = { from = "now-24h"; to = "now"; };
+                time = {
+                  from = "now-24h";
+                  to = "now";
+                };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
                   else
-                    "15s"
-                  ;
+                    "15s";
                 templating = {
                   list = [
                     {
@@ -944,13 +951,15 @@ in
                   "infrastructure"
                 ];
                 timezone = "browser";
-                time = { from = "now-6h"; to = "now"; };
+                time = {
+                  from = "now-6h";
+                  to = "now";
+                };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
                   else
-                    "15s"
-                  ;
+                    "15s";
                 schemaVersion = 30;
                 panels = [
                   {
@@ -1038,7 +1047,10 @@ in
                 version = 1;
                 editable = true;
                 graphTooltip = 1;
-                time = { from = "now-24h"; to = "now"; };
+                time = {
+                  from = "now-24h";
+                  to = "now";
+                };
                 refresh =
                   if config.services.prometheus.enable then
                     config.services.prometheus.globalConfig.scrape_interval
@@ -1086,7 +1098,12 @@ in
                         refId = "A";
                       }
                     ];
-                    gridPos = { h = 4; w = 6; x = 0; y = 0; };
+                    gridPos = {
+                      h = 4;
+                      w = 6;
+                      x = 0;
+                      y = 0;
+                    };
                     options = {
                       reduceOptions = {
                         values = false;
@@ -1116,8 +1133,14 @@ in
                       thresholds = {
                         mode = "absolute";
                         steps = [
-                          { color = "red"; value = null; }
-                          { color = "green"; value = 1; }
+                          {
+                            color = "red";
+                            value = null;
+                          }
+                          {
+                            color = "green";
+                            value = 1;
+                          }
                         ];
                       };
                     };
@@ -1137,7 +1160,12 @@ in
                         refId = "A";
                       }
                     ];
-                    gridPos = { h = 4; w = 6; x = 6; y = 0; };
+                    gridPos = {
+                      h = 4;
+                      w = 6;
+                      x = 6;
+                      y = 0;
+                    };
                     options = {
                       reduceOptions = {
                         values = false;
@@ -1157,9 +1185,18 @@ in
                       thresholds = {
                         mode = "absolute";
                         steps = [
-                          { color = "green"; value = null; }
-                          { color = "orange"; value = 100; }
-                          { color = "red"; value = 500; }
+                          {
+                            color = "green";
+                            value = null;
+                          }
+                          {
+                            color = "orange";
+                            value = 100;
+                          }
+                          {
+                            color = "red";
+                            value = 500;
+                          }
                         ];
                       };
                     };
@@ -1179,7 +1216,12 @@ in
                         refId = "A";
                       }
                     ];
-                    gridPos = { h = 4; w = 6; x = 12; y = 0; };
+                    gridPos = {
+                      h = 4;
+                      w = 6;
+                      x = 12;
+                      y = 0;
+                    };
                     options = {
                       reduceOptions = {
                         values = false;
@@ -1199,9 +1241,18 @@ in
                       thresholds = {
                         mode = "absolute";
                         steps = [
-                          { color = "green"; value = null; }
-                          { color = "orange"; value = 100; }
-                          { color = "red"; value = 500; }
+                          {
+                            color = "green";
+                            value = null;
+                          }
+                          {
+                            color = "orange";
+                            value = 100;
+                          }
+                          {
+                            color = "red";
+                            value = 500;
+                          }
                         ];
                       };
                     };
@@ -1221,7 +1272,12 @@ in
                         refId = "A";
                       }
                     ];
-                    gridPos = { h = 4; w = 6; x = 18; y = 0; };
+                    gridPos = {
+                      h = 4;
+                      w = 6;
+                      x = 18;
+                      y = 0;
+                    };
                     options = {
                       reduceOptions = {
                         values = false;
@@ -1243,9 +1299,18 @@ in
                       thresholds = {
                         mode = "absolute";
                         steps = [
-                          { color = "red"; value = null; }
-                          { color = "orange"; value = 0.95; }
-                          { color = "green"; value = 0.999; }
+                          {
+                            color = "red";
+                            value = null;
+                          }
+                          {
+                            color = "orange";
+                            value = 0.95;
+                          }
+                          {
+                            color = "green";
+                            value = 0.999;
+                          }
                         ];
                       };
                     };
@@ -1266,7 +1331,12 @@ in
                         refId = "A";
                       }
                     ];
-                    gridPos = { h = 8; w = 12; x = 0; y = 4; };
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 0;
+                      y = 4;
+                    };
                     options = {
                       legend = {
                         displayMode = "list";
@@ -1322,7 +1392,12 @@ in
                         refId = "D";
                       }
                     ];
-                    gridPos = { h = 8; w = 12; x = 12; y = 4; };
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 12;
+                      y = 4;
+                    };
                     options = {
                       legend = {
                         displayMode = "list";
@@ -1368,7 +1443,12 @@ in
                         refId = "B";
                       }
                     ];
-                    gridPos = { h = 8; w = 12; x = 0; y = 12; };
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 0;
+                      y = 12;
+                    };
                     options = {
                       legend = {
                         displayMode = "list";
@@ -1409,7 +1489,12 @@ in
                         refId = "A";
                       }
                     ];
-                    gridPos = { h = 8; w = 12; x = 12; y = 12; };
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 12;
+                      y = 12;
+                    };
                     options = {
                       legend = {
                         displayMode = "list";

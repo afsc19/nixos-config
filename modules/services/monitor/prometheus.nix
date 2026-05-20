@@ -59,16 +59,17 @@ in
           proto = "tcp";
           group = "uptime";
         }
-      ] ++ optional config.services.nginx.enable {
-          port = lib.my.ports.nginxStubStatus;
-          proto = "tcp";
-          group = "uptime";
-        }
-        ++ optional thisNode.crowdsec {
-          port = lib.my.ports.prometheusCrowdsec;
-          proto = "tcp";
-          group = "uptime";
-        };
+      ]
+      ++ optional config.services.nginx.enable {
+        port = lib.my.ports.nginxStubStatus;
+        proto = "tcp";
+        group = "uptime";
+      }
+      ++ optional thisNode.crowdsec {
+        port = lib.my.ports.prometheusCrowdsec;
+        proto = "tcp";
+        group = "uptime";
+      };
     })
 
     # Enable Prometheus Server on hubs
@@ -98,7 +99,8 @@ in
               };
             }) fleet;
           }
-        ] ++ optionals config.modules.services.nginx.enable [
+        ]
+        ++ optionals config.modules.services.nginx.enable [
           {
             job_name = "uptimewire-fleet-nginx";
             static_configs = mapAttrsToList (name: data: {
@@ -118,7 +120,8 @@ in
               };
             }) fleet;
           }
-        ] ++ optionals (crowdsecFleet != { }) [
+        ]
+        ++ optionals (crowdsecFleet != { }) [
           {
             job_name = "uptimewire-fleet-crowdsec";
             static_configs = mapAttrsToList (name: data: {
@@ -137,7 +140,9 @@ in
                 alias = name;
               };
             }) crowdsecFleet;
-          }] ++ [
+          }
+        ]
+        ++ [
           {
             job_name = "ctf-challs-https";
             metrics_path = "/probe";
@@ -165,7 +170,6 @@ in
           }
         ];
       };
-
 
     })
   ];

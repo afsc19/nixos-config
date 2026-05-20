@@ -1,4 +1,3 @@
-
 # A Portainer configuration
 {
   config,
@@ -35,5 +34,3 @@ in
     };
   };
 }
-
-

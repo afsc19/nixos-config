@@ -22,7 +22,7 @@
 
     mc = 25565;
 
-    # 51820 is default, let's start at 30 to be sure
+    # 51820 is wireguard's default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;
   };
 }

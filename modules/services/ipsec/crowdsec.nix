@@ -22,11 +22,10 @@ in
 
   config = mkIf cfg {
     # error fixing
-    systemd.tmpfiles.rules =[
+    systemd.tmpfiles.rules = [
       "d /var/lib/crowdsec 0750 crowdsec crowdsec - -"
       "f /var/lib/crowdsec/online_api_credentials.yaml 0640 crowdsec crowdsec - -"
     ];
-
 
     services.crowdsec = {
       enable = true;
@@ -52,17 +51,30 @@ in
 
       hub.collections = [
         "crowdsecurity/linux"
-      ] ++ optionals nginxEnabled [
+      ]
+      ++ optionals nginxEnabled [
         "crowdsecurity/nginx"
       ];
 
       localConfig = {
         acquisitions = [
           # always ssh
-          { source = "journalctl"; journalctl_filter = [ "_SYSTEMD_UNIT=ssh.service" ]; labels.type = "syslog"; }
-        ] ++ optionals nginxEnabled [
+          {
+            source = "journalctl";
+            journalctl_filter = [ "_SYSTEMD_UNIT=ssh.service" ];
+            labels.type = "syslog";
+          }
+        ]
+        ++ optionals nginxEnabled [
           # nginx if enabled
-          { source = "file"; filenames = [ "/var/log/nginx/access.log" "/var/log/nginx/error.log" ]; labels.type = "nginx"; }
+          {
+            source = "file";
+            filenames = [
+              "/var/log/nginx/access.log"
+              "/var/log/nginx/error.log"
+            ];
+            labels.type = "nginx";
+          }
         ];
       };
     };
@@ -70,7 +82,7 @@ in
     services.crowdsec-firewall-bouncer = {
       enable = true;
       package = pkgs.unstable.crowdsec-firewall-bouncer;
-      
+
       registerBouncer.enable = false;
       secrets.apiKeyPath = "/var/lib/crowdsec/firewall-bouncer.key";
     };
@@ -80,9 +92,12 @@ in
       description = "Generate CrowdSec Firewall Bouncer API Key";
       wants = [ "crowdsec.service" ];
       after = [ "crowdsec.service" ];
-      before =[ "crowdsec-firewall-bouncer.service" ];
-      wantedBy =[ "crowdsec-firewall-bouncer.service" ];
-      path = [ pkgs.crowdsec pkgs.coreutils ];
+      before = [ "crowdsec-firewall-bouncer.service" ];
+      wantedBy = [ "crowdsec-firewall-bouncer.service" ];
+      path = [
+        pkgs.crowdsec
+        pkgs.coreutils
+      ];
       script = ''
         KEY_FILE="/var/lib/crowdsec/firewall-bouncer.key"
         BOUNCER_NAME="nixos-firewall-bouncer"
@@ -136,6 +151,3 @@ in
     '';
   };
 }
-
-
-

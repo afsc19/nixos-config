@@ -110,11 +110,13 @@ in
           proto = "icmp";
           host = "any";
         })
-        ++ [{
-          port = "any";
-          proto = "any";
-          group = "afsc";
-        }]
+        ++ [
+          {
+            port = "any";
+            proto = "any";
+            group = "afsc";
+          }
+        ]
         ++ cfg.firewall.inbound;
 
       staticHostMap = lighthouses;

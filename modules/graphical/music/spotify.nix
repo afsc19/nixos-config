@@ -30,7 +30,12 @@ in
       icon = "spotify-client";
       terminal = false;
       type = "Application";
-      categories = [ "Audio" "Music" "Player" "AudioVideo" ];
+      categories = [
+        "Audio"
+        "Music"
+        "Player"
+        "AudioVideo"
+      ];
     };
 
     hm.programs.spicetify = {

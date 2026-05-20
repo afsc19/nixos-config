@@ -1,4 +1,3 @@
-
 # dockerized CTFd
 {
   config,
@@ -45,7 +44,7 @@ in
         # secrets creation
         mkdir -p ${cfg.folder}
         chmod 755 ${cfg.folder}
-        
+
         if [ ! -f ${secretsFile} ]; then
           # generate the secrets using openssl
           ROOT_PASS=$(${pkgs.openssl}/bin/openssl rand -hex 24)
@@ -97,14 +96,26 @@ in
         };
         environmentFiles = [ secretsFile ];
         volumes = [ "${cfg.folder}/mysql:/var/lib/mysql" ];
-        cmd = [ "mysqld" "--character-set-server=utf8mb4" "--collation-server=utf8mb4_unicode_ci" "--wait_timeout=28800" "--log-warnings=0" ];
-        extraOptions = [ "--network=ctfd_internal" "--network-alias=db" ];
+        cmd = [
+          "mysqld"
+          "--character-set-server=utf8mb4"
+          "--collation-server=utf8mb4_unicode_ci"
+          "--wait_timeout=28800"
+          "--log-warnings=0"
+        ];
+        extraOptions = [
+          "--network=ctfd_internal"
+          "--network-alias=db"
+        ];
       };
 
       ctfd-cache = {
         image = "redis:4";
         volumes = [ "${cfg.folder}/redis:/data" ];
-        extraOptions = [ "--network=ctfd_internal" "--network-alias=cache" ];
+        extraOptions = [
+          "--network=ctfd_internal"
+          "--network-alias=cache"
+        ];
       };
 
       ctfd = {
@@ -126,12 +137,16 @@ in
           "${cfg.folder}/logs:/var/log/CTFd"
         ];
         ports = [ "127.0.0.1:50200:8000" ];
-        dependsOn = [ "ctfd-db" "ctfd-cache" ];
-        extraOptions = [ "--network=ctfd_internal" "--network-alias=ctfd" ];
+        dependsOn = [
+          "ctfd-db"
+          "ctfd-cache"
+        ];
+        extraOptions = [
+          "--network=ctfd_internal"
+          "--network-alias=ctfd"
+        ];
       };
     };
 
   };
 }
-
-

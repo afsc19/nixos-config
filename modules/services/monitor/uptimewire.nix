@@ -58,7 +58,8 @@ in
       my.ports.prometheusExporter
       my.ports.grafana
       my.ports.ssh
-    ] ++ (optional thisNode.isHub my.ports.prometheusServer );
+    ]
+    ++ (optional thisNode.isHub my.ports.prometheusServer);
     networking.firewall.allowPing = true; # Just to be sure
 
     networking.wireguard.interfaces.uptimeWire0 = {

@@ -7,7 +7,13 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption listToAttrs types;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    listToAttrs
+    types
+    ;
   cfg = config.modules.services.cloudflared;
 in
 {
@@ -45,7 +51,7 @@ in
       isSystemUser = true;
       group = "cloudflared";
     };
-    users.groups.cloudflared = {};
+    users.groups.cloudflared = { };
 
     age.secrets = listToAttrs (
       map (entry: {

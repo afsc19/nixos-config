@@ -45,17 +45,15 @@ let
   acmeCerts = listToAttrs (
     map (cert: {
       name = cert.domain;
-      value =
-        {
-          group = "nginx";
-        }
-        //
-        (optionalAttrs (cert.extraDomainNames != [ ]) {
-          inherit (cert) extraDomainNames;
-        })
-        // (optionalAttrs (cert.dnsProvider != null) {
-          inherit (cert) dnsProvider;
-        });
+      value = {
+        group = "nginx";
+      }
+      // (optionalAttrs (cert.extraDomainNames != [ ]) {
+        inherit (cert) extraDomainNames;
+      })
+      // (optionalAttrs (cert.dnsProvider != null) {
+        inherit (cert) dnsProvider;
+      });
     }) cfg.acmeCerts
   );
 in
@@ -156,11 +154,9 @@ in
       virtualHosts = vhosts;
 
       appendHttpConfig = mkMerge [
-        (mkIf cfg.useEncryptedVhosts (
-          mkAfter ''
-            include ${config.age.secrets.nginxVhosts.path};
-          ''
-        ))
+        (mkIf cfg.useEncryptedVhosts (mkAfter ''
+          include ${config.age.secrets.nginxVhosts.path};
+        ''))
         ''
           server {
             listen 127.0.0.1:${toString lib.my.ports.nginxStubStatus};

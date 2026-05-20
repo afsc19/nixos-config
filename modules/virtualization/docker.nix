@@ -20,7 +20,10 @@ in
     virtualisation.docker = {
       enable = true;
       daemon.settings = {
-        dns = [ "1.1.1.1" "9.9.9.9" ];
+        dns = [
+          "1.1.1.1"
+          "9.9.9.9"
+        ];
       };
     };
 
@@ -34,14 +37,13 @@ in
     nixpkgs.overlays = [
       (final: prev: {
         qemu-user = prev.qemu-user.overrideAttrs (old: {
-          configureFlags = (old.configureFlags or []) ++ [
+          configureFlags = (old.configureFlags or [ ]) ++ [
             "--disable-pie"
           ];
         });
       })
     ];
 
-    
     boot.binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
       emulatedSystems = [ "x86_64-linux" ];
       preferStaticEmulators = true; # Make it work with Docker
@@ -49,4 +51,3 @@ in
 
   };
 }
-
