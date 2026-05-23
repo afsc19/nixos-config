@@ -153,9 +153,10 @@
   ];
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
-  networking.firewall.interfaces.${config.my.networking.wiredInterface}.allowedTCPPorts =
-    with lib.my.ports; [
+  networking.firewall.interfaces.${config.my.networking.wiredInterface} = {
+    allowedTCPPorts = with lib.my.ports; [
       ssh
+      dns
       http
       https
 
@@ -184,6 +185,10 @@
       50419
       50420
     ];
+    allowedUDPPorts = with lib.my.ports; [
+      dns
+    ];
+  };
   # For Chromecast from chrome (defined in brave.nix)
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.

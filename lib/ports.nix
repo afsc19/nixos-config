@@ -4,6 +4,7 @@
   # track of assigned ports across all profiles/modules
   ports = {
     ssh = 22;
+    dns = 53;
     http = 80;
     https = 443;
 
