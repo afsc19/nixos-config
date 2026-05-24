@@ -156,7 +156,6 @@
   networking.firewall.interfaces.${config.my.networking.wiredInterface} = {
     allowedTCPPorts = with lib.my.ports; [
       ssh
-      dns
       http
       https
 
@@ -186,7 +185,6 @@
       50420
     ];
     allowedUDPPorts = with lib.my.ports; [
-      dns
     ];
   };
   # For Chromecast from chrome (defined in brave.nix)
