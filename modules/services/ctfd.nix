@@ -106,6 +106,7 @@ in
         extraOptions = [
           "--network=ctfd_internal"
           "--network-alias=db"
+          "--pull=always"
         ];
       };
 
@@ -115,6 +116,7 @@ in
         extraOptions = [
           "--network=ctfd_internal"
           "--network-alias=cache"
+          "--pull=always"
         ];
       };
 
@@ -144,6 +146,7 @@ in
         extraOptions = [
           "--network=ctfd_internal"
           "--network-alias=ctfd"
+          "--pull=always"
         ];
       };
     };
