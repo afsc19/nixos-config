@@ -13,8 +13,10 @@ in
   options.modules.hardware.razer.enable = mkEnableOption "razer";
 
   config = mkIf cfg.enable {
-    hardware.openrazer.enable = true;
-    hardware.openrazer.users = [ user ];
+    hardware.openrazer = {
+      enable = true;
+      users = [ user ];
+    };
 
     environment.systemPackages = with pkgs; [
       polychromatic
