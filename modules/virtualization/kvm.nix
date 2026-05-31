@@ -13,22 +13,26 @@ in
   options.modules.virtualization.kvm.enable = mkEnableOption "KVM/libvirt";
 
   config = mkIf cfg.enable {
-    virtualisation.libvirtd = {
-      enable = true;
-      qemu = {
-        package = pkgs.qemu_kvm;
-        runAsRoot = true;
-        swtpm.enable = true;
+    virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu = {
+          package = pkgs.qemu_kvm;
+          runAsRoot = true;
+          swtpm.enable = true;
 
-        # Now available by default
-        # ovmf = {
-        #   enable = true;
-        #   packages = [ pkgs.OVMFFull.fd ];
-        # };
+          # Now available by default
+          # ovmf = {
+          #   enable = true;
+          #   packages = [ pkgs.OVMFFull.fd ];
+          # };
+        };
       };
+      spiceUSBRedirection.enable = true;
     };
 
     programs.virt-manager.enable = true;
+    
 
     usr.extraGroups = [
       "libvirtd"
