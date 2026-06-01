@@ -61,7 +61,7 @@ in
           # always ssh
           {
             source = "journalctl";
-            journalctl_filter = [ "_SYSTEMD_UNIT=ssh.service" ];
+            journalctl_filter = [ "_SYSTEMD_UNIT=sshd.service" ];
             labels.type = "syslog";
           }
         ]
