@@ -117,19 +117,19 @@
       dbus
       fontconfig
       freetype
-      xorg.libX11
-      xorg.libXext
-      xorg.libXrender
-      xorg.libXi
-      xorg.libXrandr
-      xorg.libXfixes
-      xorg.libxcb
-      xorg.xcbutil
-      xorg.xcbutilcursor
-      xorg.xcbutilimage
-      xorg.xcbutilkeysyms
-      xorg.xcbutilrenderutil
-      xorg.xcbutilwm
+      libx11
+      libxext
+      libxrender
+      libxi
+      libxrandr
+      libxfixes
+      libxcb
+      libxcb-util
+      libxcb-cursor
+      libxcb-image
+      libxcb-keysyms
+      libxcb-render-util
+      libxcb-wm
       qt6.qtwayland
     ];
   };

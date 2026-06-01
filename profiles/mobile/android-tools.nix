@@ -6,7 +6,6 @@
 }:
 {
 
-  programs.adb.enable = true;
   users.users.${user}.extraGroups = [ "adbusers" ];
   hm.home.packages = with pkgs; [
     # adb, fastboot, etc..

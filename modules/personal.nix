@@ -29,7 +29,7 @@ in
     hm.programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "*" = { };
 
         # Use if TERM isnt recognized on older  servers
@@ -39,48 +39,36 @@ in
 
         # A little fix to allow rsa keys for ocis
         "instance-console.eu-madrid-1.oci.oraclecloud.com" = {
-          extraOptions = {
-            HostKeyAlgorithms = "+ssh-rsa";
-            PubkeyAcceptedAlgorithms = "+ssh-rsa";
-          };
+          HostKeyAlgorithms = "+ssh-rsa";
+          PubkeyAcceptedAlgorithms = "+ssh-rsa";
         };
 
         sylva = {
           hostname = "sylva.andrecadete.com";
           user = "ubuntu";
-          extraOptions = {
-            IdentitiesOnly = "yes";
-          };
+          IdentitiesOnly = "yes";
         };
         "world.sylva sylva.world" = {
           hostname = "world.sylva.andrecadete.com";
           user = "ubuntu";
-          extraOptions = {
-            IdentitiesOnly = "yes";
-          };
+          IdentitiesOnly = "yes";
         };
         sigma = {
           hostname = "sigma.ist.utl.pt";
           user = "ist1114254";
-          extraOptions = {
-            PubkeyAuthentication = "no";
-          };
+          PubkeyAuthentication = "no";
         };
 
         "rnl cluster.rnl" = {
           hostname = "cluster.rnl.tecnico.ulisboa.pt";
           user = "ist1114254";
-          extraOptions = {
-            PubkeyAuthentication = "no";
-          };
+          PubkeyAuthentication = "no";
         };
 
         pwncollege = {
           hostname = "pwn.college";
           user = "hacker";
-          extraOptions = {
-            IdentitiesOnly = "yes";
-          };
+          IdentitiesOnly = "yes";
         };
 
       };

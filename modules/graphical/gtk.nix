@@ -33,6 +33,7 @@ in
           cp -r ${themesDir}/Catppuccin1-Yellow-Dark $out/share/themes/
         '';
       };
+      gtk4.theme = config.hm.gtk.theme;
 
       iconTheme = {
         name = "Papirus-Dark";

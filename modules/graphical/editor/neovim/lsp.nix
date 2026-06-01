@@ -124,7 +124,7 @@ in
 
       plugins.treesitter = {
         enable = true;
-        folding = true;
+        folding.enable = true;
         settings = {
           highlight.enable = true;
           indent.enable = true;

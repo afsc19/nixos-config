@@ -29,7 +29,6 @@ in
     services.desktopManager.gnome.enable = true;
     # Enable Gnome login
     services.displayManager.gdm.enable = true;
-    services.displayManager.gdm.wayland = true;
 
     # Desktop plumbing that GNOME expects
     programs.dconf.enable = true; # system dconf support

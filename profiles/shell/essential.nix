@@ -10,7 +10,6 @@
     zig
     wget
     killall
-    neofetch
     git
     gh
     tmux
@@ -50,7 +49,7 @@
     mtr # A network diagnostic tool
     iperf3
     dnsutils # `dig` + `nslookup`
-    dogdns # better `dig`
+    doggo # better `dig`
     ldns # replacement of `dig`, it provides the command `drill`
     aria2 # A lightweight multi-protocol & multi-source command-line download utility
     socat # replacement of openbsd-netcat

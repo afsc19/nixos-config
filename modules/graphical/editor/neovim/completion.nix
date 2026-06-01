@@ -49,7 +49,7 @@ in
         };
       };
 
-      plugins.blink-cmp-spell.enable = true;
+      # plugins.blink-cmp-spell.enable = true;
     };
   };
 }
