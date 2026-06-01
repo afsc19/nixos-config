@@ -22,6 +22,11 @@ in
       owner = "grafana";
     };
 
+    age.secrets.grafanaSecretKey = {
+      file = secrets.sylva.grafanaSecretKey;
+      owner = "grafana";
+    };
+
     networking.firewall.allowedTCPPorts = [ lib.my.ports.grafana ];
 
     services.grafana = {
@@ -34,6 +39,10 @@ in
 
           domain = "grafana.andrecadete.com";
           root_url = "https://grafana.andrecadete.com/";
+        };
+
+        security = {
+          secret_key = "$__file{${config.age.secrets.grafanaSecretKey.path}}";
         };
       };
 
