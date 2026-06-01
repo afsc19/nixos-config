@@ -14,8 +14,6 @@
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
-      # we don't need to build docs, so we can get rid of it
-      inputs.nuschtosSearch.follows = "";
     };
 
     # Input for Nixcord (Discord clients configs for NixOS/Home Manager)
