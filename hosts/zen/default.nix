@@ -23,7 +23,7 @@
         # spotify.enable = true;
         # hiresti.enable = true;
       };
-      androidstudio.enable = true;
+      # androidstudio.enable = true;
       gnome.enable = true;
       gtk.enable = true;
       office.enable = true;
