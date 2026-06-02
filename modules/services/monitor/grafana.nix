@@ -729,7 +729,7 @@ in
                     maxPerRow = 4;
                     targets = [
                       {
-                        expr = "max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"}))";
+                        expr = "(max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"}))) or (label_replace((max(up{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\"} == 1) * 0), \"action\", \"ban\", \"\", \"\") unless on() max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"})))";
                         legendFormat = "{{action}}";
                         refId = "A";
                       }
