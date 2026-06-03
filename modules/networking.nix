@@ -39,7 +39,7 @@ in
     # https://wiki.nixos.org/wiki/Wpa_supplicant
     # https://discourse.nixos.org/t/breaking-changes-announcement-for-unstable/17574/116
     environment.etc."wpa_supplicant/certs/ist.crt" = {
-      source = ./config/certs/ist.crt;
+      source = ../config/certs/ist.crt;
     };
   };
 }
