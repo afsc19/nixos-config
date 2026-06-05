@@ -5,7 +5,7 @@
 }:
 {
   hm.home.packages = with pkgs; [
-    qsstv
+    my.cybersec.sstv
     ffmpeg
 
     # Graphical

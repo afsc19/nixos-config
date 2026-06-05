@@ -1,10 +1,11 @@
-# Miscellaneous utils
+# Windows utils
 {
   pkgs,
   ...
 }:
 {
   hm.home.packages = with pkgs; [
-    trufflehog
+    evtx
+    my.cybersec.registry-spy
   ];
 }

@@ -6,8 +6,14 @@
 {
   hm.home.packages = with pkgs; [
     binutils # For strings, also defined in modules.shell.essential
+    exiftool # Also defined in modules.shell.essential
+
     binwalk
     foremost
-    exiftool
+    unblob
+
+    # pdf
+    pdfcrack
+    poppler
   ];
 }

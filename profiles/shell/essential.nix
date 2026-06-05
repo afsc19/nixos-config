@@ -32,7 +32,10 @@
     # Utils
     ripgrep
     gnugrep
-    binutils # strings
+    binutils
+    coreutils
+    findutils
+    exiftool
 
     # Misc
     fastfetch

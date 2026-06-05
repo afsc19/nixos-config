@@ -5,6 +5,7 @@ result-*
 # Ignore automatically generated direnv output
 .direnv
 
-flake.lock
-
 secrets/*/nginx.conf
+
+profiles/cybersec/rev/ida*/*
+profiles/cybersec/rev/binja/*.zip

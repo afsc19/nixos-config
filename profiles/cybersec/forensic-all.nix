@@ -5,8 +5,10 @@
     audio
     disk
     files
+    memory
     misc
     networking
     stego
+    windows
   ];
 }

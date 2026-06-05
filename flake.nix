@@ -92,6 +92,27 @@
       url = "github:yelanxin/hiresTI";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ida-pro-overlay = {
+      url = "github:msanft/ida-pro-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    binaryninja = {
+      url = "github:jchv/nix-binary-ninja";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # QRookie
+    glaumar_repo = {
+      url = "github:glaumar/nur";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    
+    # MemProcFS
+    dmatools = {
+      url = "github:tie-infra/dmatools";
+    };
   };
 
   outputs =
@@ -140,10 +161,14 @@
         {
           agenix = inputs.agenix.packages.${system}.default;
           spicetify = inputs.spicetify-nix.legacyPackages.${system};
+          pwndbg = inputs.pwndbg.packages.${system}.default;
+          memprocfs = inputs.dmatools.packages.${system}.memprocfs;
         };
 
       overlays = (mkOverlays ./overlays) // {
         extraPkgs = _final: prev: (extraPackages { system = prev.stdenv.hostPlatform.system; });
+        ida-pro = final: prev: inputs.ida-pro-overlay.overlays.default final prev;
+        memprocfs = final: prev: inputs.dmatools.overlays.default final prev;
       };
       pkgs = mkPkgs system overlays;
       nixosConfigurations = mkHosts ./hosts {
@@ -164,6 +189,7 @@
             };
           }
           # inputs.impermanence.nixosModules.impermanence
+          inputs.binaryninja.nixosModules.binaryninja
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.dedsec-grub-theme.nixosModule
         ];

@@ -14,4 +14,8 @@
     "dialout" # access USB TTY devices without sudo
   ];
 
+  hm.home.packages = with pkgs; [
+    bettercap
+  ];
+
 }
