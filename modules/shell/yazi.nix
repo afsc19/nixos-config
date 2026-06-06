@@ -23,7 +23,7 @@ let
     ripgrep
     fzf
     zoxide
-    poppler-utils
+    (lib.hiPrio poppler-utils)
     ffmpeg
     mediainfo
     chafa

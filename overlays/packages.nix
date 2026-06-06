@@ -2,11 +2,11 @@
 let
   packagesDir = ../packages;
 in
-{ lib, ... }:
+{ lib, inputs, ... }:
 _final: prev:
 let
   scope = lib.makeScope prev.newScope (_self: {
-    inherit lib;
+    inherit lib inputs;
   });
 in
 {

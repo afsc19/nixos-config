@@ -103,6 +103,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    angr-management = {
+      url = "github:angr/angr-management";
+      flake = false;
+    };
+
     # QRookie
     glaumar_repo = {
       url = "github:glaumar/nur";
@@ -162,13 +167,10 @@
           agenix = inputs.agenix.packages.${system}.default;
           spicetify = inputs.spicetify-nix.legacyPackages.${system};
           pwndbg = inputs.pwndbg.packages.${system}.default;
-          memprocfs = inputs.dmatools.packages.${system}.memprocfs;
         };
 
       overlays = (mkOverlays ./overlays) // {
         extraPkgs = _final: prev: (extraPackages { system = prev.stdenv.hostPlatform.system; });
-        ida-pro = final: prev: inputs.ida-pro-overlay.overlays.default final prev;
-        memprocfs = final: prev: inputs.dmatools.overlays.default final prev;
       };
       pkgs = mkPkgs system overlays;
       nixosConfigurations = mkHosts ./hosts {

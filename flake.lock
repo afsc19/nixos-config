@@ -24,6 +24,22 @@
         "type": "github"
       }
     },
+    "angr-management": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780529761,
+        "narHash": "sha256-PBNNt4JYMreqFxV5cJsKVb/fwjIxpR3zXgsLBM0LdAE=",
+        "owner": "angr",
+        "repo": "angr-management",
+        "rev": "f934c25bb39f748f67c8fa43fcf3cac4a810cf6e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "angr",
+        "repo": "angr-management",
+        "type": "github"
+      }
+    },
     "binaryninja": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -611,6 +627,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "angr-management": "angr-management",
         "binaryninja": "binaryninja",
         "dedsec-grub-theme": "dedsec-grub-theme",
         "dmatools": "dmatools",
