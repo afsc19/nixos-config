@@ -127,6 +127,8 @@
   my.security.fido2.enable = true;
   boot.loader.timeout = 200;
 
+  boot.kernelParams = [ "msr.allow_writes=on" ];
+
   # --- Firewall ---
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
