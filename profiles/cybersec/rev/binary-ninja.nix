@@ -5,12 +5,15 @@
   ...
 }:
 let
+  # Add the zip to your nix store and copy its hash:
+  # nix hash file myzip.zip
+  # nix-store --add-fixed sha256 myzip.zip
   binjaZip = pkgs.requireFile {
     name = "binaryninja_linux_stable_personal.zip";
     message = "binja";
-    hash = "sha256-NSfNlaUD0bYfC8AcWAGQw4fsUFCdsEIqwOYxFDLmR8g="; 
+    hash = "sha256-NSfNlaUD0bYfC8AcWAGQw4fsUFCdsEIqwOYxFDLmR8g=";
   };
-  kgPath = ./rev/binja/keygen.py;
+  kgPath = ./binja/keygen.py;
   kgExists = builtins.pathExists kgPath;
 in
 {
@@ -26,16 +29,7 @@ in
       python3 = pkgs.python312;
 
       
-      
     }).overrideAttrs (old: {
-      # TODO: Remove this override once the upstream package is updated to work with the latest xorg server.
-      buildInputs = (old.buildInputs or []) ++ [ 
-        pkgs.libxi 
-        pkgs.libxrender 
-        pkgs.libxcb 
-        pkgs.xcbutilimage 
-        pkgs.xcbutilrenderutil 
-      ];
 
       autoPatchelfIgnoreMissingDeps = [
         "libQt6WaylandEglClientHwIntegration.so.6"
@@ -43,6 +37,7 @@ in
 
       # Use Python 3.12 for Sidekick plugin compatibility (requires 3.10-3.12)
       nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.python312Packages.pycryptodome pkgs.makeWrapper ];
+      _2 = builtins.trace "DEBUG: Path is ${toString ./binja/keygen.py}" (builtins.pathExists ./binja/keygen.py);
 
       postInstall = (old.postInstall or "") + (if kgExists then ''
         # Binary Ninja typically installs into $out/opt/binaryninja
