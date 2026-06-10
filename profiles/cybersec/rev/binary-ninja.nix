@@ -37,7 +37,6 @@ in
 
       # Use Python 3.12 for Sidekick plugin compatibility (requires 3.10-3.12)
       nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.python312Packages.pycryptodome pkgs.makeWrapper ];
-      _2 = builtins.trace "DEBUG: Path is ${toString ./binja/keygen.py}" (builtins.pathExists ./binja/keygen.py);
 
       postInstall = (old.postInstall or "") + (if kgExists then ''
         # Binary Ninja typically installs into $out/opt/binaryninja
