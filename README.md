@@ -141,7 +141,9 @@ The installation is now identical to a [manual installation](#recommended-manual
 
 
 ## Useful links
- - [NixOS Search](https://search.nixos.org)
+ - [My NixOS](https://mynixos.com/) - Search packages and options
+ - [Nixhub.io](https://www.nixhub.io/) - Search Packages with fixed nixpkgs version references
+ - [NixOS Search](https://search.nixos.org) - Official - Search Packages
  - [All Nix functions](https://teu5us.github.io/nix-lib.html)
 
 
