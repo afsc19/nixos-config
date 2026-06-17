@@ -9,21 +9,26 @@ let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.laptop.lid-wakeups;
 
+  # systemd-sleep will then call this as ./<script> {pre,post} {suspend,hibernate,etc}
   manageUsbWakeup = pkgs.writeShellScript "manage-usb-wakeup.sh" ''
-    LID_STATE=$(cat /proc/acpi/button/lid/*/state | awk '{print $2}')
-    MONITOR_CONNECTED=$(grep -q "connected" /sys/class/drm/card*-*/status && echo "yes" || echo "no")
+    phase=$1
+    case "$phase" in
+      pre)
+        LID_CLOSED=$(grep -c "closed" /proc/acpi/button/lid/*/state)
+        MONITOR_CONNECTED=$(grep -x "connected" /sys/class/drm/card*-*/status 2>/dev/null | grep -v "eDP" | grep -q "connected" && echo "yes" || echo "no")
 
-    # lid closed and no monitors
-    if [ "$LID_STATE" = "closed" ] && [ "$MONITOR_CONNECTED" = "no" ]; then
-        for dev in /sys/bus/usb/devices/*/power/wakeup; do
-            echo "disabled" > "$dev" 2>/dev/null
-        done
-    else
-        # re-enable once you open the lid
+        if [ "$LID_CLOSED" -ge 1 ] && [ "$MONITOR_CONNECTED" = "no" ]; then
+            for dev in /sys/bus/usb/devices/*/power/wakeup; do
+                echo "disabled" > "$dev" 2>/dev/null
+            done
+        fi
+        ;;
+      post)
         for dev in /sys/bus/usb/devices/*/power/wakeup; do
             echo "enabled" > "$dev" 2>/dev/null
         done
-    fi
+        ;;
+    esac
   '';
 in
 {
@@ -31,8 +36,12 @@ in
     mkEnableOption "Disable usb waking from suspended when the lid is closed and there are no external monitors";
 
   config = mkIf cfg.enable {
-    services.udev.extraRules = ''
-      SUBSYSTEM=="acpi", ACTION=="change", KERNEL=="button", DEVPATH=="*/button/lid", RUN+="${manageUsbWakeup}"
+    powerManagement.powerDownCommands = ''
+      ${manageUsbWakeup} pre
+    '';
+
+    powerManagement.powerUpCommands = ''
+      ${manageUsbWakeup} post
     '';
   };
 }
