@@ -2,21 +2,28 @@
 {
   pkgs,
   config,
+  lib,
   ...
 }:
 let
   # Add the zip to your nix store and copy its hash:
   # nix hash file myzip.zip
   # nix-store --add-fixed sha256 myzip.zip
-  binjaZip = pkgs.requireFile {
-    name = "binaryninja_linux_stable_personal.zip";
-    message = "binja";
-    hash = "sha256-NSfNlaUD0bYfC8AcWAGQw4fsUFCdsEIqwOYxFDLmR8g=";
-  };
-  kgPath = ./binja/keygen.py;
-  kgExists = builtins.pathExists kgPath;
+  inherit (lib) mkIf;
+  # inherit 
+  # basePath = "/home/${user}/Downloads/software/binja";
+  basePath = "${config.my.softwareDirectory}/binja";
+  binjaZip = /. + "${basePath}/binaryninja_linux_stable_personal.zip";
+  kgPath = /. + "${basePath}/keygen.py";
 in
 {
+  assertions = [
+    {
+      assertion = builtins.pathExists binjaZip && builtins.pathExists kgPath;
+      message = "Binary Ninja files missing! Please place them in ${binjaZip} and ${kgPath}";
+    }
+  ];
+
   hm.home.file.".binaryninja/settings.json".text = builtins.toJSON {
     "python.binaryOverride" = "${pkgs.python312}/bin/python3.12";
     "python.interpreter" = "${pkgs.python312}/lib/libpython3.12.so";
@@ -45,7 +52,7 @@ in
           postInstall =
             (old.postInstall or "")
             + (
-              if kgExists then
+              if builtins.pathExists kgPath then
                 ''
                   # Binary Ninja typically installs into $out/opt/binaryninja
                   if [ -d "$out/opt/binaryninja" ]; then

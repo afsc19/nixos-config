@@ -22,6 +22,7 @@ in
     my = {
       homeDirectory = mkOpt types.path config.users.users.${user}.home;
       configHome = mkOpt types.path "${config.my.homeDirectory}/.config";
+      softwareDirectory = mkOpt types.path "${config.my.homeDirectory}/Downloads/software";
     };
   };
 

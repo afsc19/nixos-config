@@ -1,19 +1,13 @@
 # IDA Pro
 {
   pkgs,
+  config,
   ...
 }:
 let
-  idaRun = pkgs.requireFile {
-    name = "ida-pro_93_x64linux.run";
-    message = "xray";
-    hash = "sha256-pk5lif7soPThv7li0aKDdh+zjFFY9fgsjx593zL2mFA=";
-  };
-  scriptJs = pkgs.requireFile {
-    name = "ida-pro_93_keygen.js";
-    message = "xray";
-    hash = "sha256-22lFBAtiV/Br2qG+XibsPol7RceDveqVINXKYrf1sAc=";
-  };
+  basePath = "${config.my.softwareDirectory}/ida93sp2";
+  idaRun = /. + "${basePath}/ida-pro_93_x64linux.run";
+  scriptJs = /. + "${basePath}/kg_patch/ida-pro_93_keygen.js";
   ida-chat-plugin = pkgs.fetchFromGitHub {
     owner = "HexRaysSA";
     repo = "ida-chat-plugin";
@@ -22,6 +16,13 @@ let
   };
 in
 {
+
+  assertions = [
+    {
+      assertion = builtins.pathExists idaRun && builtins.pathExists scriptJs;
+      message = "IDA files missing! Please place them in ${idaRun} and ${scriptJs}";
+    }
+  ];
   hm.home.packages = with pkgs; [
     # IDA Pro
     (ida-pro.overrideAttrs (old: {
