@@ -10,7 +10,7 @@ let
   # nix hash file myzip.zip
   # nix-store --add-fixed sha256 myzip.zip
   inherit (lib) mkIf;
-  # inherit 
+  # inherit
   # basePath = "/home/${user}/Downloads/software/binja";
   basePath = "${config.my.softwareDirectory}/binja";
   binjaZip = /. + "${basePath}/binaryninja_linux_stable_personal.zip";
