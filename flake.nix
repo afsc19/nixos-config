@@ -113,7 +113,7 @@
       url = "github:glaumar/nur";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     # MemProcFS
     dmatools = {
       url = "github:tie-infra/dmatools";

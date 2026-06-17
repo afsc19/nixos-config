@@ -8,7 +8,7 @@
   coreutils,
   findutils,
   gnugrep,
-  volatility3
+  volatility3,
 }:
 stdenvNoCC.mkDerivation {
   pname = "volatility-toolkit";
@@ -34,13 +34,15 @@ stdenvNoCC.mkDerivation {
     install -m644 docs/*.md -t $out/share/doc/volatility-toolkit
 
     wrapProgram $out/bin/vol-analyze \
-      --prefix PATH : ${lib.makeBinPath [
-        binutils
-        coreutils
-        findutils
-        gnugrep
-        volatility3
-      ]}
+      --prefix PATH : ${
+        lib.makeBinPath [
+          binutils
+          coreutils
+          findutils
+          gnugrep
+          volatility3
+        ]
+      }
 
     runHook postInstall
   '';

@@ -2,8 +2,8 @@
 {
   lib,
   fetchFromGitHub,
-  python3Packages
-} :
+  python3Packages,
+}:
 python3Packages.buildPythonApplication {
   pname = "registry-spy";
   version = "1.1.0";

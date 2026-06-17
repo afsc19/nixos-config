@@ -3,7 +3,7 @@
   lib,
   fetchFromGitHub,
   python2Packages,
-  makeWrapper
+  makeWrapper,
 }:
 
 python2Packages.buildPythonApplication {
@@ -21,7 +21,10 @@ python2Packages.buildPythonApplication {
 
   nativeBuildInputs = with python2Packages; [ setuptools ];
 
-  propagatedBuildInputs = with python2Packages; [ bottle maxminddb ];
+  propagatedBuildInputs = with python2Packages; [
+    bottle
+    maxminddb
+  ];
 
   doCheck = false;
 

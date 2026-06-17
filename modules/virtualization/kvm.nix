@@ -32,7 +32,6 @@ in
     };
 
     programs.virt-manager.enable = true;
-    
 
     usr.extraGroups = [
       "libvirtd"

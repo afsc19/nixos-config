@@ -13,7 +13,8 @@ let
     rev = "HEAD";
     sha256 = "sha256-ueGelV0KZhE4k7O5VsBTSfZgWz/gm9Lr3CdIYl99Yd8=";
   };
-in {
+in
+{
   hm.home.packages = with pkgs; [
     # Manually download Ida PRO's binary
     ghidra
