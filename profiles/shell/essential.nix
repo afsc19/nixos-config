@@ -21,7 +21,7 @@
     # Archives
     zip
     unzip
-    rar
+    unrar
     gzip
     gnutar
     xz
