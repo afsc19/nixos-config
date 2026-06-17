@@ -35,6 +35,7 @@
     laptop = {
       battery.enable = true;
       bluetooth.enable = true;
+      lid-wakeups.enable = true;
       touchpad.enable = true;
     };
     services = {
