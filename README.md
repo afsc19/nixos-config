@@ -24,20 +24,21 @@ This flake's structure is inspired by [diogotcorreia's NixOS dotfiles](https://g
  - [rclone](https://github.com/rclone/rclone) mount
  - [Easyeffects](https://github.com/wwmm/easyeffects) presets
  - Multi-arch compatibility
- - My personal collection of forensic tools
+ - A very complete Cybersec (CTF) toolset: [Pwndbg](https://github.com/pwndbg/pwndbg), [Binary Ninja](https://binary.ninja/), [IDA](https://hex-rays.com/ida-pro), [Angr Management](https://github.com/angr/angr-management), [Ghidra](https://github.com/nationalsecurityagency/ghidra), [Burp Suite](https://portswigger.net/burp), [The Sleuth Kit + Autopsy](https://www.sleuthkit.org/), [Wireshark](https://www.wireshark.org/), [Bettercap](https://github.com/bettercap/bettercap), [Volatility3](https://github.com/volatilityfoundation/volatility3), [Volatility2](https://github.com/volatilityfoundation/volatility), [Bulk Extractor](https://github.com/simsong/bulk_extractor), and many others
   
 ## Machines:
 Machines follow a specific naming convention based on the fictional solar system from [ASTRONEER](https://astroneer.fandom.com/wiki/Astroneer_Wiki). Stationary systems (those with a static physical location) are named after planets and moons.
 
 ### Zen - Personal Laptop (x86_64-linux)
 My daily driver for general use:
- - **Desktop**: GNOME with my personal flavor of themes, plugins, and GUI apps.
- - **Virtualization**: VMWare, KVM and Distrobox with pods for CTFs.
+ - **Desktop**: [GNOME](https://www.gnome.org/) with my personal flavor of themes, plugins, and GUI apps.
+ - **Virtualization**: [VMWare](https://www.vmware.com/), [KVM](https://virt-manager.org/) and [Distrobox](https://github.com/89luca89/distrobox) with pods for CTFs.
  - **Boot**: Custom boot animation using [Plymouth](https://packages.fedoraproject.org/pkgs/plymouth/).
- - **Security**: Uses fido2 for secrets, and skips secure boot on GRUB (workaround for now - what an hypocrisy).
- - **Gaming**: Steam, Proton-GE, Hydra, Roblox - packed for procrastination.
- - **Discord**: Equicord via Nixcord - thanks [ang3lo-azevedo](https://github.com/ang3lo-azevedo).
- - **Restic**: Gotta keep in touch with my cloud storage.
+ - **Security**: Uses fido2 for secrets, and skips secure boot on a themed [GRUB](https://github.com/coreos/grub) (workaround for now - what an hypocrisy).
+ - **Gaming**: [Steam](https://store.steampowered.com/about/), [Proton-GE](https://github.com/gloriouseggroll/proton-ge-custom), [Hydra](https://github.com/hydralauncher/hydra), [Roblox](https://sober.vinegarhq.org/) - packed for procrastination.
+ - **Discord**: [Equicord](https://github.com/equicord/equicord) via [Nixcord](https://github.com/FlameFlag/nixcord) - thanks [ang3lo-azevedo](https://github.com/ang3lo-azevedo/dotfiles).
+ - **backups**: [rclone](https://github.com/rclone/rclone) to keep in touch with my cloud storage.
+ - **CyberSec Tools**: We all love hacking, right?
 
 ### Sylva - Oracle VPS (aarch64-linux)
 The public-facing primary server and lighthouse machine, chosen for it's high bandwidth:
@@ -145,11 +146,9 @@ The installation is now identical to a [manual installation](#recommended-manual
 
 
 ## References
-My configuration was heavily inspired by:
+My configuration was inspired by the following configurations:
  - [diogotcorreia/dotfiles](https://github.com/diogotcorreia/dotfiles)
-
-And it was also inspired by the following configurations:
- - [ang3lo-azevedo/dotfiles](https://github.com/ang3lo-azevedo/dotfiles)
+ - [ang3lo-azevedo/dotfiles](https://github.com/ang3lo-azevedo/dotfiles) (Honourable mention for packaging cybersec modules and many more)
  - [nomadics9/NixOS-Flake](https://github.com/nomadics9/NixOS-Flake)
  - [dnordstrom/dotfiles](https://github.com/dnordstrom/dotfiles)
  - [rnl-dei/nixrnl](https://github.com/rnl-dei/nixrnl)
