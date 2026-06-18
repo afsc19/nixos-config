@@ -36,12 +36,9 @@ in
     mkEnableOption "Disable usb waking from suspended when the lid is closed and there are no external monitors";
 
   config = mkIf cfg.enable {
-    powerManagement.powerDownCommands = ''
-      ${manageUsbWakeup} pre
-    '';
-
-    powerManagement.powerUpCommands = ''
-      ${manageUsbWakeup} post
-    '';
+    systemd.services.systemd-suspend = {
+      preStart = "${manageUsbWakeup} pre";
+      postStop = "${manageUsbWakeup} post";
+    };
   };
 }
