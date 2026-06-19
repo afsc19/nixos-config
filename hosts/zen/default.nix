@@ -53,6 +53,7 @@
     };
     shell = {
       git.enable = true;
+      opencode.enable = true;
       yazi = {
         enable = true;
         installDependencies = true;
