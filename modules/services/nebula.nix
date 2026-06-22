@@ -157,13 +157,13 @@ in
         tcpPorts = builtins.filter (
           rule:
           (rule.proto or null == "tcp" || rule.proto or null == "any")
-          && (builtins.isInt rule.port or null)
+          && (builtins.isInt rule.port or null || rule.port or null == "any")
           && !(builtins.elem rule.port config.networking.firewall.allowedTCPPorts)
         ) cfg.firewall.inbound;
         udpPorts = builtins.filter (
           rule:
           (rule.proto or null == "udp" || rule.proto or null == "any")
-          && (builtins.isInt rule.port or null)
+          && (builtins.isInt rule.port or null || rule.port or null == "any")
           && !(builtins.elem rule.port config.networking.firewall.allowedUDPPorts)
         ) cfg.firewall.inbound;
 
