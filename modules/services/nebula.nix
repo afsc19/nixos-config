@@ -154,24 +154,42 @@ in
     # therefore, for all port that isn't open on the firewall, open it for the nebula interface
     networking.firewall.interfaces.${config.services.nebula.networks.nebula0.tun.device} =
       let
+        hasTcpAny = builtins.any (
+          rule:
+          (rule.proto or null == "tcp" || rule.proto or null == "any")
+          && rule.port or null == "any"
+        ) cfg.firewall.inbound;
+        hasUdpAny = builtins.any (
+          rule:
+          (rule.proto or null == "udp" || rule.proto or null == "any")
+          && rule.port or null == "any"
+        ) cfg.firewall.inbound;
         tcpPorts = builtins.filter (
           rule:
           (rule.proto or null == "tcp" || rule.proto or null == "any")
-          && (builtins.isInt rule.port or null || rule.port or null == "any")
+          && (builtins.isInt (rule.port or null))
           && !(builtins.elem rule.port config.networking.firewall.allowedTCPPorts)
         ) cfg.firewall.inbound;
         udpPorts = builtins.filter (
           rule:
           (rule.proto or null == "udp" || rule.proto or null == "any")
-          && (builtins.isInt rule.port or null || rule.port or null == "any")
+          && (builtins.isInt (rule.port or null))
           && !(builtins.elem rule.port config.networking.firewall.allowedUDPPorts)
         ) cfg.firewall.inbound;
 
         getPorts = map (rule: rule.port);
+        allPorts = [
+          {
+            from = 0;
+            to = 65535;
+          }
+        ];
       in
       {
-        allowedTCPPorts = getPorts tcpPorts;
-        allowedUDPPorts = getPorts udpPorts;
+        allowedTCPPorts = if hasTcpAny then [ ] else getPorts tcpPorts;
+        allowedUDPPorts = if hasUdpAny then [ ] else getPorts udpPorts;
+        allowedTCPPortRanges = lib.lists.optionals hasTcpAny allPorts;
+        allowedUDPPortRanges = lib.lists.optionals hasUdpAny allPorts;
       };
 
     environment.systemPackages = with pkgs; [
