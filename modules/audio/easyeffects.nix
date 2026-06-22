@@ -11,6 +11,8 @@ let
 
   # Define your specific device name (Run `pw-cli info all` or check EasyEffects logs to find this)
   myDeviceName = "alsa_output.usb-Logitech_PRO_X_2_LIGHTSPEED_0000000000000000-00.analog-stereo";
+  myDeviceDescription = "PRO X 2 LIGHTSPEED Analog Stereo";
+  myDeviceRoute = "Analog Stereo";
   # Define the Preset Name
   myPresetName = "px2";
 
@@ -50,9 +52,11 @@ in
         };
 
         # Setup Autoloading for the specific device
-        "easyeffects/autoload/output/${myDeviceName}.json".text = builtins.toJSON {
+        "easyeffects/autoload/output/${myDeviceName}:${myDeviceRoute}.json".text = builtins.toJSON {
           device = myDeviceName;
-          preset = myPresetName;
+          device-description = myDeviceDescription;
+          device-profile = myDeviceRoute;
+          preset-name = myPresetName;
         };
       };
     };
