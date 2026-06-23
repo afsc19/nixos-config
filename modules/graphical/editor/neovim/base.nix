@@ -75,6 +75,9 @@ in
 
         # disable audible bell for sanity reasons
         belloff = "all";
+
+        # don't fold everything by default
+        foldlevelstart = 99;
       };
 
       # These packages are required by LazyVim and its default plugins
