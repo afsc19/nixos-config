@@ -82,9 +82,7 @@
       };
     };
     hardware = {
-      # TODO this is temporarily disabled given a build issue on the latest kernel
-      # https://github.com/nixos/nixpkgs/issues/523973
-      # razer.enable = true;
+      razer.enable = true;
       intel.enable = true;
     };
     personal.enable = true;

@@ -41,7 +41,6 @@ in
       owner = "systemd-network";
     };
 
-    # TODO test ip forwarding
     boot.kernel.sysctl = mkIf thisNode.isHub {
       "net.ipv4.ip_forward" = 1;
     };

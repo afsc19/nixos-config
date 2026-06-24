@@ -57,7 +57,7 @@ in
         {
           port = lib.my.ports.prometheusExporter;
           proto = "tcp";
-          group = "uptime"; # FIXME why is afsc not overriding this
+          group = "uptime";
         }
       ]
       ++ optional config.services.nginx.enable {

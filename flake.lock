@@ -421,16 +421,15 @@
         "nixpkgs-nixcord": "nixpkgs-nixcord"
       },
       "locked": {
-        "lastModified": 1780474251,
-        "narHash": "sha256-0dk6cIDKnR7kxKsz0ZpGCsi4UVXQ6+NsWhQaZrPq8DU=",
+        "lastModified": 1782292863,
+        "narHash": "sha256-rFrF8ytrLA2NicRRwHzxScwQtLLm2L7fz6oRoInDK4c=",
         "owner": "FlameFlag",
         "repo": "nixcord",
-        "rev": "2eda424b166f4713b5c8f267a8ed0d1158c4c041",
+        "rev": "d014fb9a39a39f4e34fe15071ad3b3f1e9e709d2",
         "type": "github"
       },
       "original": {
         "owner": "FlameFlag",
-        "ref": "dev",
         "repo": "nixcord",
         "type": "github"
       }
@@ -482,16 +481,16 @@
     },
     "nixpkgs-nixcord": {
       "locked": {
-        "lastModified": 1779102034,
-        "narHash": "sha256-vZJZjLo513IeI8hjzHFc6TDezUd4uCE2Eq4SNO3DNNg=",
+        "lastModified": 1780453794,
+        "narHash": "sha256-bXMRa9VTsHSPXL4Cw8R6JJLQeY3Y/IP4+YJCYVmQ7FY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "687f05a9184cad4eaf905c48b63649e3a86f5433",
+        "rev": "6b316287bae2ee04c9b93c8c858d930fd07d7338",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-25.11",
+        "ref": "nixos-26.05",
         "repo": "nixpkgs",
         "type": "github"
       }
