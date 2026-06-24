@@ -1,4 +1,4 @@
-# Tools for reverse engineering
+# Web application security tools
 {
   pkgs,
   config,
@@ -10,11 +10,12 @@ let
   hasPython = config.modules.util.python.enable;
 in
 {
+  imports = [
+    ./burpsuite.nix
+  ];
+
   hm.home = {
     packages = with pkgs.unstable; [
-      # Manually download portswigger and caido
-      burpsuite
-
       # Browsers
       ungoogled-chromium
       firefox

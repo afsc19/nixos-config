@@ -16,7 +16,6 @@ let
 in
 {
   hm.home.packages = with pkgs; [
-    # Manually download Ida PRO's binary
     ghidra
     jadx
   ];
