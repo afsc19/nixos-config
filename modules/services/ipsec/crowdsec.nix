@@ -2,13 +2,11 @@
 {
   config,
   lib,
-  secrets,
   pkgs,
   ...
 }:
 let
   inherit (lib)
-    mkEnableOption
     mkIf
     optionals
     ;

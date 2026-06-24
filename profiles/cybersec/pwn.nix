@@ -1,7 +1,6 @@
 # Pwn utils
 {
   pkgs,
-  inputs,
   ...
 }:
 {

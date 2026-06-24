@@ -3,8 +3,6 @@
   pkgs,
   ...
 }:
-let
-in
 {
   hm.home.packages = with pkgs; [
     (writeShellScriptBin "angr-management" ''

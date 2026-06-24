@@ -2,7 +2,6 @@
 {
   config,
   lib,
-  user,
   pkgs,
   ...
 }:
@@ -35,7 +34,7 @@ in
     ];
 
     nixpkgs.overlays = [
-      (final: prev: {
+      (_final: prev: {
         qemu-user = prev.qemu-user.overrideAttrs (old: {
           configureFlags = (old.configureFlags or [ ]) ++ [
             "--disable-pie"

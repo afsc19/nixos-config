@@ -9,11 +9,9 @@ let
   inherit (lib)
     mkIf
     mkMerge
-    my
     mapAttrsToList
     optionals
     optional
-    mkDefault
     ;
   inherit (lib.my.uptimewire) fleet;
   inherit (lib.my.blackbox) ctfchalls;
@@ -91,7 +89,7 @@ in
           }
           {
             job_name = "uptimewire-fleet-nebula";
-            static_configs = mapAttrsToList (name: data: {
+            static_configs = mapAttrsToList (name: _data: {
               # Considering hostname.andrecadete.com contains nebula's IP addresses.
               targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusExporter}" ];
               labels = {
@@ -112,7 +110,7 @@ in
           }
           {
             job_name = "uptimewire-fleet-nebula-nginx";
-            static_configs = mapAttrsToList (name: data: {
+            static_configs = mapAttrsToList (name: _data: {
               # Considering hostname.andrecadete.com contains nebula's IP addresses.
               targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusNginx}" ];
               labels = {
@@ -133,7 +131,7 @@ in
           }
           {
             job_name = "uptimewire-fleet-nebula-crowdsec";
-            static_configs = mapAttrsToList (name: data: {
+            static_configs = mapAttrsToList (name: _data: {
               # Considering hostname.andrecadete.com contains nebula's IP addresses.
               targets = [ "${name}.andrecadete.com:${toString lib.my.ports.prometheusCrowdsec}" ];
               labels = {

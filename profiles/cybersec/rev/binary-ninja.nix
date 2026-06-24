@@ -9,7 +9,6 @@ let
   # Add the zip to your nix store and copy its hash:
   # nix hash file myzip.zip
   # nix-store --add-fixed sha256 myzip.zip
-  inherit (lib) mkIf;
   # inherit
   # basePath = "/home/${user}/Downloads/software/binja";
   basePath = "${config.my.softwareDirectory}/binja";

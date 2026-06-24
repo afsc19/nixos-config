@@ -2,14 +2,13 @@
 {
   pkgs,
   config,
-  lib,
   ...
 }:
 let
   burpDir = /. + "${config.my.softwareDirectory}/burp";
   loaderJar = /. + "${toString burpDir}/BurpLoaderKeygen.jar";
 
-  burpPkg = pkgs.my.cybersec.burpsuite.overrideAttrs (old: {
+  burpPkg = pkgs.my.cybersec.burpsuite.overrideAttrs (_old: {
     src = burpDir;
   });
 in

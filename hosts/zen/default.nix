@@ -1,7 +1,6 @@
 # Laptop PC
 {
   profiles,
-  lib,
   ...
 }:
 

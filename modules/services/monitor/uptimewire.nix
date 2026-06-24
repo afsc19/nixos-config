@@ -3,19 +3,15 @@
   config,
   lib,
   secrets,
-  pkgs,
   ...
 }:
 let
   inherit (lib)
     mkEnableOption
-    mkOption
-    types
     mkIf
     my
     mapAttrsToList
     filterAttrs
-    mkForce
     optional
     ;
   inherit (lib.my.uptimewire) fleet port;
@@ -68,7 +64,7 @@ in
 
       # If we're a hub, map all excluding ourself.
       # Otherwise, only map hubs.
-      peers = mapAttrsToList (name: data: {
+      peers = mapAttrsToList (_name: data: {
         publicKey = data.pubkey;
         # Use 10.100.0.0/24 so the hub can forward the packets.
         allowedIPs = if (!thisNode.isHub && data.isHub) then [ "10.100.0.0/24" ] else [ "${data.ip}/32" ];

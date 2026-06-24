@@ -4,8 +4,6 @@
   config,
   lib,
   inputs,
-  secrets,
-  user,
   ...
 }:
 let

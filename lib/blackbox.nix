@@ -1,5 +1,5 @@
 # Targets to use in prometheus' blackbox
-{ lib, ... }:
+{ ... }:
 {
   blackbox = {
     ctfchalls = {

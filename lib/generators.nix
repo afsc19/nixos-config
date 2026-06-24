@@ -2,7 +2,6 @@
   inputs,
   lib,
   nixosConfigurations,
-  pkgs,
   profiles,
   secrets,
   ...

@@ -155,14 +155,10 @@ in
     networking.firewall.interfaces.${config.services.nebula.networks.nebula0.tun.device} =
       let
         hasTcpAny = builtins.any (
-          rule:
-          (rule.proto or null == "tcp" || rule.proto or null == "any")
-          && rule.port or null == "any"
+          rule: (rule.proto or null == "tcp" || rule.proto or null == "any") && rule.port or null == "any"
         ) cfg.firewall.inbound;
         hasUdpAny = builtins.any (
-          rule:
-          (rule.proto or null == "udp" || rule.proto or null == "any")
-          && rule.port or null == "any"
+          rule: (rule.proto or null == "udp" || rule.proto or null == "any") && rule.port or null == "any"
         ) cfg.firewall.inbound;
         tcpPorts = builtins.filter (
           rule:

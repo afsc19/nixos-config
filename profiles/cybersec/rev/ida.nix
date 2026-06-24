@@ -8,12 +8,6 @@ let
   basePath = "${config.my.softwareDirectory}/ida93sp2";
   idaRun = /. + "${basePath}/ida-pro_93_x64linux.run";
   scriptJs = /. + "${basePath}/kg_patch/ida-pro_93_keygen.js";
-  ida-chat-plugin = pkgs.fetchFromGitHub {
-    owner = "HexRaysSA";
-    repo = "ida-chat-plugin";
-    rev = "HEAD";
-    sha256 = "sha256-ueGelV0KZhE4k7O5VsBTSfZgWz/gm9Lr3CdIYl99Yd8=";
-  };
 in
 {
 

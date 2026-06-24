@@ -3,7 +3,6 @@
   lib,
   fetchFromGitHub,
   python2Packages,
-  makeWrapper,
 }:
 
 python2Packages.buildPythonApplication {
