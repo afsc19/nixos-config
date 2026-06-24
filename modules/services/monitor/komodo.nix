@@ -93,12 +93,11 @@ in
       };
     };
 
-    # Expose via nginx if it's enabled
-    modules.services.nginx.exposedServices = mkIf config.modules.services.nginx.enable [
-      {
-        serverName = "komodo.andrecadete.com";
-        port = lib.my.ports.komodoCore;
-      }
-    ];
+    # modules.services.nginx.exposedServices = mkIf config.modules.services.nginx.enable [
+    #   {
+    #     serverName = "komodo.andrecadete.com";
+    #     port = lib.my.ports.komodoCore;
+    #   }
+    # ];
   };
 }
