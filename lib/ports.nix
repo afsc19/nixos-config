@@ -23,6 +23,8 @@
 
     mc = 25565;
 
+    komodoCore = 9120;
+
     # 51820 is wireguard's default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;
   };

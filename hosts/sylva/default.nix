@@ -21,6 +21,7 @@
         portainer.enable = true;
         rancher.enable = false;
         uptimewire.enable = true;
+        komodo.enable = true;
       };
       cloudflared = {
         enable = true;
