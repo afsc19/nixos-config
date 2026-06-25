@@ -24,13 +24,14 @@ in
       settings = {
         WebService = {
           AllowUnencrypted = true;
+          Origins = "https://cockpit.sylva.andrecadete.com";
         };
       };
     };
 
     modules.services.nginx.exposedServices = mkIf config.modules.services.nginx.enable [
       {
-        serverName = "cockpit.andrecadete.com";
+        serverName = "cockpit.sylva.andrecadete.com";
         port = lib.my.ports.cockpit;
       }
     ];
