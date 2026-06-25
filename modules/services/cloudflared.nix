@@ -76,9 +76,7 @@ in
           value = {
             credentialsFile = config.age.secrets."cloudflaredTunnel_${entry.tunnelName}".path;
             default = entry.default;
-            ingress = (builtins.mapAttrs (hostname: service: { inherit service; }) entry.ingress) // {
-              "*" = entry.default;
-            };
+            ingress = entry.ingress;
             originRequest = {
               noTLSVerify = true;
             };
