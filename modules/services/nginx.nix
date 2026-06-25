@@ -133,6 +133,7 @@ in
       owner = "nginx";
       group = "nginx";
       mode = "0440";
+      restartUnits = [ "nginx" ];
     };
 
     services.nginx = {
