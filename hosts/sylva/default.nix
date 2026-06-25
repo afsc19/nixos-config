@@ -29,7 +29,7 @@
           {
             tunnelName = "sylva-andrecadete-com";
             tunnelID = "00425117-9b58-410e-a793-de5560839cb1";
-            default = "https://localhost:443";
+            default = "tcp://localhost:443";
           }
         ];
       };
