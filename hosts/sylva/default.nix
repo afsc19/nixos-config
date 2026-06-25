@@ -22,6 +22,7 @@
         rancher.enable = false;
         uptimewire.enable = true;
         komodo.enable = true;
+        cockpit.enable = true;
       };
       cloudflared = {
         enable = true;

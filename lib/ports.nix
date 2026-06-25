@@ -15,6 +15,7 @@
     prometheusCrowdsec = 6060;
     komodoPeriphery = 8120;
     prometheusServer = 9090;
+    cockpit = 9091;
     prometheusExporter = 9100;
     prometheusNginx = 9113;
     prometheusBlackbox = 9115;
