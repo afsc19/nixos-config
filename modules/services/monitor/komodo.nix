@@ -1,4 +1,4 @@
-# Komodo deployment manager
+# Komodo deployment manager (Docker)
 {
   config,
   lib,
@@ -10,7 +10,7 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
-    types
+    mkAfter
     ;
 
   cfg = config.modules.services.monitor.komodo;
@@ -23,45 +23,41 @@ in
 
   config = mkIf cfg.enable {
 
+    virtualisation.oci-containers.backend = "docker";
+
+    # --- Secrets ---
     age.secrets.komodoPasskey = {
       file = secrets.host.komodoPasskey;
-      owner = "komodo-periphery";
-      group = "komodo-periphery";
+      owner = "root";
+      group = "root";
       mode = "0400";
     };
 
-    services.komodo-periphery = {
-      enable = true;
-      port = lib.my.ports.komodoPeriphery;
-      ssl.enable = true;
-      rootDirectory = "/store/komodo";
-      environmentFile = config.age.secrets.komodoPasskey.path;
+    age.secrets.komodoAdminPass = {
+      file = secrets.host.komodoAdminPass;
+      owner = "root";
+      group = "root";
+      mode = "0400";
     };
 
-    virtualisation.oci-containers.backend = "docker";
+    systemd.services."${backend}-komodo-mongo".preStart = ''
+      ${pkgs.docker}/bin/docker network inspect komodo >/dev/null 2>&1 ||
+      ${pkgs.docker}/bin/docker network create komodo
+    '';
 
-    systemd.services."${backend}-komodo-mongo" = {
-      preStart = ''
-        ${pkgs.docker}/bin/docker network inspect komodo >/dev/null 2>&1 ||
-        ${pkgs.docker}/bin/docker network create komodo
-      '';
-    };
+    # secure env passkey passing
+    systemd.services."${backend}-komodo-periphery".preStart = lib.mkAfter ''
+      printf 'PERIPHERY_PASSKEYS=%s\n' "$(cat ${config.age.secrets.komodoPasskey.path})" \
+        > /run/komodo-periphery-passkey.env
+    '';
 
     systemd.tmpfiles.rules = [
       "d /store/komodo 0755 root root -"
       "d /store/komodo/mongo/config 0755 root root -"
       "d /store/komodo/mongo/data 0755 root root -"
       "d /store/komodo/cache 0755 root root -"
+      "d /store/komodo/periphery 0755 root root -"
     ];
-
-    age.secrets = {
-      komodoAdminPass = {
-        file = secrets.host.komodoAdminPass;
-        owner = "root";
-        group = "root";
-        mode = "0400";
-      };
-    };
 
     virtualisation.oci-containers.containers = {
       komodo-mongo = {
@@ -82,6 +78,26 @@ in
         ];
       };
 
+      komodo-periphery = {
+        image = "ghcr.io/moghtech/komodo-core:latest";
+        cmd = [ "periphery" ];
+        volumes = [
+          "/var/run/docker.sock:/var/run/docker.sock:rw"
+          "/store/komodo/periphery:/store/periphery:rw"
+        ];
+        environmentFiles = [ "/run/komodo-periphery-passkey.env" ];
+        environment = {
+          PERIPHERY_PORT = toString lib.my.ports.komodoPeriphery;
+          PERIPHERY_ROOT_DIRECTORY = "/store/periphery";
+          PERIPHERY_SSL_ENABLED = "true";
+        };
+        extraOptions = [
+          "--network=komodo"
+          "--network-alias=periphery"
+          "--pull=always"
+        ];
+      };
+
       komodo-core = {
         image = "ghcr.io/moghtech/komodo-core:latest";
         environment = {
@@ -92,7 +108,7 @@ in
           KOMODO_DISABLE_NON_ADMIN_CREATE = "false";
           KOMODO_DISABLE_USER_REGISTRATION = "false";
           KOMODO_ENABLE_NEW_USERS = "false";
-          KOMODO_FIRST_SERVER = "https://host.docker.internal:${toString lib.my.ports.komodoPeriphery}";
+          KOMODO_FIRST_SERVER = "https://periphery:8120";
           KOMODO_GOOGLE_OAUTH_ENABLED = "false";
           KOMODO_HOST = "https://komodo.andrecadete.com";
           KOMODO_INIT_ADMIN_USERNAME = "admin";
@@ -112,13 +128,13 @@ in
         ];
         dependsOn = [
           "komodo-mongo"
+          "komodo-periphery"
         ];
         ports = [ "127.0.0.1:${toString lib.my.ports.komodoCore}:${toString lib.my.ports.komodoCore}" ];
         extraOptions = [
           "--network=komodo"
           "--network-alias=core"
           "--pull=always"
-          "--add-host=host.docker.internal:host-gateway"
         ];
       };
     };
