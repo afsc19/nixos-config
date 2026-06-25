@@ -133,8 +133,9 @@ in
       owner = "nginx";
       group = "nginx";
       mode = "0440";
-      restartUnits = [ "nginx" ];
     };
+
+    systemd.services.nginx.reloadIfChanged = true;
 
     services.nginx = {
       enable = true;
