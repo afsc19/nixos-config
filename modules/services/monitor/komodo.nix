@@ -91,6 +91,7 @@ in
         };
         volumes = [
           "/store/komodo/cache:/repo-cache:rw"
+          "${config.age.secrets.komodoAdminPass.path}:${config.age.secrets.komodoAdminPass.path}:ro"
         ];
         dependsOn = [
           "komodo-mongo"
