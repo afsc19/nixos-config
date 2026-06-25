@@ -23,6 +23,20 @@ in
 
   config = mkIf cfg.enable {
 
+    age.secrets.komodoPasskey = {
+      file = secrets.host.komodoPasskey;
+      owner = "komodo-periphery";
+      group = "komodo-periphery";
+      mode = "0400";
+    };
+
+    services.komodo-periphery = {
+      enable = true;
+      ssl.enable = true;
+      rootDirectory = "/store/komodo";
+      environmentFile = config.age.secrets.komodoPasskey.path;
+    };
+
     virtualisation.oci-containers.backend = "docker";
 
     systemd.services."${backend}-komodo-mongo" = {
@@ -77,12 +91,14 @@ in
           KOMODO_DISABLE_NON_ADMIN_CREATE = "false";
           KOMODO_DISABLE_USER_REGISTRATION = "false";
           KOMODO_ENABLE_NEW_USERS = "false";
+          KOMODO_FIRST_SERVER = "https://host.docker.internal:8120";
           KOMODO_GOOGLE_OAUTH_ENABLED = "false";
           KOMODO_HOST = "https://komodo.andrecadete.com";
           KOMODO_INIT_ADMIN_USERNAME = "admin";
           KOMODO_INIT_ADMIN_PASSWORD_FILE = config.age.secrets.komodoAdminPass.path;
           KOMODO_JWT_TTL = "1-day";
           KOMODO_LOCAL_AUTH = "true";
+          KOMODO_PASSKEY_FILE = config.age.secrets.komodoPasskey.path;
           KOMODO_MONITORING_INTERVAL = "15-sec";
           KOMODO_RESOURCE_POLL_INTERVAL = "5-min";
           KOMODO_TITLE = "Komodo";
@@ -91,6 +107,7 @@ in
         volumes = [
           "/store/komodo/cache:/repo-cache:rw"
           "${config.age.secrets.komodoAdminPass.path}:${config.age.secrets.komodoAdminPass.path}:ro"
+          "${config.age.secrets.komodoPasskey.path}:${config.age.secrets.komodoPasskey.path}:ro"
         ];
         dependsOn = [
           "komodo-mongo"
@@ -100,6 +117,7 @@ in
           "--network=komodo"
           "--network-alias=core"
           "--pull=always"
+          "--add-host=host.docker.internal:host-gateway"
         ];
       };
     };
