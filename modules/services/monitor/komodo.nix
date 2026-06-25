@@ -32,6 +32,7 @@ in
 
     services.komodo-periphery = {
       enable = true;
+      port = lib.my.ports.komodoPeriphery;
       ssl.enable = true;
       rootDirectory = "/store/komodo";
       environmentFile = config.age.secrets.komodoPasskey.path;
@@ -91,7 +92,7 @@ in
           KOMODO_DISABLE_NON_ADMIN_CREATE = "false";
           KOMODO_DISABLE_USER_REGISTRATION = "false";
           KOMODO_ENABLE_NEW_USERS = "false";
-          KOMODO_FIRST_SERVER = "https://host.docker.internal:8120";
+          KOMODO_FIRST_SERVER = "https://host.docker.internal:${toString lib.my.ports.komodoPeriphery}";
           KOMODO_GOOGLE_OAUTH_ENABLED = "false";
           KOMODO_HOST = "https://komodo.andrecadete.com";
           KOMODO_INIT_ADMIN_USERNAME = "admin";
@@ -112,7 +113,7 @@ in
         dependsOn = [
           "komodo-mongo"
         ];
-        ports = [ "127.0.0.1:9120:9120" ];
+        ports = [ "127.0.0.1:${toString lib.my.ports.komodoCore}:${toString lib.my.ports.komodoCore}" ];
         extraOptions = [
           "--network=komodo"
           "--network-alias=core"
