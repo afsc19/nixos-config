@@ -81,6 +81,7 @@ mkSecrets [
       "cloudflareDnsApiToken"
       "cloudflaredCert"
       "cloudflaredTunnel_sylva-andrecadete-com"
+      "komodoAdminPass"
     ]
   )
 

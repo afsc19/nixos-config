@@ -3,14 +3,15 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
   inherit (lib)
     mkEnableOption
     mkIf
+    types
     ;
-  inherit (lib) types;
 
   cfg = config.modules.services.monitor.komodo;
   backend = config.virtualisation.oci-containers.backend;
@@ -24,7 +25,6 @@ in
 
     virtualisation.oci-containers.backend = "docker";
 
-    # Create docker network before containers start
     systemd.services."${backend}-komodo-mongo" = {
       preStart = ''
         ${pkgs.docker}/bin/docker network inspect komodo >/dev/null 2>&1 ||
@@ -38,6 +38,15 @@ in
       "d /store/komodo/mongo/data 0755 root root -"
       "d /store/komodo/cache 0755 root root -"
     ];
+
+    age.secrets = {
+      komodoAdminPass = {
+        file = secrets.host.komodoAdminPass;
+        owner = "root";
+        group = "root";
+        mode = "0400";
+      };
+    };
 
     virtualisation.oci-containers.containers = {
       komodo-mongo = {
@@ -71,6 +80,8 @@ in
           KOMODO_FIRST_SERVER = "https://komodo.andrecadete.com";
           KOMODO_GOOGLE_OAUTH_ENABLED = "false";
           KOMODO_HOST = "https://komodo.andrecadete.com";
+          KOMODO_INIT_ADMIN_USERNAME = "admin";
+          KOMODO_INIT_ADMIN_PASSWORD_FILE = config.age.secrets.komodoAdminPass.path;
           KOMODO_JWT_TTL = "1-day";
           KOMODO_LOCAL_AUTH = "true";
           KOMODO_MONITORING_INTERVAL = "15-sec";
