@@ -19,13 +19,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    security.polkit.enable = true;
+
     services.cockpit = {
       enable = true;
       port = lib.my.ports.cockpit;
       settings = {
         WebService = {
           AllowUnencrypted = true;
-          Origins = mkForce "https://localhost:${lib.my.ports.cockpit}";
+          Origins = mkForce "https://localhost:${toString lib.my.ports.cockpit}";
         };
       };
     };
@@ -34,6 +36,7 @@ in
       {
         serverName = "cockpit.sylva.andrecadete.com";
         port = lib.my.ports.cockpit;
+        vpnOnly = true;
       }
     ];
   };

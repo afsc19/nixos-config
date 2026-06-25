@@ -37,6 +37,14 @@ let
             proxy_set_header X-Forwarded-Proto $scheme;
           '';
         };
+      }
+      // optionalAttrs entry.vpnOnly {
+        extraConfig = ''
+          allow 192.168.100.0/24;
+          allow 127.0.0.1;
+          allow ::1;
+          deny all;
+        '';
       };
     }) cfg.exposedServices
   );
@@ -81,6 +89,12 @@ in
             port = mkOption {
               type = types.port;
               description = "Local TCP port of the service behind nginx.";
+            };
+
+            vpnOnly = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Restrict access to Nebula VPN IPs only.";
             };
           };
         }
