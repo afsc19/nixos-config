@@ -77,7 +77,6 @@ in
           KOMODO_DISABLE_NON_ADMIN_CREATE = "false";
           KOMODO_DISABLE_USER_REGISTRATION = "false";
           KOMODO_ENABLE_NEW_USERS = "false";
-          KOMODO_FIRST_SERVER = "https://komodo.andrecadete.com";
           KOMODO_GOOGLE_OAUTH_ENABLED = "false";
           KOMODO_HOST = "https://komodo.andrecadete.com";
           KOMODO_INIT_ADMIN_USERNAME = "admin";
