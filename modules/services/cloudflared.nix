@@ -37,6 +37,12 @@ in
               default = "https://localhost:443";
               description = "Default tunnel routing target.";
             };
+
+            ingress = mkOption {
+              type = types.attrsOf types.str;
+              default = { };
+              description = "Explicit routing rules for subdomains (e.g., { \"*.mysubdomain.andrecadete.com\" = \"https://localhost:443\"; }).";
+            };
           };
         }
       );
@@ -70,6 +76,11 @@ in
           value = {
             credentialsFile = config.age.secrets."cloudflaredTunnel_${entry.tunnelName}".path;
             default = entry.default;
+            ingress = (builtins.mapAttrs (hostname: service: { inherit service; }) entry.ingress) // {
+              "*" = {
+                service = entry.default;
+              };
+            };
             originRequest = {
               noTLSVerify = true;
             };
