@@ -57,6 +57,7 @@ in
       "d /store/komodo/mongo/data 0755 root root -"
       "d /store/komodo/cache 0755 root root -"
       "d /store/komodo/periphery 0755 root root -"
+      "d /store/komodo/periphery-keys 0755 root root -"
     ];
 
     virtualisation.oci-containers.containers = {
@@ -79,16 +80,17 @@ in
       };
 
       komodo-periphery = {
-        image = "ghcr.io/moghtech/komodo-core:latest";
-        cmd = [ "periphery" ];
+        image = "ghcr.io/moghtech/komodo-periphery:latest";
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock:rw"
-          "/store/komodo/periphery:/store/periphery:rw"
+          "/proc:/proc:ro"
+          "/store/komodo/periphery:/store/komodo/periphery:rw"
+          "/store/komodo/periphery-keys:/config/keys"
         ];
         environmentFiles = [ "/run/komodo-periphery-passkey.env" ];
         environment = {
           PERIPHERY_PORT = toString lib.my.ports.komodoPeriphery;
-          PERIPHERY_ROOT_DIRECTORY = "/store/periphery";
+          PERIPHERY_ROOT_DIRECTORY = "/store/komodo/periphery";
           PERIPHERY_SSL_ENABLED = "true";
         };
         extraOptions = [
