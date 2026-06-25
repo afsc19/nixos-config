@@ -8,6 +8,7 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
+    mkForce
     ;
 
   cfg = config.modules.services.monitor.cockpit;
@@ -24,7 +25,7 @@ in
       settings = {
         WebService = {
           AllowUnencrypted = true;
-          Origins = "https://cockpit.sylva.andrecadete.com";
+          Origins = mkForce "https://localhost:${lib.my.ports.cockpit}";
         };
       };
     };
