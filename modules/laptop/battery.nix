@@ -58,11 +58,13 @@ in
       };
     };
 
-    # Enable powertop
-    powerManagement.powertop.enable = true;
+    # Must disable powertop on meteor lake's to prevent BD PROCHOTs (zen is meteor lake)
+    powerManagement.powertop.enable = false;
 
     # Enable thermald (primarily useful on Intel CPUs)
     services.thermald.enable = lib.mkDefault true;
+
+    services.throttled.enable = true;
 
     # upower
     services.upower.enable = true;

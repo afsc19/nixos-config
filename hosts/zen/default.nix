@@ -81,6 +81,7 @@
       };
     };
     hardware = {
+      asus.enable = true;
       razer.enable = true;
       intel.enable = true;
     };
