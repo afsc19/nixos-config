@@ -1033,6 +1033,13 @@ in
                         };
                       };
                     };
+                    options = {
+                      effects = {
+                        barGlow = false;
+                        centerGlow = false;
+                        gradient = false;
+                      };
+                    };
                   }
                 ];
               }
