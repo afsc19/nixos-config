@@ -86,6 +86,7 @@ in
     virtualisation.oci-containers.containers = {
       ctfd-db = {
         image = "mariadb:10.11";
+        pull = "always";
         environment = {
           # MARIADB_ROOT_PASSWORD = "ctfd";
           MARIADB_USER = "ctfd";
@@ -111,6 +112,7 @@ in
 
       ctfd-cache = {
         image = "redis:4";
+        pull = "always";
         volumes = [ "${cfg.folder}/redis:/data" ];
         extraOptions = [
           "--network=ctfd_internal"
@@ -121,6 +123,7 @@ in
 
       ctfd = {
         image = "ctfd/ctfd:latest";
+        pull = "always";
         environment = {
           # DATABASE_URL = "mysql+pymysql://ctfd:ctfd@ctfd-db/ctfd";
           REDIS_URL = "redis://cache:6379";

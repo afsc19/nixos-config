@@ -23,6 +23,7 @@ in
 
     virtualisation.oci-containers.containers."portainer" = {
       image = "portainer/portainer-ce:latest";
+      pull = "always";
       ports = [ "51000:9000" ];
       volumes = [
         "/var/run/docker.sock:/var/run/docker.sock"

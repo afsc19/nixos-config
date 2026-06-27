@@ -63,6 +63,7 @@ in
     virtualisation.oci-containers.containers = {
       komodo-mongo = {
         image = "mongo:7";
+        pull = "always";
         volumes = [
           "/store/komodo/mongo/config:/data/configdb:rw"
           "/store/komodo/mongo/data:/data/db:rw"
@@ -81,6 +82,7 @@ in
 
       komodo-periphery = {
         image = "ghcr.io/moghtech/komodo-periphery:latest";
+        pull = "always";
         volumes = [
           "/var/run/docker.sock:/var/run/docker.sock:rw"
           "/proc:/proc:ro"
@@ -102,6 +104,7 @@ in
 
       komodo-core = {
         image = "ghcr.io/moghtech/komodo-core:latest";
+        pull = "always";
         environment = {
           COMPOSE_KOMODO_IMAGE_TAG = "latest";
           H_ENABLED = "false";

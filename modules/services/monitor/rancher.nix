@@ -22,6 +22,7 @@ in
 
     virtualisation.oci-containers.containers."rancher-server" = {
       image = "rancher/rancher:latest";
+        pull = "always";
       ports = [
         "127.0.0.1:51001:80"
         # "80:80"
