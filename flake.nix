@@ -177,6 +177,7 @@
         inherit extraArgs overlays;
         systems = {
           sylva = "aarch64-linux";
+          desolo = "aarch64-linux";
         };
         extraModules = [
           {
