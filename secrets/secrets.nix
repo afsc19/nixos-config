@@ -97,7 +97,7 @@ mkSecrets [
   )
 
   (mkSystem "desolo"
-    []
+    [ desoloSystem ]
     [
       "nebulaCert"
       "nebulaKey"
