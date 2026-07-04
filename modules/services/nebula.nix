@@ -18,6 +18,7 @@ let
 
   lighthouses = {
     "192.168.100.1" = [ "world.sylva.andrecadete.com:4242" ];
+    "192.168.100.6" = [ "world.desolo.andrecadete.com:4242" ];
   };
 in
 {
