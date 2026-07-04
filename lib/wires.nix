@@ -28,6 +28,12 @@
         isHub = false;
         crowdsec = false;
       };
+      "desolo" = {
+        ip = "10.100.0.6";
+        pubkey = "jGbyK1Yt+C544R3W4Gsz1pCsHRExp0GFpn/UVY6xrig=";
+        isHub = true;
+        crowdsec = true;
+      };
     };
     port = lib.my.ports.wireguardUptimeWire;
   };

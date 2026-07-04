@@ -6,6 +6,7 @@ let
   zenSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILUwEjCUp8iCU+pCvunxxP3Q1MqjuOulbOOQhxrBQqjM root@zen";
   sylvaSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIHjAuNluvxTdMzJUC99gT4VDFfwdrqzUa9sL5YlfBXl root@sylva";
   favillaSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLulyCMndsV54zdOmA4TjJ53kkkoW4n0UuL9DgL1VHC afsc@favilla";
+  desoloSystem = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMfzrKBBQF12dRtS22juJVg5KbXDeSH0lh1sBWJh3yG/ root@desolo";
 
   # Keys that can decrypt/encrypt everything
   universalKeys = [
@@ -92,6 +93,17 @@ mkSecrets [
       "nebulaCert"
       "nebulaKey"
       "uptimewireKey"
+    ]
+  )
+
+  (mkSystem "desolo"
+    []
+    [
+      "nebulaCert"
+      "nebulaKey"
+      "uptimewireKey"
+      "cloudflareDnsApiToken"
+      "nginxVhosts"
     ]
   )
 

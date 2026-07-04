@@ -23,38 +23,29 @@
         rancher.enable = false;
         uptimewire.enable = true;
       };
-      cloudflared = {
-        enable = true;
-        tunnels = [
-          {
-            tunnelName = "sylva-andrecadete-com";
-            tunnelID = "00425117-9b58-410e-a793-de5560839cb1";
-            default = "https://localhost:443";
-            ingress = {
-              "*.chall.ctf.andrecadete.com" = "https://localhost:443";
-            };
-          }
-        ];
-      };
-      ctfd.enable = true;
+      # TODO
+      # cloudflared = {
+      #   enable = true;
+      # };
       nginx = {
         enable = true;
-        useEncryptedVhosts = builtins.pathExists ../../secrets/sylva/nginxVhosts.age;
-        acmeCerts = [
-          {
-            domain = "andrecadete.com";
-            extraDomainNames = [ "*.andrecadete.com" ];
-            dnsProvider = "cloudflare";
-          }
-          {
-            domain = "ctf.andrecadete.com";
-            extraDomainNames = [
-              "*.ctf.andrecadete.com"
-              "*.chall.ctf.andrecadete.com"
-            ];
-            dnsProvider = "cloudflare";
-          }
-        ];
+        useEncryptedVhosts = builtins.pathExists ../../secrets/${config.networking.hostName}/nginxVhosts.age;
+        # TODO
+        # acmeCerts = [
+        #   {
+        #     domain = "andrecadete.com";
+        #     extraDomainNames = [ "*.andrecadete.com" ];
+        #     dnsProvider = "cloudflare";
+        #   }
+        #   {
+        #     domain = "ctf.andrecadete.com";
+        #     extraDomainNames = [
+        #       "*.ctf.andrecadete.com"
+        #       "*.chall.ctf.andrecadete.com"
+        #     ];
+        #     dnsProvider = "cloudflare";
+        #   }
+        # ];
       };
       # Nebula (VPN)
       nebula = {
@@ -79,16 +70,15 @@
       zsh.enable = true;
     };
     util = {
-      java.enable = true;
+      # java.enable = true;
       python.enable = true;
     };
     virtualization = {
       docker = {
         enable = true;
-        useVirtualization = true;
+        # useVirtualization = true;
       };
     };
-    # plymouth.enable = true;
   };
 
   imports = with profiles; [
@@ -121,10 +111,6 @@
 
   # --- Firewall ---
 
-  # ip forwarding for distributed ctf challenges
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_forward" = lib.mkForce 1;
-  };
 
   # NAT to favilla
   # networking.nat = {
@@ -143,12 +129,6 @@
   #   '';
   # };
 
-  networking.firewall.allowedTCPPortRanges = [
-    {
-      from = 25550;
-      to = 25559;
-    }
-  ];
   # Open ports in the firewall.
   #networking.firewall.allowedTCPPorts = [ ... ];
   networking.firewall.interfaces.${config.my.networking.wiredInterface} = {
@@ -158,29 +138,6 @@
       https
 
       mc
-
-      # SINFO 2026
-      50400
-      50401
-      50402
-      50403
-      50404
-      50405
-      50406
-      50407
-      50408
-      50409
-      50410
-      50411
-      50412
-      50413
-      50414
-      50415
-      50416
-      50417
-      50418
-      50419
-      50420
     ];
     allowedUDPPorts = with lib.my.ports; [
     ];
@@ -190,21 +147,6 @@
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
 
-  # Filesystem mounts
-  # ytdl-material
-  fileSystems."/mnt/ytdl-store" = {
-    device = "/srv/ytdl.img";
-    fsType = "ext4";
-    options = [ "loop" ];
-  };
-
-  systemd.tmpfiles.rules = [
-    "d /mnt/ytdl-store/audio 0755 root root -"
-    "d /mnt/ytdl-store/video 0755 root root -"
-    "d /mnt/ytdl-store/subscriptions 0755 root root -"
-    "d /mnt/ytdl-store/users 0755 root root -"
-    "d /mnt/ytdl-store/db 0755 root root -"
-  ];
 
   age.secrets.cloudflareDnsApiToken = {
     file = secrets.host.cloudflareDnsApiToken;
