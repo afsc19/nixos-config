@@ -39,7 +39,6 @@
       ctfd.enable = true;
       nginx = {
         enable = true;
-        useEncryptedVhosts = builtins.pathExists ../../secrets/sylva/nginxVhosts.age;
         acmeCerts = [
           {
             domain = "andrecadete.com";

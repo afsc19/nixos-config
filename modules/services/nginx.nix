@@ -68,15 +68,6 @@ in
   options.modules.services.nginx = {
     enable = mkEnableOption "nginx reverse proxy";
 
-    useEncryptedVhosts = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Load additional nginx server blocks from the agenix secret `secrets/''${host}/nginxVhosts.age`.
-        The decrypted file is included directly in nginx's http config.
-      '';
-    };
-
     exposedServices = mkOption {
       type = types.listOf (
         types.submodule {
@@ -135,14 +126,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = !cfg.useEncryptedVhosts || hasEncryptedVhostsSecret;
-        message = "modules.services.nginx.useEncryptedVhosts is enabled, but secrets.host.nginxVhosts is missing (expected secrets/<host>/nginxVhosts.age).";
-      }
-    ];
-
-    age.secrets.nginxVhosts = mkIf (cfg.useEncryptedVhosts && hasEncryptedVhostsSecret) {
+    age.secrets.nginxVhosts = mkIf (hasEncryptedVhostsSecret) {
       file = secrets.host.nginxVhosts;
       owner = "nginx";
       group = "nginx";
@@ -172,7 +156,7 @@ in
       virtualHosts = vhosts;
 
       appendHttpConfig = mkMerge [
-        (mkIf cfg.useEncryptedVhosts (mkAfter ''
+        (mkIf hasEncryptedVhostsSecret (mkAfter ''
           include ${config.age.secrets.nginxVhosts.path};
         ''))
         ''

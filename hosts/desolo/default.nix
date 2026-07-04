@@ -29,7 +29,6 @@
       # };
       nginx = {
         enable = true;
-        useEncryptedVhosts = builtins.pathExists ../../secrets/${config.networking.hostName}/nginxVhosts.age;
         # TODO
         # acmeCerts = [
         #   {

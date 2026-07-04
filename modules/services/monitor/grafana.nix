@@ -18,16 +18,18 @@ in
   # Automatically enable grafana if it's a hub.
   config = mkIf (thisNode != null && thisNode.isHub) {
     age.secrets.grafanaDiscordWebhook = {
-      file = secrets.sylva.grafanaDiscordWebhook;
+      file = secrets.${config.networking.hostName}.grafanaDiscordWebhook;
       owner = "grafana";
     };
 
     age.secrets.grafanaSecretKey = {
-      file = secrets.sylva.grafanaSecretKey;
+      file = secrets.${config.networking.hostName}.grafanaSecretKey;
       owner = "grafana";
     };
 
     networking.firewall.allowedTCPPorts = [ lib.my.ports.grafana ];
+
+    # TODO plug in nginx host
 
     services.grafana = {
       enable = true;
