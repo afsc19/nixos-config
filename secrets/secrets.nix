@@ -20,6 +20,7 @@ let
   serverSystems = [
     sylvaSystem
     favillaSystem
+    desoloSystem
   ];
   thirdPartySystems = [
     # ?
