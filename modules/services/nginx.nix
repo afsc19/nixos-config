@@ -64,8 +64,8 @@ let
       });
     }) (cfg.acmeCerts ++
       [{
-        domain = "*.${config.networking.hostName}.andrecadete.com";
-        extraDomainNames = [ ];
+        domain = "${config.networking.hostName}.andrecadete.com";
+        extraDomainNames = [ "*.${config.networking.hostName}.andrecadete.com" ];
         dnsProvider = "cloudflare";
       }])
   );
