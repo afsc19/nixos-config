@@ -103,7 +103,10 @@ mkSecrets [
       "nebulaCert"
       "nebulaKey"
       "uptimewireKey"
+      "grafanaDiscordWebhook"
+      "grafanaSecretKey"
       "cloudflareDnsApiToken"
+      "cloudflaredTunnel_desolo-andrecadete-com"
       "nginxVhosts"
     ]
   )

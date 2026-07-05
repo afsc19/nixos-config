@@ -35,6 +35,7 @@ in
         };
 
         # Disable beep when no file is found, per example.
+        # FIXME fix the \'\' in the output flake
         initContent = ''
                     # unsetopt beep
                     bindkey "^[[1;5C" forward-word # Ctrl + Right Arrow
@@ -51,7 +52,7 @@ in
             inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
             outputs = { nixpkgs, ... }: let 
               pkgs = nixpkgs.legacyPackages.x86_64-linux;
-              pythonEnv = (python313.withPackages (ps: [ ps.numpy ps.matplotlib ]));
+              pythonEnv = (pkgs.python313.withPackages (ps: [ ps.numpy ps.matplotlib ]));
             in {
               devShells.x86_64-linux.default = pkgs.mkShell {
                 packages = with pkgs; [
