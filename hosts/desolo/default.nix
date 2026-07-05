@@ -35,22 +35,13 @@
       };
       nginx = {
         enable = true;
-        # TODO
-        # acmeCerts = [
-        #   {
-        #     domain = "andrecadete.com";
-        #     extraDomainNames = [ "*.andrecadete.com" ];
-        #     dnsProvider = "cloudflare";
-        #   }
-        #   {
-        #     domain = "ctf.andrecadete.com";
-        #     extraDomainNames = [
-        #       "*.ctf.andrecadete.com"
-        #       "*.chall.ctf.andrecadete.com"
-        #     ];
-        #     dnsProvider = "cloudflare";
-        #   }
-        # ];
+        acmeCerts = [
+          {
+            domain = "andrecadete.com";
+            extraDomainNames = [ "*.andrecadete.com" ];
+            dnsProvider = "cloudflare";
+          }
+        ];
       };
       # Nebula (VPN)
       nebula = {
@@ -150,16 +141,6 @@
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
-
-  age.secrets.cloudflareDnsApiToken = {
-    file = secrets.host.cloudflareDnsApiToken;
-    owner = "acme";
-    group = "acme";
-    mode = "0400";
-  };
-
-  security.acme.defaults.email = "afsc.dev@gmail.com";
-  security.acme.defaults.environmentFile = config.age.secrets.cloudflareDnsApiToken.path;
 
   systemd.timers.check-calidor-wakeup = {
     wantedBy = [ "timers.target" ];

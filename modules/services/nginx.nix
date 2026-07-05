@@ -16,6 +16,7 @@ let
     mkOption
     types
     mkMerge
+    optionals
     ;
   cfg = config.modules.services.nginx;
   hasEncryptedVhostsSecret = hasAttrByPath [ "host" "nginxVhosts" ] secrets;
@@ -61,7 +62,11 @@ let
       // (optionalAttrs (cert.dnsProvider != null) {
         inherit (cert) dnsProvider;
       });
-    }) cfg.acmeCerts
+    }) (cfg.acmeCerts ++
+      {
+        domain = "*.${config.networking.hostName}.andrecadete.com";
+        dnsProvider = "cloudflare";
+      })
   );
 in
 {
@@ -177,9 +182,21 @@ in
 
     users.users.nginx.extraGroups = [ "acme" ];
 
+    # acme
+    age.secrets.cloudflareDnsApiToken = {
+      file = secrets.cloudflareDnsApiToken;
+      owner = "acme";
+      group = "acme";
+      mode = "0400";
+    };
     security.acme = {
+      defaults = {
+        email = "acme@andrecadete.com";
+        environmentFile = config.age.secrets.cloudflareDnsApiToken.path;
+      };
       acceptTerms = true;
       certs = acmeCerts;
     };
+
   };
 }

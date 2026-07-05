@@ -62,6 +62,10 @@ mkSecrets [
     "rclone"
   ])
 
+  (mkSystem "server" serverSystems [
+    "cloudflareDnsApiToken"
+  ])
+
   (mkSystem "zen"
     [ zenSystem ]
     [
@@ -81,7 +85,6 @@ mkSecrets [
       "grafanaAdminPassword"
       "grafanaSecretKey"
       "nginxVhosts"
-      "cloudflareDnsApiToken"
       "cloudflaredCert"
       "cloudflaredTunnel_sylva-tunnel"
       "komodoAdminPass"
@@ -107,7 +110,6 @@ mkSecrets [
       "grafanaDiscordWebhook"
       "grafanaAdminPassword"
       "grafanaSecretKey"
-      "cloudflareDnsApiToken"
       "cloudflaredTunnel_desolo-tunnel"
       "nginxVhosts"
     ]
