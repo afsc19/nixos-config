@@ -27,7 +27,7 @@ let
       value = {
         # enableACME = true;
         useACMEHost = entry.acmeHost;
-        forceSSL = true;
+        forceSSL = true; # TODO build HTTP -> HTTPS redirection
 
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString entry.port}";
@@ -153,6 +153,8 @@ in
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
+
+      logError = "stderr info";
 
       # a custom log with the server name and cloudflared ip on access_custom.log
       # default on access.log
