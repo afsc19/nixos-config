@@ -185,7 +185,7 @@ in
 
     # acme
     age.secrets.cloudflareDnsApiToken = {
-      file = secrets.cloudflareDnsApiToken;
+      file = secrets.server.cloudflareDnsApiToken;
       owner = "acme";
       group = "acme";
       mode = "0400";
