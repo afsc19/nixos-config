@@ -23,10 +23,9 @@
         rancher.enable = false;
         uptimewire.enable = true;
       };
-      # TODO
-      # cloudflared = {
-      #   enable = true;
-      # };
+      cloudflared = {
+        enable = true;
+      };
       nginx = {
         enable = true;
         # TODO
