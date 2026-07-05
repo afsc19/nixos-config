@@ -44,12 +44,14 @@ in
         {
           serverName = "grafana.${config.networking.hostName}.andrecadete.com";
           port = lib.my.ports.grafana;
+          acmeHost = "${config.networking.hostName}.andrecadete.com";
         }
       ]
       ++ optionals (config.networking.hostName == "sylva") [
         {
           serverName = "grafana.andrecadete.com";
           port = lib.my.ports.grafana;
+          acmeHost = "andrecadete.com";
         }
       ];
 

@@ -34,9 +34,10 @@ in
 
     modules.services.nginx.exposedServices = mkIf config.modules.services.nginx.enable [
       {
-        serverName = "cockpit.sylva.andrecadete.com";
+        serverName = "cockpit.${config.networking.hostName}.andrecadete.com";
         port = lib.my.ports.cockpit;
         nebulaOnly = true;
+        acmeHost = "${config.networking.hostName}.andrecadete.com";
       }
     ];
   };

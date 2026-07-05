@@ -26,6 +26,7 @@ let
       name = entry.serverName;
       value = {
         # enableACME = true;
+        useACMEHost = entry.acmeHost;
         forceSSL = true;
 
         locations."/" = {
@@ -92,6 +93,11 @@ in
               type = types.bool;
               default = false;
               description = "Restrict access to Nebula VPN IPs only.";
+            };
+
+            acmeHost = mkOption {
+              type = types.str;
+              description = "Name of the provisioned certificate to use.";
             };
           };
         }

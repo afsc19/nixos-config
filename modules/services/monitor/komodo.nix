@@ -145,8 +145,9 @@ in
 
     modules.services.nginx.exposedServices = mkIf config.modules.services.nginx.enable [
       {
-        serverName = "komodo.andrecadete.com";
+        serverName = "komodo.${config.networking.hostName}.andrecadete.com";
         port = lib.my.ports.komodoCore;
+        acmeHost = "${config.networking.hostName}.andrecadete.com";
       }
     ];
   };
