@@ -38,7 +38,7 @@ let
           '';
         };
       }
-      // optionalAttrs entry.vpnOnly {
+      // optionalAttrs entry.nebulaOnly {
         extraConfig = ''
           allow 192.168.100.0/24;
           allow 127.0.0.1;
@@ -82,7 +82,7 @@ in
               description = "Local TCP port of the service behind nginx.";
             };
 
-            vpnOnly = mkOption {
+            nebulaOnly = mkOption {
               type = types.bool;
               default = false;
               description = "Restrict access to Nebula VPN IPs only.";

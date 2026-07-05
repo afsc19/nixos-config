@@ -13,6 +13,9 @@ let
     ;
   inherit (lib.my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
+  domain = if config.networking.hostName == "sylva"
+    then "grafana.andrecadete.com"
+    else "grafana.${config.networking.hostName}.andrecadete.com";
 in
 {
   # Automatically enable grafana if it's a hub.
@@ -34,7 +37,22 @@ in
 
     networking.firewall.allowedTCPPorts = [ lib.my.ports.grafana ];
 
-    # TODO plug in nginx host
+    modules.services.nginx.exposedServices = mkIf config.modules.services.nginx.enable (
+      let
+        individual = [
+          {
+            serverName = "grafana.${config.networking.hostName}.andrecadete.com";
+            port = lib.my.ports.grafana;
+          }
+        ];
+        global = if config.networking.hostName == "sylva" then [
+          {
+            serverName = "grafana.andrecadete.com";
+            port = lib.my.ports.grafana;
+          }
+        ] else [];
+      in
+        individual ++ global);
 
     services.grafana = {
       enable = true;
@@ -44,8 +62,8 @@ in
           http_addr = "0.0.0.0";
           http_port = lib.my.ports.grafana;
 
-          domain = "grafana.andrecadete.com";
-          root_url = "https://grafana.andrecadete.com/";
+          inherit domain;
+          root_url = "https://${domain}/";
         };
 
         security = {

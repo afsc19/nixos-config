@@ -36,7 +36,7 @@ in
       {
         serverName = "cockpit.sylva.andrecadete.com";
         port = lib.my.ports.cockpit;
-        vpnOnly = true;
+        nebulaOnly = true;
       }
     ];
   };
