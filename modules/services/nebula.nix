@@ -189,6 +189,9 @@ in
         allowedUDPPortRanges = lib.lists.optionals hasUdpAny allPorts;
       };
 
+    # open port 4242 on the lighthouses, given that conntrack usually has a 30sec timeout and we want to keep connections alive.
+    networking.firewall.allowedUDPPorts = lib.mkIf cfg.isLighthouse [ 4242 ];
+
     environment.systemPackages = with pkgs; [
       nebula
     ];

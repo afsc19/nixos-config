@@ -74,7 +74,7 @@ in
     (mkIf (thisNode != null && thisNode.isHub) {
       services.prometheus = {
         enable = true;
-        port = lib.my.ports.prometheusServer; # Server on 9090, Exporter on 9100
+        port = lib.my.ports.prometheusServer;
         globalConfig.scrape_interval = "15s";
 
         scrapeConfigs = [
