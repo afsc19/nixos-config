@@ -63,10 +63,10 @@ let
         inherit (cert) dnsProvider;
       });
     }) (cfg.acmeCerts ++
-      {
+      [{
         domain = "*.${config.networking.hostName}.andrecadete.com";
         dnsProvider = "cloudflare";
-      })
+      }])
   );
 in
 {
