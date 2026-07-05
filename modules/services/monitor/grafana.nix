@@ -50,7 +50,7 @@ in
 
         security = {
           admin_user = "admin";
-          admin_password = "$__file{${config.age.secrets.grafanaAdminPassword.path}}"
+          admin_password = "$__file{${config.age.secrets.grafanaAdminPassword.path}}";
           secret_key = "$__file{${config.age.secrets.grafanaSecretKey.path}}";
         };
       };
