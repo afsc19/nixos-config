@@ -25,6 +25,13 @@
       };
       cloudflared = {
         enable = true;
+        tunnels = [
+          {
+            tunnelName = "desolo-tunnel";
+            tunnelID = "db266fee-3d5c-43d8-99dc-12a6a92aed0f";
+            default = "https://localhost:443";
+          }
+        ];
       };
       nginx = {
         enable = true;
