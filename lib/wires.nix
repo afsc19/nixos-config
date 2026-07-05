@@ -31,6 +31,7 @@
       "desolo" = {
         ip = "10.100.0.6";
         pubkey = "jGbyK1Yt+C544R3W4Gsz1pCsHRExp0GFpn/UVY6xrig=";
+        endpoint = "world.desolo.andrecadete.com";
         isHub = true;
         crowdsec = true;
       };
