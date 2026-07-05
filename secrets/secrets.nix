@@ -82,7 +82,7 @@ mkSecrets [
       "nginxVhosts"
       "cloudflareDnsApiToken"
       "cloudflaredCert"
-      "cloudflaredTunnel_sylva-andrecadete-com"
+      "cloudflaredTunnel_sylva-tunnel"
       "komodoAdminPass"
       "komodoPasskey"
     ]
@@ -106,7 +106,7 @@ mkSecrets [
       "grafanaDiscordWebhook"
       "grafanaSecretKey"
       "cloudflareDnsApiToken"
-      "cloudflaredTunnel_desolo-andrecadete-com"
+      "cloudflaredTunnel_desolo-tunnel"
       "nginxVhosts"
     ]
   )
