@@ -65,6 +65,7 @@ let
     }) (cfg.acmeCerts ++
       [{
         domain = "*.${config.networking.hostName}.andrecadete.com";
+        extraDomainNames = [ ];
         dnsProvider = "cloudflare";
       }])
   );
