@@ -32,12 +32,6 @@ let
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString entry.port}";
           proxyWebsockets = true;
-          extraConfig = ''
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-          '';
         };
       }
       // optionalAttrs entry.nebulaOnly {
@@ -153,8 +147,6 @@ in
       recommendedOptimisation = true;
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
-
-      logError = "stderr info";
 
       # a custom log with the server name and cloudflared ip on access_custom.log
       # default on access.log
