@@ -1,6 +1,5 @@
 # Asusd configuration
 {
-  pkgs,
   config,
   lib,
   ...

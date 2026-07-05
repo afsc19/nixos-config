@@ -21,7 +21,6 @@
     prometheusBlackbox = 9115;
     komodoCore = 9120;
 
-
     # A more reserved alternative to 8080
     nginxStubStatus = 18080;
 

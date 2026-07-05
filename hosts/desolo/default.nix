@@ -116,7 +116,6 @@
 
   # --- Firewall ---
 
-
   # NAT to favilla
   # networking.nat = {
   #   enable = true;
@@ -151,7 +150,6 @@
   #networking.firewall.allowedUDPPortRanges = [ { from = 32768; to = 60999; } ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
-
 
   age.secrets.cloudflareDnsApiToken = {
     file = secrets.host.cloudflareDnsApiToken;

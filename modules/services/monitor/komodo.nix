@@ -10,7 +10,6 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
-    mkAfter
     ;
 
   cfg = config.modules.services.monitor.komodo;
