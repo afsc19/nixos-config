@@ -25,7 +25,7 @@ let
     map (entry: {
       name = entry.serverName;
       value = {
-        enableACME = true;
+        # enableACME = true;
         forceSSL = true;
 
         locations."/" = {
