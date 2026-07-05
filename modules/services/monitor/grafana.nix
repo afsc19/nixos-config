@@ -40,13 +40,13 @@ in
     networking.firewall.allowedTCPPorts = [ lib.my.ports.grafana ];
 
     modules.services.nginx.exposedServices =
-      mkIf config.modules.services.nginx.enable [
+      optionals config.modules.services.nginx.enable [
         {
           serverName = "grafana.${config.networking.hostName}.andrecadete.com";
           port = lib.my.ports.grafana;
         }
       ]
-      ++ lib.optionals (config.networking.hostName == "sylva") [
+      ++ optionals (config.networking.hostName == "sylva") [
         {
           serverName = "grafana.andrecadete.com";
           port = lib.my.ports.grafana;
