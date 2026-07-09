@@ -41,10 +41,10 @@ in
       "net.ipv4.ip_forward" = 1;
     };
     networking.firewall.extraForwardRules = mkIf thisNode.isHub ''
-      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p icmp -j ACCEPT
-      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${toString my.ports.prometheus} -j ACCEPT
-      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${toString my.ports.ssh} -j ACCEPT
-      iptables -A FORWARD -i uptimeWire0 -o uptimeWire0 -j DROP
+      iptables -I FORWARD -i uptimeWire0 -o uptimeWire0 -j DROP
+      iptables -I FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${toString my.ports.ssh} -j ACCEPT
+      iptables -I FORWARD -i uptimeWire0 -o uptimeWire0 -p tcp --dport ${toString my.ports.prometheus} -j ACCEPT
+      iptables -I FORWARD -i uptimeWire0 -o uptimeWire0 -p icmp -j ACCEPT
     '';
 
     networking.firewall.allowedUDPPorts = [ port ];
