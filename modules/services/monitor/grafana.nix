@@ -100,7 +100,23 @@ in
                     url = "$__file{${config.age.secrets.grafanaDiscordWebhook.path}}";
                     use_discord_username = true;
                   };
-                  disableResolveMessage = false;
+                  disableResolveMessage = true;
+                }
+              ];
+            }
+            {
+              orgId = 1;
+              name = "discord-simple";
+              receivers = [
+                {
+                  uid = "discord-simple";
+                  type = "discord";
+                  settings = {
+                    url = "$__file{${config.age.secrets.grafanaDiscordWebhook.path}}";
+                    use_discord_username = true;
+                    message = "{{ .Annotations.summary }}";
+                  };
+                  disableResolveMessage = true;
                 }
               ];
             }
@@ -203,7 +219,7 @@ in
                                 },
                                 "isPaused": false,
                                 "notification_settings": {
-                                    "receiver": "discord"
+                                    "receiver": "discord-simple"
                                 }
                             }
                         ]
