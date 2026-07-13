@@ -4,7 +4,6 @@
   pkgs,
   profiles,
   lib,
-  secrets,
   ...
 }:
 {

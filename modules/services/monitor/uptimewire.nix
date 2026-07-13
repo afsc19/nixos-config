@@ -64,34 +64,42 @@ in
 
       # If we're a hub, map all excluding ourself.
       # Otherwise, only map hubs.
-      peers = mapAttrsToList (_name: data: let
-        toHub = !thisNode.isHub && data.isHub;
-        spokeAllowedIPs =
-          let
-            hubNames = builtins.attrNames (filterAttrs (n: d: d.isHub) fleet);
-            len = builtins.length hubNames;
-            # small loop to find hub position among other hubs
-            findIdx = i:
-              if i >= len then 0
-              else if builtins.elemAt hubNames i == _name then i
-              else findIdx (i + 1);
-            idx = findIdx 0;
+      peers = mapAttrsToList (
+        _name: data:
+        let
+          toHub = !thisNode.isHub && data.isHub;
+          spokeAllowedIPs =
+            let
+              hubNames = builtins.attrNames (filterAttrs (_n: d: d.isHub) fleet);
+              len = builtins.length hubNames;
+              # small loop to find hub position among other hubs
+              findIdx =
+                i:
+                if i >= len then
+                  0
+                else if builtins.elemAt hubNames i == _name then
+                  i
+                else
+                  findIdx (i + 1);
+              idx = findIdx 0;
 
-            # each hub gets a progressively broader prefix: /24, /23, /22, ...
-            # WARNING this solution is NOT scalable, and will only work with the first 8 hubs !!
-            # TODO find a better way to have failovers
-            rawBits = 24 - idx;
-            cidrBits = if rawBits < 16 then 16 else rawBits;
-          in
+              # each hub gets a progressively broader prefix: /24, /23, /22, ...
+              # WARNING this solution is NOT scalable, and will only work with the first 8 hubs !!
+              # TODO find a better way to have failovers
+              rawBits = 24 - idx;
+              cidrBits = if rawBits < 16 then 16 else rawBits;
+            in
             [ "10.100.0.0/${toString cidrBits}" ];
-      in {
-        publicKey = data.pubkey;
-        allowedIPs = (if toHub then spokeAllowedIPs else []) ++ [ "${data.ip}/32" ];
-        endpoint = if data ? endpoint then "${data.endpoint}:${toString port}" else null;
+        in
+        {
+          publicKey = data.pubkey;
+          allowedIPs = (if toHub then spokeAllowedIPs else [ ]) ++ [ "${data.ip}/32" ];
+          endpoint = if data ? endpoint then "${data.endpoint}:${toString port}" else null;
 
-        # Keepalives work spoke2hub and hub2hub (to keep punching NATs between hubs).
-        persistentKeepalive = mkIf (data.isHub) 25;
-      }) (filterAttrs (n: d: n != config.networking.hostName && (thisNode.isHub || d.isHub)) fleet);
+          # Keepalives work spoke2hub and hub2hub (to keep punching NATs between hubs).
+          persistentKeepalive = mkIf (data.isHub) 25;
+        }
+      ) (filterAttrs (n: d: n != config.networking.hostName && (thisNode.isHub || d.isHub)) fleet);
     };
   };
 }

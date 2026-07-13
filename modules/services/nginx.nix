@@ -16,7 +16,6 @@ let
     mkOption
     types
     mkMerge
-    optionals
     ;
   cfg = config.modules.services.nginx;
   hasEncryptedVhostsSecret = hasAttrByPath [ "host" "nginxVhosts" ] secrets;
@@ -46,23 +45,29 @@ let
   );
 
   acmeCerts = listToAttrs (
-    map (cert: {
-      name = cert.domain;
-      value = {
-        group = "nginx";
-      }
-      // (optionalAttrs (cert.extraDomainNames != [ ]) {
-        inherit (cert) extraDomainNames;
+    map
+      (cert: {
+        name = cert.domain;
+        value = {
+          group = "nginx";
+        }
+        // (optionalAttrs (cert.extraDomainNames != [ ]) {
+          inherit (cert) extraDomainNames;
+        })
+        // (optionalAttrs (cert.dnsProvider != null) {
+          inherit (cert) dnsProvider;
+        });
       })
-      // (optionalAttrs (cert.dnsProvider != null) {
-        inherit (cert) dnsProvider;
-      });
-    }) (cfg.acmeCerts ++
-      [{
-        domain = "${config.networking.hostName}.andrecadete.com";
-        extraDomainNames = [ "*.${config.networking.hostName}.andrecadete.com" ];
-        dnsProvider = "cloudflare";
-      }])
+      (
+        cfg.acmeCerts
+        ++ [
+          {
+            domain = "${config.networking.hostName}.andrecadete.com";
+            extraDomainNames = [ "*.${config.networking.hostName}.andrecadete.com" ];
+            dnsProvider = "cloudflare";
+          }
+        ]
+      )
   );
 in
 {
