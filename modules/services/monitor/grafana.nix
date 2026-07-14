@@ -1267,6 +1267,14 @@ in
                             "job 7" = true;
                             "job 8" = true;
                             phase = true;
+                            alias = true;
+                            "alias 1" = true;
+                            "alias 2" = true;
+                            "alias 3" = true;
+                            "alias 4" = true;
+                            "alias 5" = true;
+                            "alias 6" = true;
+                            "alias 7" = true;
                             type = true;
                             "type 1" = true;
                             "type 2" = true;
