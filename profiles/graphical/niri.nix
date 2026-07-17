@@ -23,7 +23,7 @@ in
       theme = {
         mode = "dark";
         source = "builtin";
-        builtin = "Noctalia";
+        builtin = "Ayu";
       };
       wallpaper = {
         enabled = true;
@@ -124,6 +124,7 @@ in
     seahorse # graphical keyring manager
     ptyxis
     wl-clipboard
+    wdisplays
   ];
 
   environment.sessionVariables = {

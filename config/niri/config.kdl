@@ -28,10 +28,10 @@ input {
 }
 
 layout {
-    gaps 8
+    gaps 4
 
     focus-ring {
-        width 2
+        width 1
         active-color "#f9e2af" // Catppuccin Yellow
         inactive-color "#313244" // Catppuccin Surface0
     }
@@ -44,18 +44,55 @@ binds {
     Mod+Q { close-window; }
 
     // terminal
-    Mod+T { spawn "ptyxis"; }
-    Mod+Return { spawn "ptyxis"; }
+    Mod+T { spawn "ptyxis --new-window"; }
+    Mod+Return { spawn "ptyxis --new-window"; }
 
     // window focus
     Mod+Left { focus-column-left; }
+    Mod+WheelScrollUp { focus-column-left; }
     Mod+Right { focus-column-right; }
-    Mod+Up { focus-window-or-monitor-up; }
-    Mod+Down { focus-window-or-monitor-down; }
+    Mod+WheelScrollDown { focus-column-left; }
 
-    // window move
+    Mod+Up { focus-window-or-monitor-up; }
+    Mod+WheelScrollLeft { focus-window-or-monitor-up; }
+    Mod+Down { focus-window-or-monitor-down; }
+    Mod+WheelScrollRight { focus-window-or-monitor-down; }
+
+    // switch workspace
+    Mod+Page_Up { focus-workspace-up; }
+    Mod+Ctrl+Up { focus-workspace-up; }
+    Mod+Ctrl+WheelScrollUp { focus-workspace-up; }
+    Mod+Page_Down { focus-workspace-down; }
+    Mod+Ctrl+Down { focus-workspace-down; }
+    Mod+Ctrl+WheelScrollDown { focus-workspace-down; }
+
+
+    // window move inside workspace
     Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+WheelScrollUp  { move-column-left; }
     Mod+Shift+Right { move-column-right; }
+    Mod+Shift+WheelScrollDown  { move-column-right; }
+
+    // window move to workspace
+    Mod+Ctrl+Shift+Page_Up { move-window-to-workspace-up; }
+    Mod+Ctrl+Shift+Up { move-window-to-workspace-up; }
+    Mod+Ctrl+Shift+WheelScrollUp { move-window-to-workspace-up; }
+    Mod+Shift+WheelScrollLeft { move-window-to-workspace-up; }
+    Mod+Ctrl+Shift+Page_Down { move-window-to-workspace-down; }
+    Mod+Ctrl+Shift+Down { move-window-to-workspace-down; }
+    Mod+Ctrl+Shift+WheelScrollDown { move-window-to-workspace-down; }
+    Mod+Shift+WheelScrollRight { move-window-to-workspace-down; }
+
+
+    // window move to monitor
+    Mod+Alt+Up { move-column-to-monitor-up; }
+    Mod+Alt+WheelScrollUp { move-column-to-monitor-up; }
+    Mod+Alt+Down { move-column-to-monitor-down; }
+    Mod+Alt+WheelScrollDown { move-column-to-monitor-down; }
+    Mod+Alt+Left { move-column-to-monitor-left; }
+    Mod+Alt+WheelScrollLeft { move-column-to-monitor-left; }
+    Mod+Alt+Right { move-column-to-monitor-right; }
+    Mod+Alt+WheelScrollRight { move-column-to-monitor-right; }
 
     // window resize
     Mod+R { switch-preset-column-width; }
@@ -68,13 +105,16 @@ binds {
     XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
     XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
     // media play
-    XF86AudioPlay  allow-when-locked=true { spawn-sh "noctalia media play-pause"; }
-    XF86AudioPause allow-when-locked=true { spawn-sh "noctalia media play-pause"; }
-    XF86AudioNext  allow-when-locked=true { spawn-sh "noctalia media next"; }
-    XF86AudioPrev  allow-when-locked=true { spawn-sh "noctalia media previous"; }
+    XF86AudioPlay  allow-when-locked=true { spawn-sh "noctalia msg media play-pause"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "noctalia msg media play-pause"; }
+    XF86AudioNext  allow-when-locked=true { spawn-sh "noctalia msg media next"; }
+    XF86AudioPrev  allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
     
+    Mod+O repeat=false { toggle-overview; }
+    Mod+Super_L repeat=false { toggle-overview; }
     Mod+D { spawn "noctalia launcher toggle"; }
     Mod+C { spawn "noctalia controlcenter toggle"; }
+    Mod+W { spawn "wdisplays"; }
 }
 
 
