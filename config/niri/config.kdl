@@ -111,7 +111,7 @@ binds {
     XF86AudioPrev  allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
     
     Mod+O repeat=false { toggle-overview; }
-    Mod+Super_L repeat=false { toggle-overview; }
+    Mod+Z repeat=false { toggle-overview; }
     Mod+D { spawn "noctalia launcher toggle"; }
     Mod+C { spawn "noctalia controlcenter toggle"; }
     Mod+W { spawn "wdisplays"; }
