@@ -550,6 +550,27 @@
         "type": "github"
       }
     },
+    "noctalia": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1784295216,
+        "narHash": "sha256-qsqWK82ehwtb1p5BDGXl2kkREouqMosvCneIbTEgDpE=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia",
+        "rev": "6446559e543fdb94859349e74d8be08b22998bb0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "ref": "cachix",
+        "repo": "noctalia",
+        "type": "github"
+      }
+    },
     "pwndbg": {
       "inputs": {
         "nixpkgs": [
@@ -641,6 +662,7 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
+        "noctalia": "noctalia",
         "pwndbg": "pwndbg",
         "spicetify-nix": "spicetify-nix",
         "themes": "themes",

@@ -1,0 +1,151 @@
+spawn-at-startup "noctalia"
+
+prefer-no-csd
+
+environment {
+    QT_QPA_PLATFORM "wayland"
+    DISPLAY null
+}
+
+cursor {
+    xcursor-theme "Bibata-Modern_classic"
+    xcursor-size 24
+}
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+    touchpad {
+        tap
+        natural-scroll
+    }
+    mouse {
+        accel-profile "flat"
+    }
+}
+
+layout {
+    gaps 8
+
+    focus-ring {
+        enable
+        width 2
+        active.color "#f9e2af" // Catppuccin Yellow
+        inactive.color "#313244" // Catppuccin Surface0
+    }
+}
+
+
+binds {
+    // Mod = Super = Win
+    Mod+Shift+E { quit; }
+    Mod+Q { close-window; }
+
+    // terminal
+    Mod+T { spawn "ptyxis"; }
+    Mod+Return { spawn "ptyxis"; }
+
+    // window focus
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-or-monitor-up; }
+    Mod+Down { focus-window-or-monitor-down; }
+
+    // window move
+    Mod+Shift+Left  { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+
+    // window resize
+    Mod+R { switch-preset-column-width; }
+    Mod+F { maximize-column; }
+
+    // audio
+    XF86AudioRaiseVolume { spawn-sh "noctalia msg volume-up"; }
+    XF86AudioLowerVolume { spawn-sh "noctalia msg volume-down"; }
+    XF86AudioMute { spawn-sh "noctalia msg volume-mute"; }
+    XF86MonBrightnessUp { spawn-sh "noctalia msg brightness-up"; }
+    XF86MonBrightnessDown { spawn-sh "noctalia msg brightness-down"; }
+    // media play
+    XF86AudioPlay  allow-when-locked=true { spawn-sh "noctalia media play-pause"; }
+    XF86AudioPause allow-when-locked=true { spawn-sh "noctalia media play-pause"; }
+    XF86AudioNext  allow-when-locked=true { spawn-sh "noctalia media next"; }
+    XF86AudioPrev  allow-when-locked=true { spawn-sh "noctalia media previous"; }
+    
+    Mod+D { spawn "noctalia launcher toggle"; }
+    Mod+C { spawn "noctalia controlcenter toggle"; }
+}
+
+
+window-rule {
+    // Rounded corners for a modern look.
+    geometry-corner-radius 10
+
+    // Clips window contents to the rounded corner boundaries.
+    clip-to-geometry true
+}
+
+// Floating Noctalia settings window.
+window-rule {
+  match app-id="dev.noctalia.Noctalia"
+  open-floating true
+  default-column-width { fixed 1080; }
+  default-window-height { fixed 920; }
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
+}
+
+// backdrop
+layer-rule {
+  match namespace="^noctalia-backdrop"
+  place-within-backdrop true
+}
+
+// background blur
+window-rule {
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+/*
+  Noctalia
+  Disable xray on all our surfaces so it looks more realistic.
+  Noctalia publishes blur regions automatically when ext-background-effects is available.
+*/
+layer-rule {
+  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+  background-effect {
+    xray false
+    // blur false
+  }
+}
+
+/* Enable blur on noctalia's window switcher and disable xray. */
+layer-rule {
+    match namespace="noctalia-window-switcher"
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
+/* You can also fine-tune the blur effect globally. */
+blur {
+  passes 2        // more passes = stronger blur (default: 3)
+  offset 3.0      // sample distance per pass (default: 3.0)
+  noise 0.03      // grain overlay (default: 0.02)
+  saturation 1.0  // color saturation boost (default: 1.5)
+}
+
+
+// TODO test this
+switch-events {
+    lid-close { spawn "noctalia msg session lock-and-suspend"; }
+}

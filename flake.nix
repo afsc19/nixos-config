@@ -118,6 +118,11 @@
     dmatools = {
       url = "github:tie-infra/dmatools";
     };
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
