@@ -51,7 +51,7 @@ binds {
     Mod+Left { focus-column-left; }
     Mod+WheelScrollUp { focus-column-left; }
     Mod+Right { focus-column-right; }
-    Mod+WheelScrollDown { focus-column-left; }
+    Mod+WheelScrollDown { focus-column-right; }
 
     Mod+Up { focus-window-or-monitor-up; }
     Mod+WheelScrollLeft { focus-window-or-monitor-up; }
