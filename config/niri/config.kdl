@@ -31,10 +31,9 @@ layout {
     gaps 8
 
     focus-ring {
-        enable
         width 2
-        active.color "#f9e2af" // Catppuccin Yellow
-        inactive.color "#313244" // Catppuccin Surface0
+        active-color "#f9e2af" // Catppuccin Yellow
+        inactive-color "#313244" // Catppuccin Surface0
     }
 }
 
