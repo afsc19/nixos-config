@@ -13,6 +13,34 @@ let
 in
 {
   programs.niri.enable = true;
+
+  programs.noctalia-greeter = {
+    enable = true;
+    greeter-args = "-- --session niri";
+    settings = {
+      session.default = "niri";
+      cursor = {
+        theme = "Bibata-Modern-Classic";
+        size = 24;
+        path = "${pkgs.bibata-cursors}/share/icons";
+      };
+      keyboard = {
+        layout = "us";
+      };
+      appearance.password_style = "random";
+      auth.allow_empty_password = false;
+    };
+  };
+
+  # TODO some people do this, lemme test without it first
+  # users.users.greeter = {
+  #   isSystemUser = true;
+  #   group = "greeter";
+  #   home = "/var/lib/greeter";
+  #   createHome = false;
+  # };
+  # users.groups.greeter = { };
+
   hm.xdg.configFile."niri/config.kdl".source = ../../config/niri/config.kdl;
   hm.imports = [
     inputs.noctalia.homeModules.default
@@ -36,10 +64,35 @@ in
         type = "google";
         name = "personal";
       };
-      shell.niri_overview_type_to_launch_enabled = true;
+      shell = {
+        niri_overview_type_to_launch_enabled = true;
+        time_format = "{:%H:%M:%S}";
+        greeter_sync.auto_sync = true;
+      };
+      lockscreen = {
+        enabled = true;
+        blurred_desktop = true;
+        blur_intensity = 0.7;
+        tint_intensity = 0.4;
+      };
+      lockscreen_widgets = {
+        enabled = true;
+        widget_order = [ "clock" ];
+        widget.clock = {
+          type = "clock";
+          cx = 200.0;
+          cy = 80.0;
+          settings = {
+            clock_style = "digital";
+            format = "{:%H:%M:%S}";
+            background = false;
+            shadow = true;
+          };
+        };
+      };
       idle = {
         pre_action_fade_seconds = 5.0;
-        behavior_order = [ "dim_backlight" "idle_notification" "lock_screen" "dpms_off" "suspend" ];
+        behavior_order = [ "dim_backlight" "idle_notification" "lock" "screen-off" "suspend" ];
         behaviour = {
           dim_backlight = {
             timeout = 180;
