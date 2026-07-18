@@ -125,6 +125,7 @@ in
     ptyxis
     wl-clipboard
     wdisplays
+    xwayland-satellite
   ];
 
   environment.sessionVariables = {
