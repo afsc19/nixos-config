@@ -169,5 +169,7 @@ in
 
   hm.home.sessionVariables = {
     TERMINAL = "ptyxis";
+    # use GNOME Secret Service keyring by gnome-keyring-daemon as org.freedesktop.secrets
+    XDG_CURRENT_DESKTOP = "niri:GNOME";
   };
 }

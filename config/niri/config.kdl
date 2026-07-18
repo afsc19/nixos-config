@@ -5,6 +5,7 @@ prefer-no-csd
 environment {
     QT_QPA_PLATFORM "wayland"
     DISPLAY null
+    XDG_CURRENT_DESKTOP "niri:GNOME"
 }
 
 cursor {
