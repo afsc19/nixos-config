@@ -69,6 +69,7 @@ in
         time_format = "{:%H:%M:%S}";
         greeter_sync.auto_sync = true;
       };
+      widget.clock.format = "{:%H:%M:%S}";
       lockscreen = {
         enabled = true;
         blurred_desktop = true;
