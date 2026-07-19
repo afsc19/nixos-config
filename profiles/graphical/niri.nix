@@ -174,6 +174,7 @@ in
 
   # 7. Utilities & Environment Variables
   environment.systemPackages = with pkgs; [
+    nautilus # file manager
     sushi # file previewer
     seahorse # graphical keyring manager
     ptyxis
