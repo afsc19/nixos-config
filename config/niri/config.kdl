@@ -44,8 +44,8 @@ binds {
     Mod+Q { close-window; }
 
     // terminal
-    Mod+T { spawn "ptyxis --new-window"; }
-    Mod+Return { spawn "ptyxis --new-window"; }
+    Mod+T { spawn "kitty"; }
+    Mod+Return { spawn "kitty"; }
 
     // window focus
     Mod+Left { focus-column-left; }

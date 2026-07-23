@@ -2,8 +2,6 @@
 {
   inputs,
   pkgs,
-  config,
-  lib,
   configDir,
   ...
 }:
@@ -12,6 +10,7 @@ let
   ptyxisProfileUUID = "23f46f5c-8d19-4c07-acab-7d4323234252";
 in
 {
+
   programs.niri.enable = true;
 
   programs.noctalia-greeter = {
@@ -93,7 +92,13 @@ in
       };
       idle = {
         pre_action_fade_seconds = 5.0;
-        behavior_order = [ "dim_backlight" "idle_notification" "lock" "screen-off" "suspend" ];
+        behavior_order = [
+          "dim_backlight"
+          "idle_notification"
+          "lock"
+          "screen-off"
+          "suspend"
+        ];
         behaviour = {
           dim_backlight = {
             timeout = 180;
@@ -181,13 +186,13 @@ in
     wl-clipboard
     wdisplays
     xwayland-satellite
+    kitty
   ];
 
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
     MOZ_ENABLE_WAYLAND = "1";
   };
-
 
   # fallback dconf settings
   hm.dconf.settings = {
@@ -215,16 +220,15 @@ in
     };
   };
 
-  # ptyxis
   xdg.terminal-exec = {
     enable = true;
     settings = {
-      default = [ "org.gnome.Ptyxis.desktop" ];
+      default = [ "kitty.desktop" ];
     };
   };
 
   hm.home.sessionVariables = {
-    TERMINAL = "ptyxis";
+    TERMINAL = "kitty";
     # use GNOME Secret Service keyring by gnome-keyring-daemon as org.freedesktop.secrets
     XDG_CURRENT_DESKTOP = "niri:GNOME";
   };
