@@ -99,7 +99,7 @@ in
           "screen-off"
           "suspend"
         ];
-        behaviour = {
+        behavior = {
           dim_backlight = {
             timeout = 180;
             action = "command";
@@ -112,6 +112,7 @@ in
             action = "command";
             command = "notify-send 'Idle' 'Going idle'";
             resume_command = "notify-send 'Idle' 'Back from idle'";
+            enabled = true;
           };
           lock = {
             timeout = 600;
@@ -126,6 +127,7 @@ in
           suspend = {
             timeout = 900;
             action = "lock_and_suspend";
+            enabled = true;
           };
         };
       };
