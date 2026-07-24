@@ -229,6 +229,23 @@ in
     };
   };
 
+  hm.programs.kitty = {
+    enable = true;
+    settings = {
+      confirm_os_window_close = 0;
+      tab_bar_edge = "top";
+      tab_bar_style = "powerline";
+      tab_bar_min_tabs = 1;
+      tab_bar_margin_height = "0.0 4.0";
+      active_tab_foreground = "#000000";
+      active_tab_background = "#f9e2af";
+      active_tab_font_style = "bold-italic";
+      inactive_tab_foreground = "#cdd6f4";
+      inactive_tab_background = "#313244";
+      tab_bar_background = "#11111b";
+    };
+  };
+
   hm.home.sessionVariables = {
     TERMINAL = "kitty";
     # use GNOME Secret Service keyring by gnome-keyring-daemon as org.freedesktop.secrets

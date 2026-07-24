@@ -153,6 +153,16 @@ window-rule {
   }
 }
 
+// global transparency
+window-rule {
+    opacity 0.85
+}
+
+window-rule {
+    match is-focused=true
+    opacity 0.93
+}
+
 /*
   Noctalia
   Disable xray on all our surfaces so it looks more realistic.
