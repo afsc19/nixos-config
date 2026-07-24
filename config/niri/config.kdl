@@ -15,7 +15,8 @@ cursor {
 input {
     keyboard {
         xkb {
-            layout "us"
+            layout "us,pt"
+            options "grp:win_space_toggle"
         }
     }
     touchpad {
