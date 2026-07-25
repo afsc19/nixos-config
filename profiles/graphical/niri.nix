@@ -30,12 +30,12 @@ in
       };
       appearance.password_style = "random";
       auth.allow_empty_password = false;
+      idle.timeout = 60;
     };
   };
 
-  # Copy user avatar to AccountsService so the greeter (which runs as a
-  # different user) can read it despite the private home directory.
-  system.activationScripts.afsc-avatar = lib.stringAfter [ "users" ] ''
+  # Copy user avatar to AccountsService so the greeter can read it
+  system.activationScripts.user-avatar = lib.stringAfter [ "users" ] ''
     if [ -f /home/${user}/.face ]; then
       mkdir -p /var/lib/AccountsService/{icons,users}
       install -m 0644 /home/${user}/.face /var/lib/AccountsService/icons/${user}
@@ -47,14 +47,6 @@ EOF
     fi
   '';
 
-  # TODO some people do this, lemme test without it first
-  # users.users.greeter = {
-  #   isSystemUser = true;
-  #   group = "greeter";
-  #   home = "/var/lib/greeter";
-  #   createHome = false;
-  # };
-  # users.groups.greeter = { };
 
   hm.xdg.configFile."niri/config.kdl".source = ../../config/niri/config.kdl;
   hm.imports = [
