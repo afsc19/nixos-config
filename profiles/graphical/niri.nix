@@ -189,6 +189,10 @@ in
     wdisplays
     xwayland-satellite
     kitty
+
+    # backup in case niri config fails to load
+    alacritty
+    fuzzel
   ];
 
   environment.sessionVariables = {
