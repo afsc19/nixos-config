@@ -19,7 +19,7 @@
       # Discord enabled in the corresponding profile.
       # Editors enabled in the corresponding profile.
       music = {
-        # spotify.enable = true;
+        spotify.enable = true;
         # hiresti.enable = true;
       };
       # androidstudio.enable = true;
