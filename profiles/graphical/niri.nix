@@ -237,6 +237,7 @@ in
     enable = true;
     settings = {
       confirm_os_window_close = 0;
+      background_opacity = "0.8";
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_bar_min_tabs = 1;
