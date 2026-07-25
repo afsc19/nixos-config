@@ -119,7 +119,7 @@ binds {
 
     Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
-    Mod+L { spawn-sh "noctalia msg session lock-and-suspend"}
+    Mod+L { spawn-sh "noctalia msg session lock-and-suspend"; }
 }
 
 
