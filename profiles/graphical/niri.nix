@@ -2,7 +2,9 @@
 {
   inputs,
   pkgs,
+  lib,
   configDir,
+  user,
   ...
 }:
 let
@@ -30,6 +32,20 @@ in
       auth.allow_empty_password = false;
     };
   };
+
+  # Copy user avatar to AccountsService so the greeter (which runs as a
+  # different user) can read it despite the private home directory.
+  system.activationScripts.afsc-avatar = lib.stringAfter [ "users" ] ''
+    if [ -f /home/${user}/.face ]; then
+      mkdir -p /var/lib/AccountsService/{icons,users}
+      install -m 0644 /home/${user}/.face /var/lib/AccountsService/icons/${user}
+      cat > /var/lib/AccountsService/users/${user} << 'EOF'
+[User]
+Icon=/var/lib/AccountsService/icons/${user}
+EOF
+      chmod 0600 /var/lib/AccountsService/users/${user}
+    fi
+  '';
 
   # TODO some people do this, lemme test without it first
   # users.users.greeter = {
@@ -237,7 +253,7 @@ in
     enable = true;
     settings = {
       confirm_os_window_close = 0;
-      background_opacity = "0.8";
+      background_opacity = "0.7";
       tab_bar_edge = "top";
       tab_bar_style = "powerline";
       tab_bar_min_tabs = 1;
