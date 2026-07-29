@@ -10,9 +10,42 @@ let
   inherit (lib)
     mkIf
     optionals
+    optionalString
     ;
   inherit (lib.my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
+  mkUptimewireDashboard = { uid, title, tags, aliasFilter, panels }: let
+    filterSuffix = lib.optionalString (aliasFilter != null) ", alias=~\"${aliasFilter}\"";
+  in
+    builtins.toJSON {
+      inherit uid title tags panels;
+      timezone = "browser";
+      time = {
+        from = "now-24h";
+        to = "now";
+      };
+      refresh = if config.services.prometheus.enable then
+        config.services.prometheus.globalConfig.scrape_interval
+      else
+        "15s";
+      schemaVersion = 30;
+      templating = {
+        list = [
+          {
+            name = "alias";
+            type = "query";
+            datasource = {
+              type = "prometheus";
+              uid = "prometheus";
+            };
+            query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"${filterSuffix}}, alias)";
+            refresh = 1;
+            multi = true;
+            includeAll = true;
+          }
+        ];
+      };
+    };
   domain =
     if config.networking.hostName == "sylva" then
       "grafana.andrecadete.com"
@@ -362,40 +395,14 @@ in
             name = "Uptime Wire";
             folder = "Uptimewire";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
-              builtins.toJSON {
+              mkUptimewireDashboard {
                 uid = "uptimewire-overview";
                 title = "Uptime Wire Overview";
                 tags = [
                   "uptimewire"
                   "infrastructure"
                 ];
-                timezone = "browser";
-                time = {
-                  from = "now-24h";
-                  to = "now";
-                };
-                refresh =
-                  if config.services.prometheus.enable then
-                    config.services.prometheus.globalConfig.scrape_interval
-                  else
-                    "15s";
-                schemaVersion = 30;
-                templating = {
-                  list = [
-                    {
-                      name = "alias";
-                      type = "query";
-                      datasource = {
-                        type = "prometheus";
-                        uid = "prometheus";
-                      };
-                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"}, alias)";
-                      refresh = 1;
-                      multi = true;
-                      includeAll = true;
-                    }
-                  ];
-                };
+                aliasFilter = null;
                 panels = [
                   {
                     id = 1;
@@ -475,7 +482,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
@@ -517,7 +524,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s]) or irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) * 100)";
@@ -569,7 +576,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "max by (alias) (100 * (1 - ((node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_available_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"})/(node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_physical_total_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}))))";
@@ -621,7 +628,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "max by (alias, mountpoint, volume) (100 * (
@@ -700,7 +707,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "max by (alias, device, volume) (100 * (
@@ -770,7 +777,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "(max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"}))) or (label_replace((max(up{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\"} == 1) * 0), \"action\", \"ban\", \"\", \"\") unless on() max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"})))";
@@ -807,7 +814,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "max(sum by (job) (cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"}))";
@@ -842,7 +849,7 @@ in
             name = "Uptime Wire Family";
             folder = "Uptimewire Family";
             options.path = pkgs.writeTextDir "uptimewire-overview.json" (
-              builtins.toJSON {
+              mkUptimewireDashboard {
                 uid = "uptimewire-overview-family";
                 title = "Uptime Wire Overview Family";
                 tags = [
@@ -850,33 +857,7 @@ in
                   "infrastructure"
                   "family"
                 ];
-                timezone = "browser";
-                time = {
-                  from = "now-24h";
-                  to = "now";
-                };
-                refresh =
-                  if config.services.prometheus.enable then
-                    config.services.prometheus.globalConfig.scrape_interval
-                  else
-                    "15s";
-                templating = {
-                  list = [
-                    {
-                      name = "alias";
-                      type = "query";
-                      datasource = {
-                        type = "prometheus";
-                        uid = "prometheus";
-                      };
-                      query = "label_values(up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"favilla|calidor\"}, alias)";
-                      refresh = 1;
-                      multi = true;
-                      includeAll = true;
-                    }
-                  ];
-                };
-                schemaVersion = 30;
+                aliasFilter = "favilla|calidor";
                 panels = [
                   {
                     id = 1;
@@ -956,7 +937,7 @@ in
                     };
                     repeat = "alias";
                     repeatDirection = "h";
-                    maxPerRow = 4;
+                    maxPerRow = 5;
                     targets = [
                       {
                         expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
