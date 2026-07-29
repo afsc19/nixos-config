@@ -156,6 +156,26 @@ EOF
   services.power-profiles-daemon.enable = true;
   services.upower.enable = true;
 
+  # map super to open overview
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ];
+      settings = {
+        global.overload_tap_timeout = 500;
+        main.meta = "overload(meta, M-o)";
+      };
+    };
+  };
+
+  # touchpad palm rejection
+  environment.etc."libinput/local-overrides.quirks".text = ''
+    [Serial Keyboards]
+    MatchUdevType=keyboard
+    MatchName=keyd virtual keyboard
+    AttrKeyboardIntegration=internal
+  '';
+
   services.gnome.gnome-keyring.enable = true;
   programs.dconf.enable = true;
   services.gvfs.enable = true; # nautilus file manager
@@ -194,7 +214,9 @@ EOF
     seahorse # graphical keyring manager
     ptyxis
     wl-clipboard
-    wdisplays
+    grim
+    slurp
+    nwg-displays
     xwayland-satellite
     kitty
 

@@ -2,6 +2,9 @@ spawn-at-startup "noctalia"
 
 prefer-no-csd
 
+// for nwg-displays
+include "monitor.kdl";
+
 environment {
     QT_QPA_PLATFORM "wayland"
     XDG_CURRENT_DESKTOP "niri:GNOME"
@@ -16,7 +19,7 @@ input {
     keyboard {
         xkb {
             layout "us,pt"
-            options "grp:win_space_toggle"
+            // options "grp:win_space_toggle"
         }
     }
     touchpad {
@@ -113,9 +116,14 @@ binds {
     
     Mod+O repeat=false { toggle-overview; }
     Mod+Z repeat=false { toggle-overview; }
+    
+    Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy"; }
+    Shift+Print { spawn-sh "grim - | wl-copy"; }
+    Ctrl+Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy && notify-send 'Screenshot' 'Copied to clipboard'"; } // for debug
+
     Mod+D { spawn "noctalia launcher toggle"; }
     Mod+C { spawn "noctalia controlcenter toggle"; }
-    Mod+W { spawn "wdisplays"; }
+    Mod+W { spawn "nwg-displays"; }
 
     Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }
