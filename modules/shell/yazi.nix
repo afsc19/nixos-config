@@ -84,6 +84,12 @@ in
       recommendedDeps ++ cfg.extraPackages
     );
 
+    # cache server
+    nix.settings = {
+      extra-substituters = [ "https://yazi.cachix.org" ];
+      extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" ];
+    };
+
     # Provide the function for non-HM managed POSIX shells (e.g. root, other users)
     environment.etc."profile.d/30-yazi-cwd.sh".text = yFunctionPOSIX;
   };

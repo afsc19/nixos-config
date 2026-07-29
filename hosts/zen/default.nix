@@ -19,11 +19,11 @@
       # Discord enabled in the corresponding profile.
       # Editors enabled in the corresponding profile.
       music = {
-        # spotify.enable = true;
+        spotify.enable = true;
         # hiresti.enable = true;
       };
       # androidstudio.enable = true;
-      gnome.enable = true;
+      # gnome.enable = true;
       gtk.enable = true;
       office.enable = true;
       qt.enable = true;
@@ -103,6 +103,7 @@
     graphical.editors
     graphical.games
     graphical.neovim-personal
+    graphical.niri
     graphical.video
 
     mobile.android-tools

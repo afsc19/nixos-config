@@ -43,7 +43,7 @@ in
       spotifyPackage = pkgs.spotify;
 
       theme = pkgs.spicetify.themes.sleek;
-      # colorScheme = "purple";
+      colorScheme = "Greener";
 
       enabledExtensions = with pkgs.spicetify.extensions; [
         # Nothing for now

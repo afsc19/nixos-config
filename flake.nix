@@ -118,6 +118,16 @@
     dmatools = {
       url = "github:tie-infra/dmatools";
     };
+
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -195,6 +205,7 @@
           inputs.binaryninja.nixosModules.binaryninja
           inputs.lanzaboote.nixosModules.lanzaboote
           inputs.dedsec-grub-theme.nixosModule
+          inputs.noctalia-greeter.nixosModules.default
         ];
       };
       profiles = mkProfiles ./profiles;

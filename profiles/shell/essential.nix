@@ -86,5 +86,7 @@
     # with more details log output
     nix-output-monitor
     agenix
+
+    kitty.terminfo
   ];
 }
