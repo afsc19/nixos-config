@@ -19,7 +19,7 @@ input {
     keyboard {
         xkb {
             layout "us,pt"
-            // options "grp:win_space_toggle"
+            options "grp:win_space_toggle"
         }
     }
     touchpad {
