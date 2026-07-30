@@ -46,7 +46,7 @@ in
 
     boot.binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
       emulatedSystems = [ "x86_64-linux" ];
-      preferStaticEmulators = true; # Make it work with Docker
+      # preferStaticEmulators = true; # Make it work with Docker
     };
 
   };
