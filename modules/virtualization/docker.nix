@@ -33,15 +33,16 @@ in
       docker-buildx
     ];
 
-    nixpkgs.overlays = [
-      (_final: prev: {
-        qemu-user = prev.qemu-user.overrideAttrs (old: {
-          configureFlags = (old.configureFlags or [ ]) ++ [
-            "--disable-pie"
-          ];
-        });
-      })
-    ];
+    # tweak for some pwn challenges
+    # nixpkgs.overlays = [
+    #   (_final: prev: {
+    #     qemu-user = prev.qemu-user.overrideAttrs (old: {
+    #       configureFlags = (old.configureFlags or [ ]) ++ [
+    #         "--disable-pie"
+    #       ];
+    #     });
+    #   })
+    # ];
 
     boot.binfmt = mkIf (cfg.useVirtualization && pkgs.stdenv.hostPlatform.isAarch64) {
       emulatedSystems = [ "x86_64-linux" ];
