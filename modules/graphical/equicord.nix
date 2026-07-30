@@ -40,10 +40,6 @@ in
           channelTabs.enable = false;
           showHiddenChannels.enable = true;
           summaries.enable = false; # No AI crap for now
-          splitLargeMessages = {
-            enable = true;
-            disableFileConversion = true;
-          };
           previewMessage.enable = true;
         };
       };
