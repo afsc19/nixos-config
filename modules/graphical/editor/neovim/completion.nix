@@ -13,8 +13,6 @@ in
 
   config = mkIf cfg.enable {
     hm.programs.nixvim = {
-      nixpkgs.config.allowUnfree = true;
-
       plugins.blink-cmp = {
         enable = true;
 

@@ -21,10 +21,7 @@ in
     hm.programs.nixvim = {
       enable = true;
 
-      nixpkgs = {
-        useGlobalPackages = true;
-        source = inputs.nixpkgs;
-      };
+      nixpkgs.useGlobalPackages = true;
 
       defaultEditor = true;
       viAlias = true;
