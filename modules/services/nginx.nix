@@ -57,7 +57,7 @@ let
         // (optionalAttrs (cert.dnsProvider != null) {
           inherit (cert) dnsProvider;
         })
-        // (optionalAttrs (!cert.dnsPropagationCheck) {
+        // (optionalAttrs (!(cert.dnsPropagationCheck or true)) {
           inherit (cert) dnsPropagationCheck;
         });
       })
