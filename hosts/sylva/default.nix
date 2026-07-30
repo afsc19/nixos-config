@@ -51,6 +51,7 @@
               "*.chall.ctf.andrecadete.com"
             ];
             dnsProvider = "cloudflare";
+            dnsPropagationCheck = false;
           }
         ];
       };

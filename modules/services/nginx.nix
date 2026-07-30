@@ -56,6 +56,9 @@ let
         })
         // (optionalAttrs (cert.dnsProvider != null) {
           inherit (cert) dnsProvider;
+        })
+        // (optionalAttrs (!cert.dnsPropagationCheck) {
+          inherit (cert) dnsPropagationCheck;
         });
       })
       (
@@ -124,6 +127,12 @@ in
               type = types.nullOr types.str;
               default = null;
               description = "ACME DNS provider name (required for wildcard certificates).";
+            };
+
+            dnsPropagationCheck = mkOption {
+              type = types.bool;
+              default = true;
+              description = "Toggle lego DNS propagation check/CNAME following.";
             };
           };
         }
