@@ -13,7 +13,7 @@
 
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Input for Nixcord (Discord clients configs for NixOS/Home Manager)
@@ -36,7 +36,7 @@
 
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Secure boot systemd-boot
@@ -121,12 +121,12 @@
 
     noctalia = {
       url = "github:noctalia-dev/noctalia/cachix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctalia-greeter = {
       url = "github:noctalia-dev/noctalia-greeter";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
