@@ -57,8 +57,8 @@ let
         // (optionalAttrs (cert.dnsProvider != null) {
           inherit (cert) dnsProvider;
         })
-        // (optionalAttrs (!(cert.dnsPropagationCheck or true)) {
-          inherit (cert) dnsPropagationCheck;
+        // (optionalAttrs (cert.extraLegoFlags != [ ]) {
+          inherit (cert) extraLegoFlags;
         });
       })
       (
@@ -68,6 +68,7 @@ let
             domain = "${config.networking.hostName}.andrecadete.com";
             extraDomainNames = [ "*.${config.networking.hostName}.andrecadete.com" ];
             dnsProvider = "cloudflare";
+            extraLegoFlags = [ ];
           }
         ]
       )
@@ -129,10 +130,10 @@ in
               description = "ACME DNS provider name (required for wildcard certificates).";
             };
 
-            dnsPropagationCheck = mkOption {
-              type = types.bool;
-              default = true;
-              description = "Toggle lego DNS propagation check/CNAME following.";
+            extraLegoFlags = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              description = "Additional global flags to pass to all lego commands.";
             };
           };
         }

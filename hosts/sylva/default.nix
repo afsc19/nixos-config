@@ -51,7 +51,7 @@
               "*.chall.ctf.andrecadete.com"
             ];
             dnsProvider = "cloudflare";
-            dnsPropagationCheck = false;
+            extraLegoFlags = [ "--dns.disable-cp" ];
           }
         ];
       };
