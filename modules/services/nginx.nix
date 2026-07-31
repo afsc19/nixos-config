@@ -56,9 +56,6 @@ let
         })
         // (optionalAttrs (cert.dnsProvider != null) {
           inherit (cert) dnsProvider;
-        })
-        // (optionalAttrs (cert.extraLegoFlags != [ ]) {
-          inherit (cert) extraLegoFlags;
         });
       })
       (
@@ -68,7 +65,6 @@ let
             domain = "${config.networking.hostName}.andrecadete.com";
             extraDomainNames = [ "*.${config.networking.hostName}.andrecadete.com" ];
             dnsProvider = "cloudflare";
-            extraLegoFlags = [ ];
           }
         ]
       )
@@ -128,12 +124,6 @@ in
               type = types.nullOr types.str;
               default = null;
               description = "ACME DNS provider name (required for wildcard certificates).";
-            };
-
-            extraLegoFlags = mkOption {
-              type = types.listOf types.str;
-              default = [ ];
-              description = "Additional global flags to pass to all lego commands.";
             };
           };
         }
