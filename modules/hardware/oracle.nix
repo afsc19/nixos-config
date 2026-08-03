@@ -18,6 +18,11 @@ in
       iptables -I FORWARD -d 169.254.169.254 -j DROP
     '';
 
+    # Don't use network manager since oracle cloud poorly supports it
+    networking.networkmanager.enable = lib.mkForce false;
+    networking.useDHCP = true;
+    networking.useNetworkd = true;
+
     # Quicker bootloader
     boot.loader.timeout = 2;
   };

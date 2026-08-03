@@ -17,6 +17,7 @@
     graphical.editor.neovim.base.enable = true;
     hardware.oracle.enable = true;
     services = {
+      dnscrypt.enable = true;
       monitor = {
         portainer.enable = true;
         rancher.enable = false;
@@ -101,11 +102,6 @@
   ];
 
   boot.loader.systemd-boot.enable = true;
-
-  # Don't use network manager since oracle cloud poorly supports it
-  networking.networkmanager.enable = lib.mkForce false;
-  networking.useDHCP = true;
-  networking.useNetworkd = true;
 
   systemd.network.enable = true;
 

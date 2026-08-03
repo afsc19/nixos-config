@@ -38,6 +38,7 @@
       touchpad.enable = true;
     };
     services = {
+      dnscrypt.enable = true;
       # Nebula (VPN)
       monitor.uptimewire.enable = true;
       nebula = {
