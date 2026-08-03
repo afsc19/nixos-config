@@ -100,7 +100,7 @@ in
         KEY_FILE="/var/lib/crowdsec/firewall-bouncer.key"
         BOUNCER_NAME="nixos-firewall-bouncer"
 
-        CSCLI="${config.services.crowdsec.package}/bin/cscli"
+        CSCLI="/run/current-system/sw/bin/cscli"
 
         if [ ! -s "$KEY_FILE" ]; then
           echo "generating bouncer API key..."
