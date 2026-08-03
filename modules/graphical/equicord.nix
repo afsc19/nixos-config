@@ -35,7 +35,6 @@ in
             noSpotifyAutoPause = false;
           };
           musicControls.enable = false;
-          messageLoggerEnhanced.enable = false;
           channelTabs.enable = false;
           showHiddenChannels.enable = true;
           summaries.enable = false; # No AI crap for now
