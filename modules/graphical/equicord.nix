@@ -30,7 +30,6 @@ in
           fakeNitro.enable = true;
           noNitroUpsell.enable = true;
           questify.enable = true;
-          spotifyActivityToggle.enable = true;
           spotifyCrack = {
             enable = false;
             noSpotifyAutoPause = false;
@@ -41,6 +40,10 @@ in
           showHiddenChannels.enable = true;
           summaries.enable = false; # No AI crap for now
           previewMessage.enable = true;
+          fixSpotifyEmbeds.enable = true;
+          disableCallIdle.enable = true;
+          iRememberYou.enable = true;
+          messageLoggerEnhanced.enable = true;
         };
       };
     };
