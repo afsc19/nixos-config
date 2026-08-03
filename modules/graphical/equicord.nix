@@ -44,6 +44,7 @@ in
           disableCallIdle.enable = true;
           iRememberYou.enable = true;
           messageLoggerEnhanced.enable = true;
+          permissionsViewer.enable = true;
         };
       };
     };
