@@ -37,5 +37,6 @@
       };
     };
     port = lib.my.ports.wireguardUptimeWire;
+    captain = "sylva";
   };
 }

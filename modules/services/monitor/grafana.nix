@@ -47,7 +47,7 @@ let
       };
     };
   domain =
-    if config.networking.hostName == "sylva" then
+    if config.networking.hostName == lib.my.uptimewire.captain then
       "grafana.andrecadete.com"
     else
       "grafana.${config.networking.hostName}.andrecadete.com";
@@ -80,7 +80,7 @@ in
           acmeHost = "${config.networking.hostName}.andrecadete.com";
         }
       ]
-      ++ optionals (config.networking.hostName == "sylva") [
+      ++ optionals (config.networking.hostName == lib.my.uptimewire.captain) [
         {
           serverName = "grafana.andrecadete.com";
           port = lib.my.ports.grafana;
