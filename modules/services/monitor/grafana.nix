@@ -1398,7 +1398,7 @@ in
                             }
                             {
                               id = "max";
-                              value = 365;
+                              value = 90;
                             }
                             {
                               id = "custom.filterable";
