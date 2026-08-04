@@ -60,6 +60,7 @@ mkSecrets [
 
   (mkSystem "personal" personalSystems [
     "rclone"
+    "tecnicoVpnPassword"
   ])
 
   (mkSystem "server" serverSystems [
