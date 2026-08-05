@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -112,6 +113,15 @@ in
           };
         };
       };
+    };
+
+    age.secrets.ociSmtpUser = {
+      file = secrets.host.ociSmtpUser;
+      owner = "stalwart";
+    };
+    age.secrets.ociSmtpPass = {
+      file = secrets.host.ociSmtpPass;
+      owner = "stalwart";
     };
 
     systemd.services.stalwart = {
