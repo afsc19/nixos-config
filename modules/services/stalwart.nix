@@ -45,7 +45,6 @@ in
         "key.pem" = "${certDir}/key.pem";
         "oci-user" = config.age.secrets.ociSmtpUser.path;
         "oci-pass" = config.age.secrets.ociSmtpPass.path;
-        "admin-pass" = config.age.secrets.stalwartAdminPass.path;
       };
 
       settings = {
