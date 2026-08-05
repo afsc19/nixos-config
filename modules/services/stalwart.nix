@@ -43,6 +43,9 @@ in
       credentials = {
         "cert.pem" = "${certDir}/fullchain.pem";
         "key.pem" = "${certDir}/key.pem";
+        "oci-user" = config.age.secrets.ociSmtpUser.path;
+        "oci-pass" = config.age.secrets.ociSmtpPass.path;
+        "admin-pass" = config.age.secrets.stalwartAdminPass.path;
       };
 
       settings = {
@@ -68,8 +71,8 @@ in
             implicit = true;
           };
           auth = {
-            username = "%{file:${config.age.secrets.ociSmtpUser.path}}";
-            password = "%{file:${config.age.secrets.ociSmtpPass.path}}";
+            username = "%{file:${credPath}/oci-user}%";
+            password = "%{file:${credPath}/oci-pass}%";
           };
         };
 
@@ -112,6 +115,11 @@ in
             use-x-forwarded = true;
           };
         };
+        # admin creds
+        authentication.fallback-admin = {
+          user = "admin";
+          secret = "%{file:${credPath}/admin-pass}%";
+        };
       };
     };
 
@@ -121,6 +129,10 @@ in
     };
     age.secrets.ociSmtpPass = {
       file = secrets.host.ociSmtpPass;
+      owner = "stalwart";
+    };
+    age.secrets.stalwartAdminPass = {
+      file = secrets.host.stalwartAdminPass;
       owner = "stalwart";
     };
 
