@@ -49,6 +49,34 @@ in
       };
 
       settings = {
+        config.local-keys = [
+          "authentication.fallback-admin.*"
+          "certificate.*"
+          "cluster.node-id"
+          "directory.*"
+          "lookup.default.domain"
+          "lookup.default.hostname"
+          "metrics.*"
+          "queue.route.*"
+          "queue.strategy.route.*"
+          "report.analysis.*"
+          "resolver.*"
+          "server.*"
+          "!server.blocked-ip.*"
+          "session.mta-sts.*"
+          "session.rcpt.catch-all"
+          "session.rcpt.rewrite.*"
+          "spam-filter.resource"
+          "storage.blob"
+          "storage.data"
+          "storage.directory"
+          "storage.fts"
+          "storage.lookup"
+          "store.*"
+          "tracer.*"
+          "webadmin.*"
+        ];
+
         # TLS certificate shared with nginx
         certificate.default = {
           cert = "%{file:${credPath}/cert.pem}%";
