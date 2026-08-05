@@ -56,7 +56,6 @@ in
           level = "trace";
         };
         config.local-keys = [
-          "authentication.fallback-admin.*"
           "certificate.*"
           "cluster.node-id"
           "directory.*"
@@ -149,7 +148,7 @@ in
             use-x-forwarded = true;
           };
         };
-        # admin creds
+        # admin creds - deprecated
         authentication.fallback-admin = {
           user = "admin";
           secret = "%{file:${credPath}/admin-pass}%";
@@ -173,6 +172,7 @@ in
     systemd.services.stalwart = {
       wants = [ "acme-${cfg.domain}.service" ];
       after = [ "acme-${cfg.domain}.service" ];
+      serviceConfig.EnvironmentFile = config.age.secrets.stalwartAdminEnv.path;
     };
 
     # Restart stalwart on certificate renewal
