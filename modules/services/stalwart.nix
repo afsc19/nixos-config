@@ -139,7 +139,7 @@ in
         {
           serverName = adminHost;
           port = lib.my.ports.stalwartHttp;
-          acmeHost = cfg.domain;
+          acmeHost = "${config.networking.hostName}.andrecadete.com";
         }
       ];
   };
