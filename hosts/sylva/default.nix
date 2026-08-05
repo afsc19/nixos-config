@@ -67,6 +67,7 @@
           }
         ];
       };
+      stalwart.enable = true;
       # TODO automatic append-only backups
     };
     shell = {

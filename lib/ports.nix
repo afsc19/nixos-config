@@ -4,9 +4,12 @@
   # track of assigned ports across all profiles/modules
   ports = {
     ssh = 22;
+    smtp = 25;
     dns = 53;
     http = 80;
     https = 443;
+    smtpSubmissionTls = 465;
+    smtpSubmission = 587;
 
     mdnsGoogleCast = 5353;
 
@@ -23,6 +26,7 @@
 
     # A more reserved alternative to 8080
     nginxStubStatus = 18080;
+    stalwartHttp = 18081;
 
     mc = 25565;
 
