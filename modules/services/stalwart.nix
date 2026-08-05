@@ -14,6 +14,7 @@ let
   credPath = "/run/credentials/stalwart.service";
 
   # adminHost = "stalwart.${hostName}.${cfg.domain}";
+  adminHost = mailHost;
   mailHost = "mail.${hostName}.${cfg.domain}";
 
   # utils for config
@@ -182,7 +183,7 @@ in
     modules.services.nginx.exposedServices =
       optionals config.modules.services.nginx.enable [
         {
-          serverName = mailHost;
+          serverName = adminHost;
           port = lib.my.ports.stalwartHttp;
           acmeHost = "${config.networking.hostName}.andrecadete.com";
         }
