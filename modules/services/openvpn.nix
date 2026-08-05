@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -33,7 +34,7 @@ in
     ];
 
     # tecnico VPN
-    age.secrets.tecnicoVpnPassword.file = ../../secrets/personal/tecnicoVpnPassword.age;
+    age.secrets.tecnicoVpnPassword.file = secrets.personal.tecnicoVpnPassword;
 
     networking.networkmanager.ensureProfiles = {
       environmentFiles = [ config.age.secrets.tecnicoVpnPassword.path ];
