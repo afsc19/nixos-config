@@ -13,7 +13,7 @@ let
   certDir = config.security.acme.certs.${cfg.domain}.directory;
   credPath = "/run/credentials/stalwart.service";
 
-  adminHost = "stalwart.${hostName}.${cfg.domain}";
+  # adminHost = "stalwart.${hostName}.${cfg.domain}";
   mailHost = "mail.${hostName}.${cfg.domain}";
 
   # utils for config
@@ -182,7 +182,7 @@ in
     modules.services.nginx.exposedServices =
       optionals config.modules.services.nginx.enable [
         {
-          serverName = adminHost;
+          serverName = mailHost;
           port = lib.my.ports.stalwartHttp;
           acmeHost = "${config.networking.hostName}.andrecadete.com";
         }
