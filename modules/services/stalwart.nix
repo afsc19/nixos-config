@@ -49,6 +49,12 @@ in
       };
 
       settings = {
+        # verbose logs
+        tracer.console = {
+          enable = true;
+          type = "console";
+          level = "trace";
+        };
         config.local-keys = [
           "authentication.fallback-admin.*"
           "certificate.*"
