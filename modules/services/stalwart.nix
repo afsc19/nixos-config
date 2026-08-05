@@ -164,8 +164,8 @@ in
       file = secrets.host.ociSmtpPass;
       owner = "stalwart";
     };
-    age.secrets.stalwartAdminPass = {
-      file = secrets.host.stalwartAdminPass;
+    age.secrets.stalwartAdminEnv = {
+      file = secrets.host.stalwartAdminEnv;
       owner = "stalwart";
     };
 
