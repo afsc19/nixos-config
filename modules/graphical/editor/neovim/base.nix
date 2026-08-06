@@ -36,6 +36,9 @@ in
       };
 
       opts = {
+        # sync yanks/pastes with system clipboard
+        clipboard = "unnamedplus";
+
         # show invisible whitespace characters
         list = true;
         listchars = {
