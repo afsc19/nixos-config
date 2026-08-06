@@ -153,7 +153,7 @@ in
         # admin creds - deprecated
         authentication.fallback-admin = {
           user = "admin";
-          secret = "%{file:${credPath}/admin-pass}%";
+          secret = "admin";
         };
       };
     };
