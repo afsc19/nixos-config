@@ -41,6 +41,7 @@ in
 
         # don't add trailing newline at end of file
         eol = false;
+        fixeol = false;
 
         # show invisible whitespace characters
         list = true;
