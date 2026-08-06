@@ -92,6 +92,7 @@ mkSecrets [
       "komodoPasskey"
       "ociSmtpUser"
       "ociSmtpPass"
+      "stalwartAdminPass"
       "stalwartAdminEnv"
     ]
   )

@@ -46,6 +46,7 @@ in
         "key.pem" = "${certDir}/key.pem";
         "oci-user" = config.age.secrets.ociSmtpUser.path;
         "oci-pass" = config.age.secrets.ociSmtpPass.path;
+        "admin-pass" = config.age.secrets.stalwartAdminPass.path;
       };
 
       settings = {
@@ -164,15 +165,19 @@ in
       file = secrets.host.ociSmtpPass;
       owner = "stalwart";
     };
-    age.secrets.stalwartAdminEnv = {
-      file = secrets.host.stalwartAdminEnv;
+    age.secrets.stalwartAdminPass = {
+      file = secrets.host.stalwartAdminPass;
       owner = "stalwart";
     };
+    # age.secrets.stalwartAdminEnv = {
+    #   file = secrets.host.stalwartAdminEnv;
+    #   owner = "stalwart";
+    # };
 
     systemd.services.stalwart = {
       wants = [ "acme-${cfg.domain}.service" ];
       after = [ "acme-${cfg.domain}.service" ];
-      serviceConfig.EnvironmentFile = config.age.secrets.stalwartAdminEnv.path;
+      # serviceConfig.EnvironmentFile = config.age.secrets.stalwartAdminEnv.path;
     };
 
     # Restart stalwart on certificate renewal
