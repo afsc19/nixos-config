@@ -57,6 +57,7 @@ in
           level = "trace";
         };
         config.local-keys = [
+          "authentication.fallback-admin.*"
           "certificate.*"
           "cluster.node-id"
           "directory.*"
