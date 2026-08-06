@@ -93,7 +93,6 @@ mkSecrets [
       "ociSmtpUser"
       "ociSmtpPass"
       "stalwartAdminPass"
-      "stalwartAdminEnv"
     ]
   )
 
