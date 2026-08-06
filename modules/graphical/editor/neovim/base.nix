@@ -39,6 +39,9 @@ in
         # sync yanks/pastes with system clipboard
         clipboard = "unnamedplus";
 
+        # don't add trailing newline at end of file
+        eol = false;
+
         # show invisible whitespace characters
         list = true;
         listchars = {
