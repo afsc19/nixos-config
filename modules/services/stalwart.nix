@@ -97,30 +97,33 @@ in
         };
 
         # oracle cloud email delivery
-        queue.route.oci = {
-          type = "relay";
-          address = "smtp.email.eu-madrid-1.oci.oraclecloud.com"; # eu-madrid-1
-          port = 587;
-          protocol = "smtp";
-          tls = {
-            implicit = true;
+        queue = {
+          route.oci = {
+            type = "relay";
+            address = "smtp.email.eu-madrid-1.oci.oraclecloud.com"; # eu-madrid-1
+            port = 587;
+            protocol = "smtp";
+            tls = {
+              implicit = true;
+            };
+            auth = {
+              username = "%{file:${credPath}/oci-user}%";
+              secret = "%{file:${credPath}/oci-pass}%";
+            };
           };
-          auth = {
-            username = "%{file:${credPath}/oci-user}%";
-            password = "%{file:${credPath}/oci-pass}%";
-          };
-        };
 
-        # local mail
-        
-        strategy.route = [
-          (ifthen "is_local_domain('', rcpt_domain)" "'local'")
-          # sometimes spf reports are sent to mail.<domain> instead, which is not registered as a local domain
-          (ifthen "rcpt_domain == 'mail.${cfg.domain}'" "'local'")
-          # use oci when my domains are sending
-          (ifthen "sender_domain == '${cfg.domain}'" "'oci'")
-          (otherwise "'mx'")
-        ];
+          # local mail
+          
+          strategy.route = [
+            (ifthen "is_local_domain('', rcpt_domain)" "'local'")
+            # sometimes spf reports are sent to mail.<domain> instead, which is not registered as a local domain
+            (ifthen "rcpt_domain == 'mail.${cfg.domain}'" "'local'")
+            # use oci when my domains are sending
+            (ifthen "sender_domain == '${cfg.domain}'" "'oci'")
+            (otherwise "'mx'")
+          ];
+
+        };
 
         # no relay
         # queue.route.mx = {
