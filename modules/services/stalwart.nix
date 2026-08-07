@@ -150,10 +150,10 @@ in
             use-x-forwarded = true;
           };
         };
-        # admin creds - deprecated
+        # admin creds - will be deprecated
         authentication.fallback-admin = {
           user = "admin";
-          secret = "admin";
+          secret = "%{file:${credPath}/admin-pass}%";
         };
       };
     };
