@@ -103,9 +103,7 @@ in
             address = "smtp.email.eu-madrid-1.oci.oraclecloud.com"; # eu-madrid-1
             port = 587;
             protocol = "smtp";
-            tls = {
-              implicit = true;
-            };
+            tls.implicit = false;
             auth = {
               username = "%{file:${credPath}/oci-user}%";
               secret = "%{file:${credPath}/oci-pass}%";
