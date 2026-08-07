@@ -90,7 +90,6 @@ mkSecrets [
       "cloudflaredTunnel_sylva-tunnel"
       "komodoAdminPass"
       "komodoPasskey"
-      "ociSmtpUser"
       "ociSmtpPass"
       "stalwartAdminPass"
     ]

@@ -44,7 +44,6 @@ in
       credentials = {
         "cert.pem" = "${certDir}/fullchain.pem";
         "key.pem" = "${certDir}/key.pem";
-        "oci-user" = config.age.secrets.ociSmtpUser.path;
         "oci-pass" = config.age.secrets.ociSmtpPass.path;
         "admin-pass" = config.age.secrets.stalwartAdminPass.path;
       };
@@ -105,7 +104,6 @@ in
             protocol = "smtp";
             tls.implicit = false;
             auth = {
-              # username = "%{file:${credPath}/oci-user}%";
               username = "ocid1.user.oc1..aaaaaaaanfxfmodne275vmkpmlorlyzldmyneyr74zd5ttl5vj345sqngtha@ocid1.tenancy.oc1..aaaaaaaavy6wazf46zfejzwyaopopn45tcuq2b25a6wczqo5wevconlaqeaq.ix.com";
               secret = "%{file:${credPath}/oci-pass}%";
             };
@@ -160,10 +158,6 @@ in
       };
     };
 
-    age.secrets.ociSmtpUser = {
-      file = secrets.host.ociSmtpUser;
-      owner = "stalwart";
-    };
     age.secrets.ociSmtpPass = {
       file = secrets.host.ociSmtpPass;
       owner = "stalwart";
