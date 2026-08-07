@@ -105,7 +105,8 @@ in
             protocol = "smtp";
             tls.implicit = false;
             auth = {
-              username = "%{file:${credPath}/oci-user}%";
+              # username = "%{file:${credPath}/oci-user}%";
+              username = "ocid1.user.oc1..aaaaaaaanfxfmodne275vmkpmlorlyzldmyneyr74zd5ttl5vj345sqngtha@ocid1.tenancy.oc1..aaaaaaaavy6wazf46zfejzwyaopopn45tcuq2b25a6wczqo5wevconlaqeaq.ix.com";
               secret = "%{file:${credPath}/oci-pass}%";
             };
           };
