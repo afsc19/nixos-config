@@ -114,9 +114,9 @@ in
           # local mail
           
           strategy.route = [
-            (ifthen "is_local_domain('', rcpt_domain)" "'local'")
-            # sometimes spf reports are sent to mail.<domain> instead, which is not registered as a local domain
-            (ifthen "rcpt_domain == 'mail.${cfg.domain}'" "'local'")
+            # (ifthen "is_local_domain('', rcpt_domain)" "'local'")
+            # # sometimes spf reports are sent to mail.<domain> instead, which is not registered as a local domain
+            # (ifthen "rcpt_domain == 'mail.${cfg.domain}'" "'local'")
             # use oci when my domains are sending
             (ifthen "sender_domain == '${cfg.domain}'" "'oci'")
             (otherwise "'mx'")
