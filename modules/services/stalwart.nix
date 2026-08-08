@@ -188,6 +188,14 @@ in
           serverName = adminHost;
           port = lib.my.ports.stalwartHttp;
           acmeHost = "${config.networking.hostName}.andrecadete.com";
+          nebulaOnly = true;
+        }
+      ]
+      ++ optionals (config.networking.hostName == lib.my.uptimewire.captain) [
+        {
+          serverName = "mail.andrecadete.com";
+          port = lib.my.ports.stalwartHttp;
+          acmeHost = "andrecadete.com";
         }
       ];
   };
