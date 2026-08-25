@@ -191,7 +191,7 @@ in
                                         "datasourceUid": "prometheus",
                                         "model": {
                                             "editorMode": "builder",
-                                            "expr": "up{alias=\"calidor\"}",
+                                            "expr": "up{alias=\"calidor\"} * on() (hour() == 5 or vector(0))",
                                             "instant": true,
                                             "intervalMs": 1000,
                                             "legendFormat": "__auto",
@@ -245,7 +245,7 @@ in
                                 ],
                                 "noDataState": "NoData",
                                 "execErrState": "Error",
-                                "for": "1h",
+                                "for": "0s",
                                 "annotations": {
                                     "description": "Calidor has been detected to be UP",
                                     "summary": "Calidor is UP!"
