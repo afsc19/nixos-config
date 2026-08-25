@@ -51,6 +51,76 @@ let
       "grafana.andrecadete.com"
     else
       "grafana.${config.networking.hostName}.andrecadete.com";
+  mkDiskUsageRule = alias: {
+    uid = "${alias}-disk-usage";
+    title = "${alias}-disk-usage";
+    condition = "C";
+    data = [
+      {
+        refId = "A";
+        relativeTimeRange = {
+          from = 600;
+          to = 0;
+        };
+        datasourceUid = "prometheus";
+        model = {
+          editorMode = "builder";
+          expr = "100 * (1 - ((node_filesystem_avail_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", fstype!~\"tmpfs|ramfs|overlay|squashfs\", mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\", alias=\"${alias}\"} or windows_logical_disk_free_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", volume!~\"HarddiskVolume.*\", alias=\"${alias}\"}) / (node_filesystem_size_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", fstype!~\"tmpfs|ramfs|overlay|squashfs\", mountpoint!~\"/run($|/)|/var/lib/docker($|/).*|/nix/store|/boot\", alias=\"${alias}\"} or windows_logical_disk_size_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", volume!~\"HarddiskVolume.*\", alias=\"${alias}\"})))";
+          instant = true;
+          intervalMs = 1000;
+          legendFormat = "__auto";
+          maxDataPoints = 43200;
+          range = false;
+          refId = "A";
+        };
+      }
+      {
+        refId = "C";
+        relativeTimeRange = {
+          from = 0;
+          to = 0;
+        };
+        datasourceUid = "__expr__";
+        model = {
+          conditions = [
+            {
+              evaluator = {
+                params = [ 90 ];
+                type = "gt";
+              };
+              operator.type = "and";
+              query.params = [ "C" ];
+              reducer.params = [ ];
+              reducer.type = "last";
+              type = "query";
+            }
+          ];
+          datasource = {
+            type = "__expr__";
+            uid = "__expr__";
+          };
+          expression = "A";
+          intervalMs = 1000;
+          maxDataPoints = 43200;
+          refId = "C";
+          type = "threshold";
+        };
+      }
+    ];
+    noDataState = "OK";
+    execErrState = "Error";
+    for = "0s";
+    annotations = {
+      description = "{{ $labels.mountpoint }}{{ $labels.volume }} on ${alias} is at {{ $values.A }}% usage (above 90%)";
+      summary = "${alias} disk usage above 90%!";
+    };
+    isPaused = false;
+    notification_settings = {
+      receiver = "discord";
+      group_by = [ "alertname" ];
+      repeat_interval = "24h";
+    };
+  };
 in
 {
   # Automatically enable grafana if it's a hub.
@@ -167,10 +237,11 @@ in
           #     ];
           #   }
           # ];
-          rules.settings = builtins.fromJSON ''
-            {
-                "apiVersion": 1,
-                "groups": [
+          rules.settings = {
+            apiVersion = 1;
+            groups =
+              (builtins.fromJSON ''
+                [
                     {
                         "orgId": 1,
                         "name": "up_checks_1h",
@@ -387,8 +458,17 @@ in
                           }
                         ]
                     }
-                ]
-            }'';
+                ] '')
+              ++ [
+                {
+                  orgId = 1;
+                  name = "disk_checks_1h";
+                  folder = "Uptimewire";
+                  interval = "1h";
+                  rules = map mkDiskUsageRule (builtins.attrNames fleet);
+                }
+              ];
+          };
         };
         dashboards.settings.providers = [
           {
