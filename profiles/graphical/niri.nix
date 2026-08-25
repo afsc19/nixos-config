@@ -140,7 +140,7 @@ EOF
         };
       };
     };
-    validateConfig = true; # not necessary in nix, but it's here in case I change my mind
+    checkConfig = true; # not necessary in nix, but it's here in case I change my mind
   };
 
   nix.settings = {
