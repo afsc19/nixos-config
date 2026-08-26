@@ -42,7 +42,7 @@ in
     environment.systemPackages = [ pkgs.rclone ];
 
     age.secrets.minecraftBackupRclone = {
-      file = secrets.personal.rclone;
+      file = secrets.sylva.rclone;
       owner = "root";
       mode = "600";
     };
