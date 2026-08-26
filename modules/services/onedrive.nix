@@ -54,6 +54,7 @@ in
         Type = "simple";
         # Force create mountpoint and writable rclone config location
         ExecStartPre = [
+          "/run/current-system/sw/bin/sh -c '/run/current-system/sw/bin/fusermount -uz %h/${cfg.mountPoint} 2>/dev/null || true'" # unmount if mounted leftovers
           "/run/current-system/sw/bin/mkdir -p %h/${cfg.mountPoint}"
           "/run/current-system/sw/bin/mkdir -p %h/.config/rclone"
           ''
