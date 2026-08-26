@@ -92,6 +92,7 @@ mkSecrets [
       "komodoPasskey"
       "ociSmtpPass"
       "stalwartAdminPass"
+      "rclone"
     ]
   )
 

@@ -18,6 +18,12 @@
     hardware.oracle.enable = true;
     services = {
       dnscrypt.enable = true;
+      minecraftBackup = {
+        enable = true;
+        sourceBase = "/home/afsc/Minecraft/minepanel/servers";
+        remoteName = "onedrive";
+        remotePath = "Documents/AFSC Home Lab/sylva/backups";
+      };
       monitor = {
         portainer.enable = true;
         rancher.enable = false;
