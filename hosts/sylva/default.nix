@@ -42,7 +42,11 @@
         acmeCerts = [
           {
             domain = "andrecadete.com";
-            extraDomainNames = [ "*.andrecadete.com" ];
+            # TODO scale this to "*.${networking.hostName}.andrecadete.com" per server host
+            extraDomainNames = [ 
+              "*.andrecadete.com"
+              "*.sylva.andrecadete.com"
+            ];
             dnsProvider = "cloudflare";
           }
           {
