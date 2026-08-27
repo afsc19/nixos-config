@@ -262,7 +262,7 @@ in
                                         "datasourceUid": "prometheus",
                                         "model": {
                                             "editorMode": "builder",
-                                            "expr": "up{alias=\"calidor\"} * on() (hour() == 5 or vector(0))",
+                                            "expr": "max without (instance, job, port) (up{alias=\"calidor\"}) * on() (hour() == 5 or vector(0))",
                                             "instant": true,
                                             "intervalMs": 1000,
                                             "legendFormat": "__auto",
