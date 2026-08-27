@@ -27,6 +27,7 @@
         pubkey = "sGCMUVkFjCoAWYm8YdNQ6lfzwac99gdtj0MpoM3yS1A=";
         isHub = false;
         crowdsec = false;
+        silenceDiskUsageAlerts = true;
       };
       "desolo" = {
         ip = "10.100.0.6";

@@ -465,7 +465,11 @@ in
                   name = "disk_checks_1h";
                   folder = "Uptimewire";
                   interval = "1h";
-                  rules = map mkDiskUsageRule (builtins.attrNames fleet);
+                  rules = map mkDiskUsageRule (
+                    builtins.attrNames (
+                      lib.filterAttrs (_: host: !(host.silenceDiskUsageAlerts or false)) fleet
+                    )
+                  );
                 }
               ];
           };
