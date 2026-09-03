@@ -83,6 +83,7 @@
       razer.enable = true;
       intel.enable = true;
     };
+    printing.enable = true;
     personal.enable = true;
     plymouth = {
       enable = true;

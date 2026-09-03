@@ -109,8 +109,5 @@ in
     services.flatpak.enable = true;
     # locate
     services.locate.enable = true;
-    # Enable CUPS to print documents.
-    services.printing.enable = true;
-
   };
 }
