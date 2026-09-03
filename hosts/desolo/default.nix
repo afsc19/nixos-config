@@ -95,8 +95,6 @@
 
   boot.loader.systemd-boot.enable = true;
 
-
-
   systemd.network.enable = true;
 
   my.networking.wiredInterface = "enp0s6";

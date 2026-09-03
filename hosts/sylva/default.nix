@@ -49,7 +49,7 @@
           {
             domain = "andrecadete.com";
             # TODO scale this to "*.${networking.hostName}.andrecadete.com" per server host
-            extraDomainNames = [ 
+            extraDomainNames = [
               "*.andrecadete.com"
               "*.sylva.andrecadete.com"
             ];

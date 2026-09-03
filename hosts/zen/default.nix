@@ -39,11 +39,8 @@
     };
     services = {
       dnscrypt.enable = true;
-      # Nebula (VPN)
       monitor.uptimewire.enable = true;
-      nebula = {
-        enable = true;
-      };
+      nebula.enable = true;
       openvpn.enable = true;
       onedrive = {
         enable = true;

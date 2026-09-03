@@ -36,17 +36,16 @@ in
 
   # Copy user avatar to AccountsService so the greeter can read it
   system.activationScripts.user-avatar = lib.stringAfter [ "users" ] ''
-    if [ -f /home/${user}/.face ]; then
-      mkdir -p /var/lib/AccountsService/{icons,users}
-      install -m 0644 /home/${user}/.face /var/lib/AccountsService/icons/${user}
-      cat > /var/lib/AccountsService/users/${user} << 'EOF'
-[User]
-Icon=/var/lib/AccountsService/icons/${user}
-EOF
-      chmod 0600 /var/lib/AccountsService/users/${user}
-    fi
+        if [ -f /home/${user}/.face ]; then
+          mkdir -p /var/lib/AccountsService/{icons,users}
+          install -m 0644 /home/${user}/.face /var/lib/AccountsService/icons/${user}
+          cat > /var/lib/AccountsService/users/${user} << 'EOF'
+    [User]
+    Icon=/var/lib/AccountsService/icons/${user}
+    EOF
+          chmod 0600 /var/lib/AccountsService/users/${user}
+        fi
   '';
-
 
   hm.xdg.configFile."niri/config.kdl".source = ../../config/niri/config.kdl;
   hm.imports = [

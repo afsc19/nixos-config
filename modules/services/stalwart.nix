@@ -2,12 +2,17 @@
 {
   config,
   lib,
-  pkgs,
   secrets,
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf mkOption types optionals;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    optionals
+    ;
   cfg = config.modules.services.stalwart;
   hostName = config.networking.hostName;
   certDir = config.security.acme.certs.${cfg.domain}.directory;
@@ -110,7 +115,7 @@ in
           };
 
           # local mail
-          
+
           strategy.route = [
             # (ifthen "is_local_domain('', rcpt_domain)" "'local'")
             # # sometimes spf reports are sent to mail.<domain> instead, which is not registered as a local domain
@@ -178,8 +183,9 @@ in
     };
 
     # Restart stalwart on certificate renewal
-    security.acme.certs.${cfg.domain}.reloadServices =
-      optionals config.modules.services.nginx.enable [ "stalwart.service" ];
+    security.acme.certs.${cfg.domain}.reloadServices = optionals config.modules.services.nginx.enable [
+      "stalwart.service"
+    ];
 
     # Expose the admin UI behind nginx with the existing wildcard cert
     modules.services.nginx.exposedServices =

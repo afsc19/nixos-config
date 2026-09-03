@@ -17,12 +17,19 @@ in
       enable = true;
       settings = {
         # Listen on localhost so systemd-resolved can forward queries here
-        listen_addresses = [ "127.0.0.1:53" "[::1]:53" ];
+        listen_addresses = [
+          "127.0.0.1:53"
+          "[::1]:53"
+        ];
 
         # Both are DoH (HTTPS on 443), no-log, no-ECS.
         # Quad9: Swiss non-profit, good for gaming
         # Mullvad: fallback, different jurisdiction
-        server_names = [ "quad9-doh-ip4-port443-filter-pri" "quad9-doh-ip6-port443-filter-pri" "mullvad-doh" ];
+        server_names = [
+          "quad9-doh-ip4-port443-filter-pri"
+          "quad9-doh-ip6-port443-filter-pri"
+          "mullvad-doh"
+        ];
 
         require_dnssec = true;
         require_nolog = true;
@@ -52,7 +59,6 @@ in
       };
     };
 
-
     networking.networkmanager = mkIf config.networking.networkmanager.enable {
       # Stop NM from pushing DHCP nameservers, which would bypass dnscrypt-proxy
       dns = mkForce "none";
@@ -63,17 +69,19 @@ in
       dispatcherScripts = [
         {
           type = "basic";
-          source = lib.getExe (pkgs.writeShellApplication {
-            name = "90-clear-per-link-dns";
-            runtimeInputs = [ pkgs.systemd ];
-            text = ''
-              case "$2" in
-                up|dhcp4-change|dhcp6-change)
-                  resolvectl revert "$1"
-                  ;;
-              esac
-            '';
-          });
+          source = lib.getExe (
+            pkgs.writeShellApplication {
+              name = "90-clear-per-link-dns";
+              runtimeInputs = [ pkgs.systemd ];
+              text = ''
+                case "$2" in
+                  up|dhcp4-change|dhcp6-change)
+                    resolvectl revert "$1"
+                    ;;
+                esac
+              '';
+            }
+          );
         }
       ];
     };

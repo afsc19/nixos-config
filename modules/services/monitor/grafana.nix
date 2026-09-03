@@ -10,24 +10,37 @@ let
   inherit (lib)
     mkIf
     optionals
-    optionalString
     ;
   inherit (lib.my.uptimewire) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
-  mkUptimewireDashboard = { uid, title, tags, aliasFilter, panels }: let
-    filterSuffix = lib.optionalString (aliasFilter != null) ", alias=~\"${aliasFilter}\"";
-  in
+  mkUptimewireDashboard =
+    {
+      uid,
+      title,
+      tags,
+      aliasFilter,
+      panels,
+    }:
+    let
+      filterSuffix = lib.optionalString (aliasFilter != null) ", alias=~\"${aliasFilter}\"";
+    in
     builtins.toJSON {
-      inherit uid title tags panels;
+      inherit
+        uid
+        title
+        tags
+        panels
+        ;
       timezone = "browser";
       time = {
         from = "now-24h";
         to = "now";
       };
-      refresh = if config.services.prometheus.enable then
-        config.services.prometheus.globalConfig.scrape_interval
-      else
-        "15s";
+      refresh =
+        if config.services.prometheus.enable then
+          config.services.prometheus.globalConfig.scrape_interval
+        else
+          "15s";
       schemaVersion = 30;
       templating = {
         list = [
@@ -466,9 +479,7 @@ in
                   folder = "Uptimewire";
                   interval = "1h";
                   rules = map mkDiskUsageRule (
-                    builtins.attrNames (
-                      lib.filterAttrs (_: host: !(host.silenceDiskUsageAlerts or false)) fleet
-                    )
+                    builtins.attrNames (lib.filterAttrs (_: host: !(host.silenceDiskUsageAlerts or false)) fleet)
                   );
                 }
               ];
@@ -478,244 +489,243 @@ in
           {
             name = "Uptime Wire";
             folder = "Uptimewire";
-            options.path = pkgs.writeTextDir "uptimewire-overview.json" (
-              mkUptimewireDashboard {
-                uid = "uptimewire-overview";
-                title = "Uptime Wire Overview";
-                tags = [
-                  "uptimewire"
-                  "infrastructure"
-                ];
-                aliasFilter = null;
-                panels = [
-                  {
-                    id = 1;
-                    title = "Fleet Status";
-                    type = "stat";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    targets = [
-                      {
-                        expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})";
-                        legendFormat = "{{alias}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 0;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        mappings = [
-                          {
-                            type = "value";
-                            options = {
-                              "0" = {
-                                color = "red";
-                                text = "DOWN";
-                                index = 0;
-                              };
-                              "1" = {
-                                color = "orange";
-                                text = "MUMBLE";
-                                index = 1;
-                              };
-                              "2" = {
-                                color = "green";
-                                text = "UP";
-                                index = 2;
-                              };
+            options.path = pkgs.writeTextDir "uptimewire-overview.json" (mkUptimewireDashboard {
+              uid = "uptimewire-overview";
+              title = "Uptime Wire Overview";
+              tags = [
+                "uptimewire"
+                "infrastructure"
+              ];
+              aliasFilter = null;
+              panels = [
+                {
+                  id = 1;
+                  title = "Fleet Status";
+                  type = "stat";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  targets = [
+                    {
+                      expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\"})";
+                      legendFormat = "{{alias}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 0;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      mappings = [
+                        {
+                          type = "value";
+                          options = {
+                            "0" = {
+                              color = "red";
+                              text = "DOWN";
+                              index = 0;
                             };
+                            "1" = {
+                              color = "orange";
+                              text = "MUMBLE";
+                              index = 1;
+                            };
+                            "2" = {
+                              color = "green";
+                              text = "UP";
+                              index = 2;
+                            };
+                          };
+                        }
+                      ];
+                      color = {
+                        mode = "thresholds";
+                      };
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          {
+                            color = "red";
+                            value = null;
+                          }
+                          {
+                            color = "orange";
+                            value = 1;
+                          }
+                          {
+                            color = "green";
+                            value = 2;
                           }
                         ];
-                        color = {
-                          mode = "thresholds";
-                        };
-                        thresholds = {
-                          mode = "absolute";
-                          steps = [
-                            {
-                              color = "red";
-                              value = null;
-                            }
-                            {
-                              color = "orange";
-                              value = 1;
-                            }
-                            {
-                              color = "green";
-                              value = 2;
-                            }
-                          ];
-                        };
                       };
                     };
-                  }
-                  {
-                    id = 2;
-                    title = "$alias Bandwidth Usage";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
-                        legendFormat = "Download";
-                        refId = "A";
-                      }
-                      {
-                        expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_sent_total{alias=~\"^$alias$\"}[30s]))) * 8";
-                        legendFormat = "Upload";
-                        refId = "B";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "bps";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "smooth";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
+                  };
+                }
+                {
+                  id = 2;
+                  title = "$alias Bandwidth Usage";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
+                      legendFormat = "Download";
+                      refId = "A";
+                    }
+                    {
+                      expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_sent_total{alias=~\"^$alias$\"}[30s]))) * 8";
+                      legendFormat = "Upload";
+                      refId = "B";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "bps";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
                       };
                     };
-                  }
-                  {
-                    id = 3;
-                    title = "$alias CPU Usage";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s]) or irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) * 100)";
-                        legendFormat = "{{alias}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "percent";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "linear";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
-                        min = 0;
-                        max = 100;
-                        thresholds = {
-                          mode = "absolute";
-                          steps = [
-                            {
-                              color = "green";
-                              value = 0;
-                            }
-                            {
-                              color = "red";
-                              value = 80;
-                            }
-                          ];
-                        };
+                  };
+                }
+                {
+                  id = 3;
+                  title = "$alias CPU Usage";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s]) or irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) * 100)";
+                      legendFormat = "{{alias}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "percent";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "linear";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
+                      };
+                      min = 0;
+                      max = 100;
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          {
+                            color = "green";
+                            value = 0;
+                          }
+                          {
+                            color = "red";
+                            value = 80;
+                          }
+                        ];
                       };
                     };
-                  }
-                  {
-                    id = 4;
-                    title = "$alias RAM Usage";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "max by (alias) (100 * (1 - ((node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_available_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"})/(node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_physical_total_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}))))";
-                        legendFormat = "{{alias}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "percent";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "linear";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
-                        min = 0;
-                        max = 100;
-                        thresholds = {
-                          mode = "absolute";
-                          steps = [
-                            {
-                              color = "green";
-                              value = 0;
-                            }
-                            {
-                              color = "red";
-                              value = 80;
-                            }
-                          ];
-                        };
+                  };
+                }
+                {
+                  id = 4;
+                  title = "$alias RAM Usage";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "max by (alias) (100 * (1 - ((node_memory_MemAvailable_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_available_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"})/(node_memory_MemTotal_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"} or windows_memory_physical_total_bytes{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}))))";
+                      legendFormat = "{{alias}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "percent";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "linear";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
+                      };
+                      min = 0;
+                      max = 100;
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          {
+                            color = "green";
+                            value = 0;
+                          }
+                          {
+                            color = "red";
+                            value = 80;
+                          }
+                        ];
                       };
                     };
-                  }
-                  {
-                    id = 5;
-                    title = "$alias Disk Storage Usage";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "max by (alias, mountpoint, volume) (100 * (
+                  };
+                }
+                {
+                  id = 5;
+                  title = "$alias Disk Storage Usage";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "max by (alias, mountpoint, volume) (100 * (
   1 - (
     (node_filesystem_avail_bytes{
       job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",
@@ -743,58 +753,58 @@ in
       alias=~\"^$alias$\"
     })
   )))";
-                        legendFormat = "{{mountpoint}}{{volume}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "percent";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "linear";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
-                        min = 0;
-                        max = 100;
-                        thresholds = {
-                          mode = "absolute";
-                          steps = [
-                            {
-                              color = "green";
-                              value = 0;
-                            }
-                            {
-                              color = "red";
-                              value = 80;
-                            }
-                          ];
-                        };
+                      legendFormat = "{{mountpoint}}{{volume}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "percent";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "linear";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
+                      };
+                      min = 0;
+                      max = 100;
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          {
+                            color = "green";
+                            value = 0;
+                          }
+                          {
+                            color = "red";
+                            value = 80;
+                          }
+                        ];
                       };
                     };
-                  }
-                  {
-                    id = 6;
-                    title = "$alias Disk Busy";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "max by (alias, device, volume) (100 * (
+                  };
+                }
+                {
+                  id = 6;
+                  title = "$alias Disk Busy";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "max by (alias, device, volume) (100 * (
   rate(node_disk_io_time_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\", device=~\"^(sd[a-z]+|vd[a-z]+|xvd[a-z]+|nvme[0-9]+n[0-9]+|mmcblk[0-9]+)$\"}[30s])
   or
   (
@@ -811,251 +821,248 @@ in
     )
   )
 ))";
-                        legendFormat = "{{device}}{{volume}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "percent";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "linear";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
-                        min = 0;
-                        max = 100;
-                        thresholds = {
-                          mode = "absolute";
-                          steps = [
-                            {
-                              color = "green";
-                              value = 0;
-                            }
-                            {
-                              color = "red";
-                              value = 80;
-                            }
-                          ];
-                        };
+                      legendFormat = "{{device}}{{volume}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "percent";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "linear";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
+                      };
+                      min = 0;
+                      max = 100;
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          {
+                            color = "green";
+                            value = 0;
+                          }
+                          {
+                            color = "red";
+                            value = 80;
+                          }
+                        ];
                       };
                     };
-                  }
-                ]
-                ++ optionals (lib.filterAttrs (_: host: host.crowdsec or false) lib.my.uptimewire.fleet != { }) [
-                  {
-                    id = 7;
-                    title = "$alias CrowdSec Bans";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "(max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"}))) or (label_replace((max(up{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\"} == 1) * 0), \"action\", \"ban\", \"\", \"\") unless on() max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"})))";
-                        legendFormat = "{{action}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "none";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "smooth";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
+                  };
+                }
+              ]
+              ++ optionals (lib.filterAttrs (_: host: host.crowdsec or false) lib.my.uptimewire.fleet != { }) [
+                {
+                  id = 7;
+                  title = "$alias CrowdSec Bans";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "(max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"}))) or (label_replace((max(up{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\"} == 1) * 0), \"action\", \"ban\", \"\", \"\") unless on() max by (action) (sum by (action, job) ({job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\", origin=\"crowdsec\"})))";
+                      legendFormat = "{{action}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "none";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
                       };
                     };
-                  }
-                  {
-                    id = 8;
-                    title = "$alias CrowdSec Alerts";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "max(sum by (job) (cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"}))";
-                        legendFormat = "Alerts";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "none";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "smooth";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
+                  };
+                }
+                {
+                  id = 8;
+                  title = "$alias CrowdSec Alerts";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "max(sum by (job) (cs_alerts{job=~\"uptimewire-fleet-crowdsec|uptimewire-fleet-nebula-crowdsec\", alias=~\"^$alias$\"}))";
+                      legendFormat = "Alerts";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "none";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
                       };
                     };
-                  }
-                ];
-              }
-            );
+                  };
+                }
+              ];
+            });
           }
           {
             name = "Uptime Wire Family";
             folder = "Uptimewire Family";
-            options.path = pkgs.writeTextDir "uptimewire-overview.json" (
-              mkUptimewireDashboard {
-                uid = "uptimewire-overview-family";
-                title = "Uptime Wire Overview Family";
-                tags = [
-                  "uptimewire"
-                  "infrastructure"
-                  "family"
-                ];
-                aliasFilter = "favilla|calidor";
-                panels = [
-                  {
-                    id = 1;
-                    title = "Fleet Status";
-                    type = "stat";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    targets = [
-                      {
-                        expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",alias=~\"favilla|calidor\"})";
-                        legendFormat = "{{alias}}";
-                        refId = "A";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 0;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        mappings = [
-                          {
-                            type = "value";
-                            options = {
-                              "0" = {
-                                color = "red";
-                                text = "DOWN";
-                                index = 0;
-                              };
-                              "1" = {
-                                color = "orange";
-                                text = "MUMBLE";
-                                index = 1;
-                              };
-                              "2" = {
-                                color = "green";
-                                text = "UP";
-                                index = 2;
-                              };
+            options.path = pkgs.writeTextDir "uptimewire-overview.json" (mkUptimewireDashboard {
+              uid = "uptimewire-overview-family";
+              title = "Uptime Wire Overview Family";
+              tags = [
+                "uptimewire"
+                "infrastructure"
+                "family"
+              ];
+              aliasFilter = "favilla|calidor";
+              panels = [
+                {
+                  id = 1;
+                  title = "Fleet Status";
+                  type = "stat";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  targets = [
+                    {
+                      expr = "sum by (alias) (up{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\",alias=~\"favilla|calidor\"})";
+                      legendFormat = "{{alias}}";
+                      refId = "A";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 0;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      mappings = [
+                        {
+                          type = "value";
+                          options = {
+                            "0" = {
+                              color = "red";
+                              text = "DOWN";
+                              index = 0;
                             };
+                            "1" = {
+                              color = "orange";
+                              text = "MUMBLE";
+                              index = 1;
+                            };
+                            "2" = {
+                              color = "green";
+                              text = "UP";
+                              index = 2;
+                            };
+                          };
+                        }
+                      ];
+                      color = {
+                        mode = "thresholds";
+                      };
+                      thresholds = {
+                        mode = "absolute";
+                        steps = [
+                          {
+                            color = "red";
+                            value = null;
+                          }
+                          {
+                            color = "orange";
+                            value = 1;
+                          }
+                          {
+                            color = "green";
+                            value = 2;
                           }
                         ];
-                        color = {
-                          mode = "thresholds";
-                        };
-                        thresholds = {
-                          mode = "absolute";
-                          steps = [
-                            {
-                              color = "red";
-                              value = null;
-                            }
-                            {
-                              color = "orange";
-                              value = 1;
-                            }
-                            {
-                              color = "green";
-                              value = 2;
-                            }
-                          ];
-                        };
                       };
                     };
-                  }
-                  {
-                    id = 2;
-                    title = "$alias Bandwidth Usage";
-                    type = "timeseries";
-                    datasource = {
-                      type = "prometheus";
-                      uid = "prometheus";
-                    };
-                    repeat = "alias";
-                    repeatDirection = "h";
-                    maxPerRow = 5;
-                    targets = [
-                      {
-                        expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
-                        legendFormat = "Download";
-                        refId = "A";
-                      }
-                      {
-                        expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_sent_total{alias=~\"^$alias$\"}[30s]))) * 8";
-                        legendFormat = "Upload";
-                        refId = "B";
-                      }
-                    ];
-                    gridPos = {
-                      h = 8;
-                      w = 24;
-                      x = 0;
-                      y = 8;
-                    };
-                    fieldConfig = {
-                      defaults = {
-                        unit = "bps";
-                        custom = {
-                          drawStyle = "line";
-                          lineInterpolation = "smooth";
-                          lineWidth = 1;
-                          fillOpacity = 10;
-                          gradientMode = "opacity";
-                        };
+                  };
+                }
+                {
+                  id = 2;
+                  title = "$alias Bandwidth Usage";
+                  type = "timeseries";
+                  datasource = {
+                    type = "prometheus";
+                    uid = "prometheus";
+                  };
+                  repeat = "alias";
+                  repeatDirection = "h";
+                  maxPerRow = 5;
+                  targets = [
+                    {
+                      expr = "(sum(max by (device) (rate(node_network_receive_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_received_total{alias=~\"^$alias$\"}[30s]))) * 8";
+                      legendFormat = "Download";
+                      refId = "A";
+                    }
+                    {
+                      expr = "(sum(max by (device) (rate(node_network_transmit_bytes_total{alias=~\"^$alias$\", device!~\"lo|veth.*|docker.*|wg.*|nebula.*|uptimeWire0\"}[30s]))) or max by (alias) (rate(windows_net_bytes_sent_total{alias=~\"^$alias$\"}[30s]))) * 8";
+                      legendFormat = "Upload";
+                      refId = "B";
+                    }
+                  ];
+                  gridPos = {
+                    h = 8;
+                    w = 24;
+                    x = 0;
+                    y = 8;
+                  };
+                  fieldConfig = {
+                    defaults = {
+                      unit = "bps";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "smooth";
+                        lineWidth = 1;
+                        fillOpacity = 10;
+                        gradientMode = "opacity";
                       };
                     };
-                  }
-                ];
-              }
-            );
+                  };
+                }
+              ];
+            });
           }
           {
             name = "CTF Challenges UP";

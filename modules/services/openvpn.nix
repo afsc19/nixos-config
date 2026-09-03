@@ -14,14 +14,17 @@ let
   ovpn = builtins.readFile ovpnFile;
 
   # Extract a PEM block delimited by <tag>...</tag> from an .ovpn file.
-  extract = tag: let
-    afterOpen   = builtins.elemAt (builtins.split "<${tag}>" ovpn) 2;
-    beforeClose = builtins.elemAt (builtins.split "</${tag}>" afterOpen) 0;
-    trimmed     = builtins.match "[[:space:]]*(.*)[[:space:]]*" beforeClose;
-  in builtins.elemAt trimmed 0;
+  extract =
+    tag:
+    let
+      afterOpen = builtins.elemAt (builtins.split "<${tag}>" ovpn) 2;
+      beforeClose = builtins.elemAt (builtins.split "</${tag}>" afterOpen) 0;
+      trimmed = builtins.match "[[:space:]]*(.*)[[:space:]]*" beforeClose;
+    in
+    builtins.elemAt trimmed 0;
 
   tecnicoCert = pkgs.writeText "tecnico-ca.pem" (extract "ca");
-  tecnicoTa   = pkgs.writeText "tecnico-tls-auth.pem" (extract "tls-auth");
+  tecnicoTa = pkgs.writeText "tecnico-tls-auth.pem" (extract "tls-auth");
 in
 {
   options.modules.services.openvpn.enable = mkEnableOption "OpenVPN";
