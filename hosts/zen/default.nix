@@ -27,7 +27,7 @@
       gtk.enable = true;
       office.enable = true;
       qt.enable = true;
-      rstudio.enable = true;
+      # rstudio.enable = true;
       stremio.enable = true;
       torrenting.enable = true;
     };
