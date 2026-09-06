@@ -12,18 +12,26 @@ let
   manageXhciWake = pkgs.writeShellScript "manage-xhci-wake.sh" ''
     phase=$1
     STATE_FILE="/run/manage-xhci-wakeup-state"
-    XHCI_PATH="/sys/bus/pci/devices/0000:00:14.0/power/wakeup"
     case "$phase" in
       pre)
-        if [ -f "$XHCI_PATH" ]; then
-          cat "$XHCI_PATH" > "$STATE_FILE" 2>/dev/null
-          echo "disabled" > "$XHCI_PATH" 2>/dev/null || true
-        fi
+        > "$STATE_FILE"
+        for dev in /sys/bus/pci/devices/*/power/wakeup; do
+            [ -f "$dev" ] || continue
+            class=$(cat "$(dirname "$(dirname "$dev")")/class" 2>/dev/null) || continue
+            # USB controller class = 0x0c0330 (USB xHCI)
+            [ "$class" = "0x0c0330" ] || continue
+            current=$(cat "$dev" 2>/dev/null)
+            echo "$dev $current" >> "$STATE_FILE"
+            echo "disabled" > "$dev" 2>/dev/null || true
+        done
         ;;
       post)
-        if [ -f "$STATE_FILE" ] && [ -f "$XHCI_PATH" ]; then
-          cat "$STATE_FILE" > "$XHCI_PATH" 2>/dev/null || true
-          rm -f "$STATE_FILE"
+        if [ -f "$STATE_FILE" ]; then
+            while read -r dev state; do
+                [ -f "$dev" ] || continue
+                echo "$state" > "$dev" 2>/dev/null || true
+            done < "$STATE_FILE"
+            rm -f "$STATE_FILE"
         fi
         ;;
     esac
