@@ -62,6 +62,8 @@ binds {
     Mod+WheelScrollLeft { focus-window-or-monitor-up; }
     Mod+Down { focus-window-or-monitor-down; }
     Mod+WheelScrollRight { focus-window-or-monitor-down; }
+    Mod+Ctrl+Left { focus-monitor-left; }
+    Mod+Ctrl+Right { focus-monitor-right; }
 
     // switch workspace
     Mod+Page_Up { focus-workspace-up; }

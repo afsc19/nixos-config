@@ -79,8 +79,8 @@ in
       lockscreen = {
         enabled = true;
         blurred_desktop = true;
-        blur_intensity = 0.7;
-        tint_intensity = 0.4;
+        blur_intensity = 0.8;
+        tint_intensity = 0.5;
       };
       lockscreen_widgets = {
         enabled = true;
