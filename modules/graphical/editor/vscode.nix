@@ -80,7 +80,15 @@ in
   config = mkIf cfg.enable {
     hm.programs.vscode = {
       enable = true;
-      package = pkgs.unstable.vscode;
+
+      # FIXME temp workaround https://github.com/NixOS/nixpkgs/issues/560776
+      # package = pkgs.unstable.vscode;
+      package = pkgs.vscode.overrideAttrs (old: {
+        postPatch = old.postPatch + ''
+          ln -s node_modules resources/app/node_modules.asar.unpacked
+        '';
+      });
+
       profiles.default = {
         extensions = with pkgs.unstable.vscode-extensions; [
           # Nix
