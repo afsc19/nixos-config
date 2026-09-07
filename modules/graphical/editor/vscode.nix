@@ -83,7 +83,7 @@ in
 
       # FIXME temp workaround https://github.com/NixOS/nixpkgs/issues/560776
       # package = pkgs.unstable.vscode;
-      package = pkgs.vscode.overrideAttrs (old: {
+      package = pkgs.unstable.vscode.overrideAttrs (old: {
         postPatch = old.postPatch + ''
           ln -s node_modules resources/app/node_modules.asar.unpacked
         '';
