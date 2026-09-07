@@ -86,6 +86,7 @@ in
       package = pkgs.unstable.vscode.overrideAttrs (old: {
         postPatch = old.postPatch + ''
           ln -s node_modules resources/app/node_modules.asar.unpacked
+          rm -f resources/app/node_modules/node_modules
         '';
       });
 
