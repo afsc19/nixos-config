@@ -9,6 +9,7 @@
   makeDesktopItem,
   autoPatchelfHook,
   wrapGAppsHook3,
+  imagemagick,
   gtk3,
   glib,
   webkitgtk_4_1,
@@ -30,6 +31,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     copyDesktopItems
     wrapGAppsHook3
     autoPatchelfHook
+    imagemagick
   ];
 
   buildInputs = [
@@ -98,6 +100,9 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     install -Dm644 $out/opt/archi/icon.xpm $out/share/pixmaps/archi.xpm
     mkdir -p $out/share/icons/hicolor/48x48/apps
     ln -s $out/share/pixmaps/archi.xpm $out/share/icons/hicolor/48x48/apps/archi.xpm
+    # Many launchers cannot load XPM, so also ship a PNG rendering of the icon
+    mkdir -p $out/share/icons/hicolor/256x256/apps
+    magick $out/opt/archi/icon.xpm $out/share/icons/hicolor/256x256/apps/archi.png
 
     runHook postInstall
   '';
