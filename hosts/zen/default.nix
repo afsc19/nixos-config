@@ -23,6 +23,7 @@
         # hiresti.enable = true;
       };
       # androidstudio.enable = true;
+      archi.enable = true;
       camunda.enable = true;
       # gnome.enable = true;
       gtk.enable = true;
