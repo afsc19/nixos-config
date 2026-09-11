@@ -158,6 +158,12 @@ writeShellApplication {
       if command -v gtk-update-icon-cache >/dev/null 2>&1; then
         gtk-update-icon-cache -f -t "$(dirname "$(dirname "$ICONS_DIR")")" >/dev/null 2>&1 || true
       fi
+      # Wine auto-generates its own duplicate menu entries on every msiexec
+      # run; remove them, ours above is the canonical one. The
+      # wine-extension-*.desktop file associations are intentionally kept.
+      rm -rf "$APPS_DIR/wine" "''${XDG_DATA_HOME:-$HOME/.local/share}"/desktop-directories/wine-*.directory 2>/dev/null || true
+      rm -f "$HOME"/.config/menus/applications-merged/wine-*.menu 2>/dev/null || true
+      update-desktop-database "$APPS_DIR" >/dev/null 2>&1 || true
     }
 
     current_wine_version() {
