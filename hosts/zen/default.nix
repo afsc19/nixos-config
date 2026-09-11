@@ -25,6 +25,7 @@
       # androidstudio.enable = true;
       archi.enable = true;
       camunda.enable = true;
+      enterprise-architect.enable = true;
       # gnome.enable = true;
       gtk.enable = true;
       office.enable = true;
