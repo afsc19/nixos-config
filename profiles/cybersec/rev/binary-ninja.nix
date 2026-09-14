@@ -36,7 +36,7 @@ in
     package =
       (pkgs.binary-ninja-personal-wayland.override {
         overrideSource = binjaZip;
-        python3 = pkgs.python312;
+        python313 = pkgs.python312;
 
       }).overrideAttrs
         (old: {
