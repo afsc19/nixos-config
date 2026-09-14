@@ -68,11 +68,7 @@ in
 
     hm.xdg.mimeApps =
       let
-        value =
-          let
-            zen-browser = zenPackage;
-          in
-          zen-browser.meta.desktopFileName;
+        value = "zen-beta.desktop";
 
         associations = builtins.listToAttrs (
           map
@@ -95,10 +91,23 @@ in
               #"application/json"
               #"text/plain"
               "text/html"
+              # PDF
+              "application/pdf"
+              # Images
+              "image/avif"
+              "image/bmp"
+              "image/gif"
+              "image/jpeg"
+              "image/png"
+              "image/svg+xml"
+              "image/tiff"
+              "image/vnd.microsoft.icon"
+              "image/webp"
             ]
         );
       in
       {
+        enable = true;
         associations.added = associations;
         defaultApplications = associations;
       };
