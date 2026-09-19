@@ -2,7 +2,7 @@
   lib,
   stdenvNoCC,
   unzip,
-  jdk,
+  jdk21,
   coreutils,
   systemd,
   libxcrypt-legacy,
@@ -100,6 +100,10 @@ stdenvNoCC.mkDerivation {
     done
     ln -sf "''$CONFIG_DIR/config.ini" "''$WORK_DIR/.config.ini"
 
+    # blank window: non-reparenting WM hint so AWT paints
+    export _JAVA_AWT_WM_NONREPARENTING=1
+    unset _JAVA_OPTIONS
+
     cd "''$WORK_DIR"
     exec NIX_JAVA/bin/java -jar BurpLoaderKeygen.jar "''$@"
     SCRIPT
@@ -112,7 +116,7 @@ stdenvNoCC.mkDerivation {
             ]
           }|" \
           -e "s|NIX_CORETOOLS|${coreutils}/bin|" \
-          -e "s|NIX_JAVA|${jdk}|" \
+          -e "s|NIX_JAVA|${jdk21}|" \
           -e "s|NIX_OUT|$out|" \
           "$out/bin/burpsuite"
         chmod +x "$out/bin/burpsuite"
