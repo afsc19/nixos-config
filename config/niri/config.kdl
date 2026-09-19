@@ -124,8 +124,9 @@ binds {
     Shift+Print { spawn-sh "grim - | wl-copy"; }
     Ctrl+Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy && notify-send 'Screenshot' 'Copied to clipboard'"; } // for debug
 
-    Mod+D { spawn "noctalia launcher toggle"; }
-    Mod+C { spawn "noctalia controlcenter toggle"; }
+    Mod+D { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+C { spawn-sh "noctalia msg panel-toggle control-center"; }
+    Mod+Shift+C { spawn-sh "noctalia msg caffeine-toggle"; }
     Mod+W { spawn "nwg-displays"; }
     Mod+M { spawn-sh "src=$(niri msg outputs | grep '^Output' | cut -d'(' -f 2 | cut -d')' -f 1 | fuzzel --dmenu --prompt 'src? '); [ -n \"$src\" ] && wl-mirror \"$src\""; }
     Mod+Shift+F { fullscreen-window; }
