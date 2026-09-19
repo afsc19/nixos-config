@@ -82,29 +82,32 @@ stdenvNoCC.mkDerivation {
       CONFIG_DIR="''$XDG_CONFIG_HOME/burpsuite"
     fi
     mkdir -p "''$CONFIG_DIR"
-    if [ ! -f "''$CONFIG_DIR/config.ini" ]; then
-      cp NIX_OUT/share/burpsuite/.config.ini "''$CONFIG_DIR/config.ini"
-    fi
 
-    if [ -z "''$TMPDIR" ]; then
-      TMPDIR="''$HOME/.config"
+    if [ ! -f "''$CONFIG_DIR/.config.ini" ]; then
+      if [ -f "''$CONFIG_DIR/config.ini" ]; then
+        cp "''$CONFIG_DIR/config.ini" "''$CONFIG_DIR/.config.ini"
+      else
+        cp NIX_OUT/share/burpsuite/.config.ini "''$CONFIG_DIR/.config.ini"
+      fi
     fi
-    WORK_DIR="''$TMPDIR/burpsuite-''$$"
-    rm -rf "''$WORK_DIR"
-    mkdir -p "''$WORK_DIR"
-    trap "rm -rf ''$WORK_DIR" EXIT
+    chmod u+w "''$CONFIG_DIR/.config.ini"
 
-    ln -sf NIX_OUT/share/burpsuite/BurpLoaderKeygen.jar "''$WORK_DIR/"
+
+    rm -f "''$CONFIG_DIR"/burpsuite_*.jar
+    ln -sf NIX_OUT/share/burpsuite/BurpLoaderKeygen.jar "''$CONFIG_DIR/"
     for jar in NIX_OUT/share/burpsuite/burpsuite*.jar; do
-      ln -sf "''$jar" "''$WORK_DIR/"
+      ln -sf "''$jar" "''$CONFIG_DIR/"
     done
-    ln -sf "''$CONFIG_DIR/config.ini" "''$WORK_DIR/.config.ini"
+    
+    if [ -n "''$HOME" ]; then
+      rm -rf "''$HOME"/.config/burpsuite-"*"
+    fi
 
     # blank window: non-reparenting WM hint so AWT paints
     export _JAVA_AWT_WM_NONREPARENTING=1
     unset _JAVA_OPTIONS
 
-    cd "''$WORK_DIR"
+    cd "''$CONFIG_DIR"
     exec NIX_JAVA/bin/java -jar BurpLoaderKeygen.jar "''$@"
     SCRIPT
 
