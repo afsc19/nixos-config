@@ -1,3 +1,4 @@
+# FIXME temp fix
 { ... }:
 final: prev: {
   opencode =
