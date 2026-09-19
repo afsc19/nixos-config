@@ -169,15 +169,15 @@ window-rule {
   }
 }
 
-// global transparency
-window-rule {
-    opacity 0.85
-}
+// // global transparency
+// window-rule {
+//     opacity 0.85
+// }
 
-window-rule {
-    match is-focused=true
-    opacity 1.0
-}
+// window-rule {
+//     match is-focused=true
+//     opacity 1.0
+// }
 
 // kitty uses its own background_opacity (text stays opaque)
 window-rule {
