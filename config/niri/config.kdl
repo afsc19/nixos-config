@@ -127,6 +127,8 @@ binds {
     Mod+D { spawn "noctalia launcher toggle"; }
     Mod+C { spawn "noctalia controlcenter toggle"; }
     Mod+W { spawn "nwg-displays"; }
+    Mod+M { spawn-sh "src=$(niri msg outputs | grep '^Output' | cut -d'(' -f 2 | cut -d')' -f 1 | fuzzel --dmenu --prompt 'src? '); [ -n \"$src\" ] && wl-mirror \"$src\""; }
+    Mod+Shift+F { fullscreen-window; }
 
     Mod+S { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Comma { spawn-sh "noctalia msg settings-toggle"; }

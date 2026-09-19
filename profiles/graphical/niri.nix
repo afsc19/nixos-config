@@ -217,6 +217,7 @@ in
     slurp
     nwg-displays
     xwayland-satellite
+    wl-mirror
     kitty
 
     # backup in case niri config fails to load
