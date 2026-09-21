@@ -15,6 +15,7 @@ in
   config = mkIf cfg.enable {
     programs.steam = {
       enable = true;
+      package = pkgs.unstable.steam;
 
       # Enable Gamescope session for Steam Deck-like experience
       gamescopeSession.enable = true;
