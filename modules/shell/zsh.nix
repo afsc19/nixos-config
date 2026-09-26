@@ -32,6 +32,8 @@ in
           docker = "sudo docker";
           suz = "sudo -E zsh";
 
+          ssh-test = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR";
+
         };
 
         # Disable beep when no file is found, per example.
