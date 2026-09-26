@@ -1,6 +1,7 @@
 # Laptop PC
 {
   profiles,
+  pkgs,
   ...
 }:
 
