@@ -119,6 +119,12 @@
     laptop-virtualization
   ];
 
+
+# TEMP faust26
+environment.systemPackages = with pkgs; [
+  (python3.withPackages (ps: [ ps.typer ps.rich ps.requests ]))
+];
+
   my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
   my.hardware = {
