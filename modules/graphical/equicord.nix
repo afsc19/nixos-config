@@ -37,13 +37,13 @@ in
           musicControls.enable = false;
           channelTabs.enable = false;
           showHiddenChannels.enable = true;
-          summaries.enable = false; # No AI crap for now
           previewMessage.enable = true;
           fixSpotifyEmbeds.enable = true;
           disableCallIdle.enable = true;
           iRememberYou.enable = true;
           messageLoggerEnhanced.enable = true;
           permissionsViewer.enable = true;
+          youtubeAdblock.enable = true;
         };
       };
     };
