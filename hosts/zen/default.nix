@@ -121,17 +121,12 @@
   ];
 
 
-  # TEMP faust26
+  # TEMP AD ctfs
   environment.systemPackages = with pkgs; [
     (python3.withPackages (ps: [ ps.typer ps.rich ps.requests ps.pwntools ]))
   ];
-  environment.localBinInPath = true;
-  networking.hosts = {
-    "10.67.67.1" = [
-      "attacker"
-    ];
-  };
 
+  
   my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
   my.hardware = {
