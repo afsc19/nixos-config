@@ -31,6 +31,7 @@
       gtk.enable = true;
       office.enable = true;
       qt.enable = true;
+      reader.enable = true;
       # rstudio.enable = true;
       stremio.enable = true;
       torrenting.enable = true;
