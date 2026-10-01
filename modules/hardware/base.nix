@@ -32,5 +32,10 @@ in
       default = 3;
       description = "Battery charge percentage range to trigger device recharging (%)";
     };
+    graphical = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether this device has a graphical desktop (for GUI tools)";
+    };
   };
 }

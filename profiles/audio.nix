@@ -1,4 +1,7 @@
 {
+  config,
+  lib,
+  pkgs,
   ...
 }:
 {
@@ -48,4 +51,11 @@
     # media-session.enable = true;
   };
   modules.audio.easyeffects.enable = true;
+
+  environment.systemPackages = lib.mkIf config.my.hardware.graphical (
+    with pkgs;
+    [
+      pavucontrol
+    ]
+  );
 }

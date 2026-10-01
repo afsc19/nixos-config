@@ -133,6 +133,7 @@
   my.hardware = {
     laptop = true;
     batteryPowered = true;
+    graphical = true;
     batteryChargeLimit = 75;
     batteryChargeThresholdRange = 3;
   };
