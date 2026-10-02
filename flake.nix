@@ -26,12 +26,6 @@
     agenix = {
       url = "github:ryantm/agenix/main";
       inputs.nixpkgs.follows = "nixpkgs";
-
-      # we don't use darwin, so we can get rid of it
-      inputs.darwin.follows = "";
-
-      # used for home-manager's internal tests only
-      inputs.home-manager.follows = "";
     };
 
     spicetify-nix = {
