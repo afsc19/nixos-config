@@ -76,6 +76,54 @@ in
         greeter_sync.auto_sync = true;
       };
       widget.clock.format = "{:%H:%M:%S}";
+      widget.clock.anchor = true;
+
+      bar.default.start = [
+        "launcher"
+        "workspaces"
+        "gap1"
+        "cpu"
+        "ram"
+        "disk"
+        "net-down"
+        "net-up"
+      ];
+      widget.gap1 = {
+        type = "spacer";
+        length = 20;
+      };
+      widget.cpu = {
+        type = "sysmon";
+        stat = "cpu_usage";
+        visualization = "gauge";
+        show_value = true;
+      };
+      widget.ram = {
+        type = "sysmon";
+        stat = "ram_pct";
+        visualization = "gauge";
+        show_value = true;
+      };
+      widget.disk = {
+        type = "sysmon";
+        stat = "disk_used_pct";
+        path = "/";
+        visualization = "gauge";
+        show_value = true;
+      };
+      widget."net-down" = {
+        type = "sysmon";
+        stat = "net_rx";
+        visualization = "none";
+        show_value = true;
+      };
+      widget."net-up" = {
+        type = "sysmon";
+        stat = "net_tx";
+        visualization = "none";
+        show_value = true;
+      };
+
       lockscreen = {
         enabled = true;
         blurred_desktop = true;
