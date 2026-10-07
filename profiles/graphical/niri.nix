@@ -80,6 +80,7 @@ in
 
       bar.default.start = [
         "launcher"
+        "wallpaper"
         "workspaces"
         "gap1"
         "cpu"
