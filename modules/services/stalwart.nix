@@ -143,9 +143,7 @@ in
           (otherwise false)
         ];
 
-        session.rcpt.is-local = [
-          (otherwise false)
-        ];
+        session.rcpt.catch-all = true;
 
         # SMTP submission (client auth) + admin HTTP behind nginx, loopback only
         server.listener = {
