@@ -138,12 +138,16 @@ in
         #   };
         # };
 
+        # Force rcpt to ignore local mailboxes and relay
+        directory.empty.type = "memory";
+        session.rcpt.directory = [
+          (otherwise "'empty'")
+        ];
+
         session.rcpt.relay = [
           (ifthen "!is_empty(authenticated_as)" true)
           (otherwise false)
         ];
-
-        session.rcpt.catch-all = true;
 
         # SMTP submission (client auth) + admin HTTP behind nginx, loopback only
         server.listener = {
