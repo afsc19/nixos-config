@@ -140,9 +140,7 @@ in
 
         # Force rcpt to ignore local mailboxes and relay
         directory.empty.type = "memory";
-        session.rcpt.directory = [
-          (otherwise "'empty'")
-        ];
+        session.rcpt.directory = "'empty'";
 
         session.rcpt.relay = [
           (ifthen "!is_empty(authenticated_as)" true)
