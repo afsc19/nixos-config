@@ -77,6 +77,7 @@ in
           "session.mta-sts.*"
           "session.rcpt.catch-all"
           "session.rcpt.rewrite.*"
+          "session.rcpt.*"
           "spam-filter.resource"
           "storage.blob"
           "storage.data"
@@ -136,6 +137,15 @@ in
         #     multihomed = 2;
         #   };
         # };
+
+        session.rcpt.relay = [
+          (ifthen "!is_empty(authenticated_as)" true)
+          (otherwise false)
+        ];
+
+        session.rcpt.is-local = [
+          (otherwise false)
+        ];
 
         # SMTP submission (client auth) + admin HTTP behind nginx, loopback only
         server.listener = {
