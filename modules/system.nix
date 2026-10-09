@@ -102,6 +102,7 @@
     enable = true;
     libraries = with pkgs; [
       stdenv.cc.cc
+      stdenv.cc.cc.lib
       zlib
       openssl
       xz
@@ -127,6 +128,15 @@
       libxcb-render-util
       libxcb-wm
       qt6.qtwayland
+      # pip venv interpreters (e.g. jupyter/pyzmq) dlopen these,
+      # bypassing the nix-ld shim, so they must be in NIX_LD_LIBRARY_PATH
+      # for penv()'s LD_LIBRARY_PATH promotion (see modules/util/python.nix)
+      zeromq
+      libsodium
+      sqlite
+      libffi
+      curl
+      bzip2
     ];
   };
 
