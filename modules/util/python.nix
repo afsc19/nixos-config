@@ -8,7 +8,7 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.util.python;
-  pythonPkg = pkgs.unstable.python3;
+  pythonPkg = pkgs.python3;
   pythonld = pkgs.writeShellScriptBin "pythonld" ''
     export LD_LIBRARY_PATH="''${NIX_LD_LIBRARY_PATH:-/run/current-system/sw/share/nix-ld/lib}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
     exec -a "$0" ${pythonPkg}/bin/python3 "$@"
