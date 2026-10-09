@@ -129,6 +129,9 @@ in
           # Custom theme
           ayu-high-contrast
 
+          # Astro language support
+          astro-build.astro-vscode
+
         ];
         # inherit userSettings;
       };
