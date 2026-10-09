@@ -61,6 +61,7 @@ in
       ips = [ "${thisNode.ip}/24" ];
       listenPort = port;
       privateKeyFile = config.age.secrets.uptimewireKey.path;
+      dynamicEndpointRefreshSeconds = 25;
 
       # If we're a hub, map all excluding ourself.
       # Otherwise, only map hubs.
@@ -85,7 +86,6 @@ in
 
               # each hub gets a progressively broader prefix: /24, /23, /22, ...
               # WARNING this solution is NOT scalable, and will only work with the first 8 hubs !!
-              # TODO find a better way to have failovers
               rawBits = 24 - idx;
               cidrBits = if rawBits < 16 then 16 else rawBits;
             in
@@ -98,6 +98,9 @@ in
 
           # Keepalives work spoke2hub and hub2hub (to keep punching NATs between hubs).
           persistentKeepalive = mkIf (data.isHub) 25;
+
+          # retry quicker than the dynamicEndpointRefreshSeconds
+          dynamicEndpointRefreshRestartSeconds = 5;
         }
       ) (filterAttrs (n: d: n != config.networking.hostName && (thisNode.isHub || d.isHub)) fleet);
     };
