@@ -100,7 +100,7 @@ in
           persistentKeepalive = mkIf (data.isHub) 25;
 
           # retry quicker than the dynamicEndpointRefreshSeconds
-          dynamicEndpointRefreshRestartSeconds = 5;
+          dynamicEndpointRefreshRestartSeconds = if config.networking.wireguard.useNetworkd then null else 5;
         }
       ) (filterAttrs (n: d: n != config.networking.hostName && (thisNode.isHub || d.isHub)) fleet);
     };
