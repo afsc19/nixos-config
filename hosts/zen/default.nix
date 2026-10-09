@@ -54,6 +54,7 @@
       };
     };
     shell = {
+      claude-code.enable = true;
       git.enable = true;
       opencode.enable = true;
       yazi = {
