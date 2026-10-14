@@ -123,9 +123,9 @@ in
     };
 
     forwardedProtoRedirect.enable = mkOption {
-      type = types.bool;
+      type = types.bool;:
       default = true;
-      description = "cloudflare tunnel Catch-all HTTP -> HTTPS redirect ("X-Forwarded-Proto: http", set by Cloudflare)(default server on port 80)";
+      description = "cloudflare tunnel Catch-all HTTP -> HTTPS redirect (default server on port 80)";
     };
 
     dropUnknownTls = {
