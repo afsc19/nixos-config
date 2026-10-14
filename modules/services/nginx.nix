@@ -1,17 +1,20 @@
 {
   config,
   lib,
+  pkgs,
   secrets,
   ...
 }:
 let
   inherit (lib)
+    elem
     hasAttrByPath
     listToAttrs
     map
     optionalAttrs
     mkEnableOption
     mkAfter
+    mkBefore
     mkIf
     mkOption
     types
@@ -20,13 +23,21 @@ let
   cfg = config.modules.services.nginx;
   hasEncryptedVhostsSecret = hasAttrByPath [ "host" "nginxVhosts" ] secrets;
 
+  # Cloudflare tunnel tells the proto using X-Forwarded-Proto header
+  forwardedProtoRedirect = pkgs.writeText "nginx-forwarded-proto-redirect.conf" ''
+    if ($http_x_forwarded_proto = "http") {
+      return 301 https://$host$request_uri;
+    }
+  '';
+  forwardedProtoRedirectPath = "/etc/nginx/forwarded-proto-redirect.conf";
+
   vhosts = listToAttrs (
     map (entry: {
       name = entry.serverName;
       value = {
         # enableACME = true;
         useACMEHost = entry.acmeHost;
-        forceSSL = true; # TODO build HTTP -> HTTPS redirection
+        forceSSL = true;
 
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString entry.port}";
@@ -111,6 +122,12 @@ in
       description = "Catch-all HTTP -> HTTPS redirect (default server on port 80)";
     };
 
+    forwardedProtoRedirect.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "cloudflare tunnel Catch-all HTTP -> HTTPS redirect ("X-Forwarded-Proto: http", set by Cloudflare)(default server on port 80)";
+    };
+
     dropUnknownTls = {
       enable = mkOption {
         type = types.bool;
@@ -156,6 +173,25 @@ in
     };
   };
 
+  # extend every vhost (also ones declared by other modules) with the redirect snippet
+  options.services.nginx.virtualHosts = mkOption {
+    type = types.attrsOf (
+      types.submodule (
+        { name, ... }:
+        {
+          config.extraConfig = mkIf (
+            cfg.enable
+            && cfg.forwardedProtoRedirect.enable
+            && !(elem name [
+              "_"
+              "_tls"
+            ])
+          ) (mkBefore "include ${forwardedProtoRedirect};");
+        }
+      )
+    );
+  };
+
   config = mkIf cfg.enable {
     age.secrets.nginxVhosts = mkIf (hasEncryptedVhostsSecret) {
       file = secrets.host.nginxVhosts;
@@ -165,6 +201,10 @@ in
     };
 
     services.nginx.enableReload = true;
+
+    environment.etc."nginx/forwarded-proto-redirect.conf" = mkIf cfg.forwardedProtoRedirect.enable {
+      source = forwardedProtoRedirect;
+    };
 
     services.nginx = {
       enable = true;
