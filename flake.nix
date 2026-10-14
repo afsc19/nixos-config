@@ -19,7 +19,6 @@
     # Input for Nixcord (Discord clients configs for NixOS/Home Manager)
     nixcord = {
       url = "github:FlameFlag/nixcord";
-
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
