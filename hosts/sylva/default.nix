@@ -43,6 +43,12 @@
         ];
       };
       ctfd.enable = true;
+      personal-website = {
+        enable = true;
+        acmeHost = "andrecadete.com";
+        websiteRoot = "/srv/www/afsc-website";
+        cvRoot = "/srv/www/cv"; 
+      };
       nginx = {
         enable = true;
         acmeCerts = [
