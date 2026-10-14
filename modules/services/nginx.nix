@@ -164,7 +164,7 @@ in
       mode = "0440";
     };
 
-    systemd.services.nginx.reloadIfChanged = true;
+    services.nginx.enableReload = true;
 
     services.nginx = {
       enable = true;
