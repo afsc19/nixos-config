@@ -105,6 +105,26 @@ in
       description = "List of subdomain -> local port mappings to expose via nginx.";
     };
 
+    httpRedirect.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Catch-all HTTP -> HTTPS redirect (default server on port 80)";
+    };
+
+    dropUnknownTls = {
+      enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Drop (444) HTTPS requests for hosts that match no server block (default server on port 443).";
+      };
+
+      acmeHost = mkOption {
+        type = types.str;
+        default = "andrecadete.com";
+        description = "Name of the provisioned certificate presented to unknown hosts.";
+      };
+    };
+
     acmeCerts = mkOption {
       type = types.listOf (
         types.submodule {
@@ -164,7 +184,47 @@ in
         access_log /var/log/nginx/access_custom.log vhost;
       '';
 
-      virtualHosts = vhosts;
+      virtualHosts =
+        vhosts
+        // optionalAttrs cfg.httpRedirect.enable {
+          # HTTP -> HTTPS redirect for any host not handled by another port 80 server
+          "_" = {
+            default = true;
+            listen = [
+              {
+                addr = "0.0.0.0";
+                port = 80;
+              }
+              {
+                addr = "[::]";
+                port = 80;
+              }
+            ];
+            locations."/".return = "301 https://$host$request_uri";
+          };
+        }
+        // optionalAttrs cfg.dropUnknownTls.enable {
+          # Drop unknown TLS hosts after the handshake
+          "_tls" = {
+            serverName = "_";
+            default = true;
+            onlySSL = true;
+            useACMEHost = cfg.dropUnknownTls.acmeHost;
+            listen = [
+              {
+                addr = "0.0.0.0";
+                port = 443;
+                ssl = true;
+              }
+              {
+                addr = "[::]";
+                port = 443;
+                ssl = true;
+              }
+            ];
+            locations."/".return = "444";
+          };
+        };
 
       appendHttpConfig = mkMerge [
         (mkIf hasEncryptedVhostsSecret (mkAfter ''
