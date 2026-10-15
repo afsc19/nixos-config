@@ -11,39 +11,43 @@ let
     mkIf
     mkOption
     types
+    mkDefault
     ;
   cfg = config.modules.shell.yazi;
 
+  # Required dependency bundle
+  requiredDeps = with pkgs; [
+    unstable.yazi
+    file
+  ];
+
   # Recommended dependency bundle
   recommendedDeps = with pkgs; [
-    yazi
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
+    ffmpeg
+    _7zz
+    jq
+    (lib.hiPrio poppler-utils)
     fd
     ripgrep
     fzf
     zoxide
-    (lib.hiPrio poppler-utils)
-    ffmpeg
-    mediainfo
-    chafa
-    ueberzugpp
-    exiftool
+    resvg
+    imagemagick
+    wl-clipboard
   ];
 
-  # POSIX shell version of the `y` helper
-  yFunctionPOSIX = ''
+  # `y` helper: cd into yazi's last directory on exit (bash & zsh)
+  yFunction = ''
     y() {
-      local tmp="$(mktemp -t yazi-cwd.XXXXXX)"
-      yazi "$@" --cwd-file="$tmp"
-      if [ -f "$tmp" ]; then
-        local cwd
-        cwd="$(cat "$tmp")"
-        if [ -n "$cwd" ] && [ -d "$cwd" ]; then
-          cd "$cwd" || return
-        fi
+      local tmp cwd
+      tmp="$(mktemp -t yazi-cwd.XXXXXX)" || return
+      command yazi "$@" --cwd-file="$tmp"
+      if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
       fi
-      rm -f "$tmp"
+      command rm -f -- "$tmp"
     }
   '';
 in
@@ -63,34 +67,19 @@ in
   };
 
   config = mkIf cfg.enable {
-    hm = {
-      programs.yazi = {
-        enable = true;
-        enableZshIntegration = true;
-        shellWrapperName = "y";
-      };
+    # System-wide so every user can run it
+    environment.systemPackages = requiredDeps
+      ++ lib.optionals cfg.installDependencies recommendedDeps
+      ++ cfg.extraPackages;
 
-      # Inject 'y'
-      # programs.zsh.initContent = lib.mkAfter yFunctionPOSIX;
-      # programs.bash.initExtra = lib.mkAfter yFunctionPOSIX;
-      # programs.fish.interactiveShellInit = lib.mkAfter yFunctionFish;
+    programs.bash.interactiveShellInit = yFunction;
+    programs.zsh.interactiveShellInit = yFunction;
 
-      # Ensure packages exist for user profile
-      home.packages = lib.mkIf cfg.installDependencies (recommendedDeps ++ cfg.extraPackages);
+    hm.programs.yazi = {
+      enable = true;
+      package = pkgs.unstable.yazi;
+      enableZshIntegration = mkDefault false;
+      enableBashIntegration = mkDefault false;
     };
-
-    # System-wide yazi
-    environment.systemPackages = lib.mkIf cfg.installDependencies (
-      recommendedDeps ++ cfg.extraPackages
-    );
-
-    # cache server
-    nix.settings = {
-      extra-substituters = [ "https://yazi.cachix.org" ];
-      extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" ];
-    };
-
-    # Provide the function for non-HM managed POSIX shells (e.g. root, other users)
-    environment.etc."profile.d/30-yazi-cwd.sh".text = yFunctionPOSIX;
   };
 }

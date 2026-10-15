@@ -18,7 +18,6 @@
       # https://github.com/NixOS/nix/issues/9649#issuecomment-1868001568
       trusted-users = [ "root" ];
 
-      # Yazi cache server
       extra-substituters = [
         "https://nix-community.cachix.org"
         "https://attic.xuyh0120.win/lantian"

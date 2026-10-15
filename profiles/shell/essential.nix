@@ -26,6 +26,7 @@
     gnutar
     xz
     p7zip
+    _7zz
 
     # Disk
     ncdu
