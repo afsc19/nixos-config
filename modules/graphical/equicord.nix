@@ -29,7 +29,8 @@ in
         plugins = {
           fakeNitro.enable = true;
           noNitroUpsell.enable = true;
-          questify.enable = true;
+          # FIXME temp Questify depends on AudioPlayerAPI, which breaks notification sounds (as of 14/10/2026)
+          questify.enable = false;
           spotifyCrack = {
             enable = false;
             noSpotifyAutoPause = false;
