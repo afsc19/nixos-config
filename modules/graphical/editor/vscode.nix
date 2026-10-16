@@ -72,6 +72,14 @@ let
       "strings" = true;
     };
     "keyboard.dispatch" = "keyCode";
+    # smooth cursor + tweaks
+    "editor.smoothScrolling" = true;
+    "editor.cursorSmoothCaretAnimation" = "on";
+    "workbench.list.smoothScrolling" = true;
+    "terminal.integrated.smoothScrolling" = true;
+    "editor.cursorBlinking" = "smooth";
+    "terminal.integrated.cursorStyle" = "line";
+    "terminal.integrated.cursorBlinking" = true;
   };
 in
 {
