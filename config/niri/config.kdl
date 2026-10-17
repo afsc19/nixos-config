@@ -127,6 +127,7 @@ binds {
     Ctrl+Print { spawn-sh "grim -g \"$(slurp)\" - | wl-copy && notify-send 'Screenshot' 'Copied to clipboard'"; } // for debug
 
     Mod+D { spawn-sh "noctalia msg panel-toggle launcher"; }
+    Mod+Period { spawn-sh "noctalia msg panel-toggle launcher '/emo '"; } // emoji picker
     Mod+C { spawn-sh "noctalia msg panel-toggle control-center"; }
     Mod+Shift+C { spawn-sh "noctalia msg caffeine-toggle"; }
     Mod+W { spawn "nwg-displays"; }
