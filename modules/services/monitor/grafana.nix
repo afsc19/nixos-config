@@ -216,7 +216,7 @@ in
                     url = "$__file{${config.age.secrets.grafanaDiscordWebhook.path}}";
                     use_discord_username = true;
                   };
-                  disableResolveMessage = true;
+                  disableResolveMessage = false;
                 }
               ];
             }
@@ -230,9 +230,9 @@ in
                   settings = {
                     url = "$__file{${config.age.secrets.grafanaDiscordWebhook.path}}";
                     use_discord_username = true;
-                    message = "{{ .Annotations.summary }}";
+                    message = "{{ if eq .Status \"resolved\" }}✅🧑‍🚒 Resolved: {{ else }}🔥🤯 Firing {{ end }}{{ .Annotations.summary }}"; # gpt-style emojis because free will is a thing
                   };
-                  disableResolveMessage = true;
+                  disableResolveMessage = false;
                 }
               ];
             }
