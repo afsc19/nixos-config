@@ -94,6 +94,7 @@
   environment.systemPackages = with pkgs; [
     gcc
     glibc.static
+    gnumake
   ];
 
   # Allow running dynamically linked Linux binaries not built by Nix
