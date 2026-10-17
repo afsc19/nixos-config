@@ -47,7 +47,7 @@
         enable = true;
         acmeHost = "andrecadete.com";
         websiteRoot = "/srv/www/afsc-website";
-        cvRoot = "/srv/www/cv"; 
+        cvRoot = "/srv/www/cv";
       };
       nginx = {
         enable = true;

@@ -123,13 +123,16 @@
     laptop-virtualization
   ];
 
-
   # TEMP AD ctfs
   environment.systemPackages = with pkgs; [
-    (python3.withPackages (ps: [ ps.typer ps.rich ps.requests ps.pwntools ]))
+    (python3.withPackages (ps: [
+      ps.typer
+      ps.rich
+      ps.requests
+      ps.pwntools
+    ]))
   ];
 
-  
   my.networking.wiredInterface = "eth1";
   my.networking.wirelessInterface = "wlo1";
   my.hardware = {

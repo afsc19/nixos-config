@@ -29,7 +29,6 @@ let
       return 301 https://$host$request_uri;
     }
   '';
-  forwardedProtoRedirectPath = "/etc/nginx/forwarded-proto-redirect.conf";
 
   vhosts = listToAttrs (
     map (entry: {

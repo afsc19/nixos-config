@@ -98,7 +98,7 @@ stdenvNoCC.mkDerivation {
     for jar in NIX_OUT/share/burpsuite/burpsuite*.jar; do
       ln -sf "''$jar" "''$CONFIG_DIR/"
     done
-    
+
     if [ -n "''$HOME" ]; then
       rm -rf "''$HOME"/.config/burpsuite-"*"
     fi

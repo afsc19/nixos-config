@@ -68,9 +68,8 @@ in
 
   config = mkIf cfg.enable {
     # System-wide so every user can run it
-    environment.systemPackages = requiredDeps
-      ++ lib.optionals cfg.installDependencies recommendedDeps
-      ++ cfg.extraPackages;
+    environment.systemPackages =
+      requiredDeps ++ lib.optionals cfg.installDependencies recommendedDeps ++ cfg.extraPackages;
 
     programs.bash.interactiveShellInit = yFunction;
     programs.zsh.interactiveShellInit = yFunction;

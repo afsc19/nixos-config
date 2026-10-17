@@ -9,7 +9,8 @@ let
     mkEnableOption
     mkIf
     mkOption
-    types;
+    types
+    ;
 
   cfg = config.modules.services.personal-website;
 in
