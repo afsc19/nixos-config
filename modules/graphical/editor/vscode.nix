@@ -99,51 +99,55 @@ in
       });
 
       profiles.default = {
-        extensions = with pkgs.unstable.vscode-extensions; [
-          # Nix
-          bbenoist.nix
-          jnoortheen.nix-ide
+        extensions =
+          with pkgs.unstable.vscode-extensions;
+          [
+            # Nix
+            bbenoist.nix
+            jnoortheen.nix-ide
 
-          # Java
-          redhat.java
-          ms-vscode.cpptools
+            # Java
+            redhat.java
+            ms-vscode.cpptools
 
-          # Python
-          ms-python.python
-          ms-python.black-formatter
+            # Python
+            ms-python.python
+            ms-python.black-formatter
 
-          # PDFs
-          tomoki1207.pdf
+            # PDFs
+            tomoki1207.pdf
 
-          # HEX editor
-          ms-vscode.hexeditor
+            # HEX editor
+            ms-vscode.hexeditor
 
-          # CSV colors
-          mechatroner.rainbow-csv
+            # CSV colors
+            mechatroner.rainbow-csv
 
-          # JSON formatter
-          Meezilla.json
+            # Markdown
+            yzhang.markdown-all-in-one
 
-          # Markdown
-          yzhang.markdown-all-in-one
+            # TO DO highlighter
+            gruntfuggly.todo-tree
 
-          # TO DO highlighter
-          gruntfuggly.todo-tree
+            # Git tools
+            eamodio.gitlens
 
-          # Git tools
-          eamodio.gitlens
+            # Themes
+            teabyii.ayu
+            # FranRuizSantaclara.high-contrast-theme
 
-          # Themes
-          teabyii.ayu
-          # FranRuizSantaclara.high-contrast-theme
+            # Custom theme
+            ayu-high-contrast
 
-          # Custom theme
-          ayu-high-contrast
+            # Astro language support
+            astro-build.astro-vscode
 
-          # Astro language support
-          astro-build.astro-vscode
-
-        ];
+          ]
+          # Extensions not packaged in nixpkgs (lowercase)
+          ++ (with pkgs.nix-vscode-extensions.vscode-marketplace; [
+            # JSON formatter
+            meezilla.json
+          ]);
         # inherit userSettings;
       };
     };

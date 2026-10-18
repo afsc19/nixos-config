@@ -71,6 +71,12 @@
       flake = false;
     };
 
+    # VS Code Marketplace / Open VSX extensions
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     vscode-ayu-theme = {
       url = "github:afsc19/ayu-high-contrast-themes";
       flake = false;
