@@ -121,6 +121,9 @@ in
           # CSV colors
           mechatroner.rainbow-csv
 
+          # JSON formatter
+          Meezilla.json
+
           # Markdown
           yzhang.markdown-all-in-one
 
