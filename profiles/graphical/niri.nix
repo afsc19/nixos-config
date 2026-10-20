@@ -125,6 +125,12 @@ in
         show_value = true;
       };
 
+      system.monitor = {
+        cpu_poll_seconds = 1.0;
+        memory_poll_seconds = 1.0;
+        network_poll_seconds = 1.0;
+      };
+
       lockscreen = {
         enabled = true;
         blurred_desktop = true;
