@@ -34,12 +34,8 @@
 
     # Secure boot systemd-boot
     lanzaboote = {
-      url = "github:nix-community/lanzaboote?ref=v0.4.3";
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
-      # only used for development, so we can get rid of it
-      inputs.pre-commit-hooks-nix.follows = "";
-      # only used for non-flake setups, so we can get rid of it
-      inputs.flake-compat.follows = "";
     };
 
     # To inspect indexes
