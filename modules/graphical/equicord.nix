@@ -38,6 +38,7 @@ in
           musicControls.enable = false;
           channelTabs.enable = false;
           showHiddenChannels.enable = true;
+          whoReacted.enable = true;
           previewMessage.enable = true;
           fixSpotifyEmbeds.enable = true;
           disableCallIdle.enable = true;
