@@ -1,3 +1,4 @@
-_final: _prev: {
+{ ... }:
+_final: prev: {
   cacert = _final.unstable.cacert;
 }
