@@ -71,6 +71,41 @@ in
           method = "auto";
         };
       };
+      profiles.tecnico-rnl = {
+        connection = {
+          id = "tecnico-rnl";
+          type = "vpn";
+        };
+        vpn = {
+          service-type = "org.freedesktop.NetworkManager.openvpn";
+          connection-type = "password";
+          auth = "SHA256";
+          cipher = "AES-256-CBC";
+          dev = "tun";
+          password-flags = "0";
+          remote = "vpn.tecnico.ulisboa.pt";
+          remote-cert-tls = "server";
+          tls-version-min = "1.2";
+          ca = "${tecnicoCert}";
+          ta = "${tecnicoTa}";
+          ta-dir = "0";
+          username = "ist1114254@tecnico.ulisboa.pt";
+        };
+        vpn-secrets = {
+          password = "\${TECNICO_VPN_PASSWORD}";
+        };
+        ipv4 = {
+          method = "auto";
+          never-default = "true";
+          ignore-auto-routes = "true";
+          route1 = "193.136.164.0/24";
+        };
+        ipv6 = {
+          method = "auto";
+          never-default = "true";
+          ignore-auto-routes = "true";
+        };
+      };
     };
 
     # This is the missing piece that makes NetworkManager's VPN plugin
