@@ -29,6 +29,7 @@
       enterprise-architect.enable = true;
       # gnome.enable = true;
       gtk.enable = true;
+      obs.enable = true;
       office.enable = true;
       qt.enable = true;
       reader.enable = true;
