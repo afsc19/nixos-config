@@ -51,6 +51,8 @@
       };
       nginx = {
         enable = true;
+        # Default port 80 page serves the static CTF site
+        httpRedirect.root = "/srv/www/ctf";
         acmeCerts = [
           {
             domain = "andrecadete.com";

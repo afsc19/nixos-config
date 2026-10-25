@@ -118,7 +118,13 @@ in
     httpRedirect.enable = mkOption {
       type = types.bool;
       default = true;
-      description = "Catch-all HTTP -> HTTPS redirect (default server on port 80)";
+      description = "Catch-all default server on port 80 (HTTP -> HTTPS redirect, or static root if set)";
+    };
+
+    httpRedirect.root = mkOption {
+      type = types.nullOr types.path;
+      default = null;
+      description = "Static root served by the port 80 default server. Defaults to HTTP -> HTTPS redirection.";
     };
 
     forwardedProtoRedirect.enable = mkOption {
@@ -226,7 +232,8 @@ in
       virtualHosts =
         vhosts
         // optionalAttrs cfg.httpRedirect.enable {
-          # HTTP -> HTTPS redirect for any host not handled by another port 80 server
+          # Port 80 default server for any host not handled by another port 80 server.
+          # Serves a static root if configured, otherwise redirects HTTP -> HTTPS.
           "_" = {
             default = true;
             listen = [
@@ -239,7 +246,11 @@ in
                 port = 80;
               }
             ];
-            locations."/".return = "301 https://$host$request_uri";
+            locations."/" =
+              if cfg.httpRedirect.root != null then
+                { root = cfg.httpRedirect.root; }
+              else
+                { return = "301 https://$host$request_uri"; };
           };
         }
         // optionalAttrs cfg.dropUnknownTls.enable {
