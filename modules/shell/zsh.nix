@@ -31,6 +31,8 @@ in
           nixdevup = "nix flake update && nix develop path:. -c zsh";
 
           docker = "sudo docker";
+          kctl = "kubectl";
+
           suz = "sudo -E zsh";
 
           ssh-test = "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR";
