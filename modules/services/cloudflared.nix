@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   secrets,
   ...
 }:
@@ -70,6 +71,7 @@ in
 
     services.cloudflared = {
       enable = true;
+      package = pkgs.unstable.cloudflared;
       tunnels = listToAttrs (
         map (entry: {
           name = entry.tunnelID;
