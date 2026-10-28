@@ -266,6 +266,7 @@ in
     nautilus # file manager
     sushi # file previewer
     seahorse # graphical keyring manager
+    qalculate-gtk
     ptyxis
     wl-clipboard
     grim
