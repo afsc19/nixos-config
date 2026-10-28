@@ -40,7 +40,6 @@ in
         };
 
         # Disable beep when no file is found, per example.
-        # FIXME fix the \'\' in the output flake
         initContent = ''
                     # unsetopt beep
                     bindkey "^[[1;5C" forward-word # Ctrl + Right Arrow
@@ -52,7 +51,7 @@ in
                       if [[ -f flake.nix ]] then
                         echo "flake.nix already exists"
                       else
-                        cat <<EOF > flake.nix
+                        cat <<'EOF' > flake.nix
           {
             inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
             outputs = { nixpkgs, ... }: let 
@@ -64,9 +63,9 @@ in
                   pythonEnv
                 ];
 
-                shellHook = \'\'
-                  ln -sfn \$\{pythonEnv\} .venv
-                \'\';
+                shellHook = '''
+                  ln -sfn ''${pythonEnv} .venv
+                ''';
               };
             };
           }
