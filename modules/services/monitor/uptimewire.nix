@@ -57,6 +57,10 @@ in
     ++ (optional thisNode.isHub my.ports.prometheusServer);
     networking.firewall.allowPing = true; # Just to be sure
 
+    # the networkd backend refreshes endpoints by re-applying the whole netdev (networkctl reload) which disrupts the tunnel
+    # now it only runs "wg set endpoint"
+    networking.wireguard.useNetworkd = false;
+
     networking.wireguard.interfaces.uptimeWire0 = {
       ips = [ "${thisNode.ip}/24" ];
       listenPort = port;
@@ -100,7 +104,7 @@ in
           persistentKeepalive = mkIf (data.isHub) 25;
 
           # retry quicker than the dynamicEndpointRefreshSeconds
-          dynamicEndpointRefreshRestartSeconds = if config.networking.wireguard.useNetworkd then null else 5;
+          dynamicEndpointRefreshRestartSeconds = 5;
         }
       ) (filterAttrs (n: d: n != config.networking.hostName && (thisNode.isHub || d.isHub)) fleet);
     };
