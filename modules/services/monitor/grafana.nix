@@ -252,6 +252,14 @@ in
           # ];
           rules.settings = {
             apiVersion = 1;
+            # renamed/deleted rules for grafana so it propagates (yup you need this)
+            # and also folders aren't managed by the config, so you'll have to use a API rip
+            deleteRules = [
+              {
+                orgId = 1;
+                uid = "ctf_checks_15m";
+              }
+            ];
             groups =
               (builtins.fromJSON ''
                 [
