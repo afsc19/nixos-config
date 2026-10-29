@@ -198,6 +198,18 @@ in
   };
 
   config = mkIf cfg.enable {
+    modules.services.nebula.firewall.inbound =
+      map
+        (port: {
+          inherit port;
+          proto = "tcp";
+          group = "uptime";
+        })
+        (with lib.my.ports; [
+          http
+          https
+        ]);
+
     age.secrets.nginxVhosts = mkIf (hasEncryptedVhostsSecret) {
       file = secrets.host.nginxVhosts;
       owner = "nginx";
