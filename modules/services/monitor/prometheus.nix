@@ -90,6 +90,8 @@ in
     (mkIf (thisNode != null && thisNode.isHub) {
       age.secrets.blackboxPersonal = mkIf hasPersonalEndpoints {
         file = secrets.host.blackboxPersonal;
+        # file_sd picks its parser from the extension
+        path = "/run/agenix/blackboxPersonal.json";
         owner = "prometheus";
         group = "prometheus";
         mode = "0440";
