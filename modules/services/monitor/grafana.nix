@@ -343,13 +343,13 @@ in
                     },
                     {
                         "orgId": 1,
-                        "name": "ctf_checks_15m",
-                        "folder": "CTF",
+                        "name": "endpoint_checks_15m",
+                        "folder": "Endpoints",
                         "interval": "15m",
                         "rules": [
                             {
-                              "uid": "ctf_checks_15m",
-                              "title": "ctf_checks_15m",
+                              "uid": "endpoint_checks_15m",
+                              "title": "endpoint_checks_15m",
                               "condition": "C",
                               "data": [
                                   {
@@ -361,7 +361,7 @@ in
                                       "datasourceUid": "prometheus",
                                       "model": {
                                           "editorMode": "builder",
-                                          "expr": "probe_success{job=\"ctf-challs-https\"}",
+                                          "expr": "probe_success",
                                           "instant": false,
                                           "intervalMs": 1000,
                                           "legendFormat": "__auto",
@@ -460,8 +460,8 @@ in
                               "noDataState": "NoData",
                               "execErrState": "Error",
                               "annotations": {
-                                  "description": "One or more CTF Challenges aren't accessible via public https.",
-                                  "summary": "CTF Challenges DOWN!"
+                                  "description": "One or more Endpoints aren't accessible via public https.",
+                                  "summary": "Endpoints DOWN!"
                               },
                               "labels": {},
                               "isPaused": false,
@@ -1064,9 +1064,10 @@ in
               ];
             });
           }
+          # custom ctf dash for whos up
           {
             name = "CTF Challenges UP";
-            folder = "CTF";
+            folder = "Endpoints";
             options.path = pkgs.writeTextDir "ctfchalls-overview.json" (
               builtins.toJSON {
                 uid = "ctfchalls-overview";
@@ -1161,17 +1162,16 @@ in
               }
             );
           }
-          # prettier CTF Challenges
+          # prettier endpoints
           {
-            name = "CTF Challenges Details";
-            folder = "CTF";
-            options.path = pkgs.writeTextDir "ctfchalls-details.json" (
+            name = "Endpoints Details";
+            folder = "Endpoints";
+            options.path = pkgs.writeTextDir "endpoints-details.json" (
               builtins.toJSON {
-                uid = "ctfchalls-details";
-                title = "CTF Challenges Details";
+                uid = "endpoints-details";
+                title = "Endpoints Details";
                 description = "Blackbox exporter HTTP prober dashboard";
                 tags = [
-                  "ctfchalls"
                   "infrastructure"
                   "blackbox"
                   "prometheus"
@@ -2020,7 +2020,7 @@ in
           # NGINX
           {
             name = "NGINX";
-            folder = "NGINX";
+            folder = "Endpoints";
             options.path = pkgs.writeTextDir "nginx-overview.json" (
               builtins.toJSON {
                 uid = "nginx-overview";
