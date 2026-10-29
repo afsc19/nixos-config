@@ -23,6 +23,13 @@ in
     networking.useDHCP = true;
     networking.useNetworkd = true;
 
+    # no LAN to discover on
+    # with these on, reverse lookups of private addresses wait on LLMNR/mDNS timeouts across links, stalling for 7-15s
+    services.resolved.settings.Resolve = {
+      LLMNR = "no";
+      MulticastDNS = "no";
+    };
+
     # Quicker bootloader
     boot.loader.timeout = 2;
   };
