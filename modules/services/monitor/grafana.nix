@@ -1072,6 +1072,7 @@ in
               builtins.toJSON {
                 uid = "ctfchalls-overview";
                 title = "CTF Challenges Overview";
+                version = 2;
                 tags = [
                   "ctfchalls"
                   "infrastructure"
@@ -2032,7 +2033,7 @@ in
                 ];
                 timezone = "browser";
                 schemaVersion = 30;
-                version = 1;
+                version = 2;
                 editable = true;
                 graphTooltip = 1;
                 time = {
