@@ -18,6 +18,8 @@ in
     programs.nixcord = {
       enable = true;
       discord = {
+        # FIXME VA-API hardware video decode on the Intel iGPU crashes SIGTRAP when a gif loads
+        commandLineArgs = [ "--disable-accelerated-video-decode" ];
         vencord.enable = false;
         equicord = {
           enable = true;
