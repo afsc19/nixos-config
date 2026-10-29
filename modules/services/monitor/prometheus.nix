@@ -91,7 +91,7 @@ in
       age.secrets.blackboxPersonal = mkIf hasPersonalEndpoints {
         file = secrets.host.blackboxPersonal;
         # file_sd picks its parser from the extension
-        path = "/run/agenix/blackboxPersonal.json";
+        path = "/run/blackbox-personal.json";
         owner = "prometheus";
         group = "prometheus";
         mode = "0440";
