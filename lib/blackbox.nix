@@ -32,6 +32,8 @@
         "ssti1"
         "ssti2"
         "ssti3"
+        "blog-sinfo2026"
+        "bazingasim-sinfo2026"
       ];
       prefix = "https://";
       suffix = ".chall.ctf.andrecadete.com";
