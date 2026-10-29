@@ -90,6 +90,14 @@ in
         foldlevelstart = 99;
       };
 
+      # over ssh, use OSC 52 so yanks/pastes reach the local terminal's clipboard
+      extraConfigLua =
+        ''
+          if vim.env.SSH_TTY then
+            vim.g.clipboard = 'osc52'
+          end
+        '';
+
       # These packages are required by LazyVim and its default plugins
       extraPackages = with pkgs; [
         # Build tools for tree-sitter & plugins

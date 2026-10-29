@@ -334,6 +334,9 @@ in
       inactive_tab_foreground = "#cdd6f4";
       inactive_tab_background = "#313244";
       tab_bar_background = "#11111b";
+      
+      # allow remote programs over ssh to read+write the clipboard via OSC 52
+      clipboard_control = "write-clipboard write-primary read-clipboard read-primary";
     };
   };
 

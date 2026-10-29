@@ -89,5 +89,11 @@
     agenix
 
     kitty.terminfo
+
+    # copy stdin to the local terminal's clipboard via OSC 52 (ssh)
+    # cat to_download.txt | osc-copy
+    (writeShellScriptBin "osc-copy" ''
+      printf '\e]52;c;%s\a' "$(base64 -w0)"
+    '')
   ];
 }
