@@ -66,9 +66,13 @@ in
       };
       backdrop.enabled = true;
       battery.warning_threshold = 10;
-      calendar.account.personal_google = {
-        type = "google";
-        name = "personal";
+      calendar = {
+        enabled = true;
+        refresh_minutes = 5;
+        account.personal_google = {
+          type = "google";
+          name = "Personal Calendar";
+        };
       };
       shell = {
         niri_overview_type_to_launch_enabled = true;
