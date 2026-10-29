@@ -236,6 +236,23 @@ in
                 }
               ];
             }
+            {
+              orgId = 1;
+              name = "discord-endpoints";
+              receivers = [
+                {
+                  uid = "discord-endpoints";
+                  type = "discord";
+                  settings = {
+                    url = "$__file{${config.age.secrets.grafanaDiscordWebhook.path}}";
+                    use_discord_username = true;
+                    title = "{{ if gt (len .Alerts.Firing) 0 }}🔥🤯 Endpoints DOWN ({{ len .Alerts.Firing }}){{ else }}✅🧑‍🚒 Endpoints recovered{{ end }}";
+                    message = "{{ if .Alerts.Firing }}**Down:**\n{{ range .Alerts.Firing }}- {{ .Labels.instance }}\n{{ end }}{{ end }}{{ if .Alerts.Resolved }}\n**Recovered:**\n{{ range .Alerts.Resolved }}- {{ .Labels.instance }}\n{{ end }}{{ end }}";
+                  };
+                  disableResolveMessage = false;
+                }
+              ];
+            }
           ];
           # policies.settings.policies = [
           #   {
@@ -469,12 +486,12 @@ in
                               "execErrState": "Error",
                               "annotations": {
                                   "description": "One or more Endpoints aren't accessible via public https.",
-                                  "summary": "Endpoints DOWN!"
+                                  "summary": "Endpoint {{ $labels.instance }} is DOWN!"
                               },
                               "labels": {},
                               "isPaused": false,
                               "notification_settings": {
-                                  "receiver": "discord"
+                                  "receiver": "discord-endpoints"
                               }
                           }
                         ]
