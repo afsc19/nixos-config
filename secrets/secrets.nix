@@ -86,6 +86,7 @@ mkSecrets [
       "grafanaAdminPassword"
       "grafanaSecretKey"
       "nginxVhosts"
+      "blackboxPersonal"
       "cloudflaredCert"
       "cloudflaredTunnel_sylva-tunnel"
       "komodoAdminPass"
@@ -116,6 +117,7 @@ mkSecrets [
       "grafanaSecretKey"
       "cloudflaredTunnel_desolo-tunnel"
       "nginxVhosts"
+      "blackboxPersonal"
     ]
   )
 

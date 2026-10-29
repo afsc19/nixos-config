@@ -3,6 +3,7 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
@@ -14,9 +15,24 @@ let
     optional
     ;
   inherit (lib.my.uptimewire) fleet;
-  inherit (lib.my.blackbox) ctfchalls;
+  inherit (lib.my.blackbox) ctfchalls hostEndpoints;
+  hasPersonalEndpoints = lib.hasAttrByPath [ "host" "blackboxPersonal" ] secrets;
   crowdsecFleet = lib.filterAttrs (_: host: host.crowdsec or false) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
+  blackboxRelabelConfigs = [
+    {
+      source_labels = [ "__address__" ];
+      target_label = "__param_target";
+    }
+    {
+      source_labels = [ "__param_target" ];
+      target_label = "instance";
+    }
+    {
+      target_label = "__address__";
+      replacement = "127.0.0.1:${toString lib.my.ports.prometheusBlackbox}";
+    }
+  ];
 in
 {
   config = mkMerge [
@@ -72,6 +88,13 @@ in
 
     # Enable Prometheus Server on hubs
     (mkIf (thisNode != null && thisNode.isHub) {
+      age.secrets.blackboxPersonal = mkIf hasPersonalEndpoints {
+        file = secrets.host.blackboxPersonal;
+        owner = "prometheus";
+        group = "prometheus";
+        mode = "0440";
+      };
+
       services.prometheus = {
         enable = true;
         port = lib.my.ports.prometheusServer;
@@ -151,22 +174,32 @@ in
               targets = [ "${ctfchalls.prefix}${target}${ctfchalls.suffix}" ];
               labels.alias = target;
             }) ctfchalls.targets;
-            relabel_configs = [
-              {
-                source_labels = [ "__address__" ];
-                target_label = "__param_target";
-              }
-              {
-                source_labels = [ "__param_target" ];
-                target_label = "instance";
-              }
-              {
-                target_label = "__address__";
-                replacement = "127.0.0.1:${toString lib.my.ports.prometheusBlackbox}";
-              }
-            ];
+            relabel_configs = blackboxRelabelConfigs;
           }
-        ];
+          {
+            job_name = "host-endpoints-https";
+            metrics_path = "/probe";
+            params = {
+              module = [ "http_2xx" ];
+            };
+            static_configs = builtins.map (endpoint: {
+              targets = [ endpoint.url ];
+              labels.alias = endpoint.alias;
+            }) hostEndpoints;
+            relabel_configs = blackboxRelabelConfigs;
+          }
+        ]
+        # Personal endpoints are kept out of the (public) config and nix store:
+        # prometheus reads them at runtime from the agenix-decrypted file_sd file.
+        ++ optional hasPersonalEndpoints {
+          job_name = "personal-endpoints-https";
+          metrics_path = "/probe";
+          params = {
+            module = [ "http_2xx" ];
+          };
+          file_sd_configs = [ { files = [ config.age.secrets.blackboxPersonal.path ]; } ];
+          relabel_configs = blackboxRelabelConfigs;
+        };
       };
 
     })
