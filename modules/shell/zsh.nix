@@ -29,6 +29,8 @@ in
           nixup-impure = "(OLD_PATH=$PWD; trap \"cd $OLD_PATH; unset OLD_PATH\" EXIT; cd ~/nixos-config && git pull && sudo nixos-rebuild switch --flake ~/nixos-config#$(uname -n) --impure)";
           nixtest = "(OLD_PATH=$PWD; trap \"cd $OLD_PATH; unset OLD_PATH\" EXIT; cd ~/nixos-config && git pull && sudo nixos-rebuild test --flake ~/nixos-config#$(uname -n))";
           nixtest-impure = "(OLD_PATH=$PWD; trap \"cd $OLD_PATH; unset OLD_PATH\" EXIT; cd ~/nixos-config && git pull && sudo nixos-rebuild test --flake ~/nixos-config#$(uname -n) --impure)";
+          nixbuild = "(OLD_PATH=$PWD; trap \"cd $OLD_PATH; unset OLD_PATH\" EXIT; cd ~/nixos-config && git pull && sudo nixos-rebuild build --flake ~/nixos-config#$(uname -n))";
+          nixbuild-impure = "(OLD_PATH=$PWD; trap \"cd $OLD_PATH; unset OLD_PATH\" EXIT; cd ~/nixos-config && git pull && sudo nixos-rebuild build --flake ~/nixos-config#$(uname -n) --impure)";
           nixdev = "nix develop path:. -c zsh";
           nixdevup = "nix flake update && nix develop path:. -c zsh";
 
