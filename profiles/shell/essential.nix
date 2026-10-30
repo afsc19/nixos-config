@@ -17,6 +17,7 @@
     # Nix
     nixfmt
     nixfmt-tree
+    nix-tree
 
     # Archives
     zip
