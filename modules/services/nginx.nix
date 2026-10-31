@@ -282,6 +282,9 @@ in
         set_real_ip_from 127.0.0.1;
         set_real_ip_from ::1;
         real_ip_header X-Forwarded-For;
+
+        # avoid switching to loopback port and scheme
+        absolute_redirect off;
       '';
 
       virtualHosts =
@@ -304,7 +307,7 @@ in
 
             # upgrade all hosts that aren't served by nginx to https, and only then drop them if it's the case
             extraConfig = mkIf (behindTraefik && cfg.httpRedirect.root == null) "include ${forwardedProtoRedirect};";
-            
+
             locations."/" =
               if cfg.httpRedirect.root != null then
                 { root = cfg.httpRedirect.root; }
