@@ -50,6 +50,8 @@ in
         # network creation
         ${pkgs."${backend}"}/bin/${backend} network inspect ctfd_internal ||
         ${pkgs."${backend}"}/bin/${backend} network create --internal ctfd_internal
+        ${pkgs."${backend}"}/bin/${backend} network inspect ctfd_public ||
+        ${pkgs."${backend}"}/bin/${backend} network create ctfd_public
 
         # secrets creation
         mkdir -p ${cfg.folder}
@@ -157,14 +159,13 @@ in
           "ctfd-cache"
         ];
         extraOptions = [
-          "--network=ctfd_internal"
-          "--network-alias=ctfd"
-          "--network=bridge"
+          "--network=name=ctfd_internal,alias=ctfd"
+          "--network=ctfd_public"
           "--pull=always"
         ];
         labels = {
           "traefik.enable" = "true";
-          "traefik.docker.network" = "bridge";
+          "traefik.docker.network" = "ctfd_public";
           "traefik.http.routers.ctfd.rule" = "Host(`${cfg.domain}`)";
           "traefik.http.services.ctfd.loadbalancer.server.port" = "8000";
         };
