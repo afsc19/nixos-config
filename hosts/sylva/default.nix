@@ -87,7 +87,7 @@
       traefik = {
         enable = true;
         blackboxTargets.enable = true;
-      }
+      };
       # TODO automatic append-only backups
     };
     shell = {
