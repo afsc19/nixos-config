@@ -35,6 +35,25 @@ let
   ];
 in
 {
+  options.modules.services.monitor.blackboxEndpoints = lib.mkOption {
+    type = lib.types.listOf (
+      lib.types.submodule {
+        options = {
+          alias = lib.mkOption {
+            type = lib.types.str;
+            description = "Name shown in grafana for this probe.";
+          };
+          url = lib.mkOption {
+            type = lib.types.str;
+            description = "URL probed by blackbox (http_2xx).";
+          };
+        };
+      }
+    );
+    default = [ ];
+    description = "Endpoints served by this host, probed by every hub's blackbox exporter.";
+  };
+
   config = mkMerge [
     # Enable Node Exporter on all fleet members
     (mkIf (thisNode != null) {
@@ -172,10 +191,7 @@ in
             params = {
               module = [ "http_2xx" ];
             };
-            static_configs = builtins.map (target: {
-              targets = [ "${ctfchalls.prefix}${target}${ctfchalls.suffix}" ];
-              labels.alias = target;
-            }) ctfchalls.targets;
+            static_configs = ctfchalls;
             relabel_configs = blackboxRelabelConfigs;
           }
           {

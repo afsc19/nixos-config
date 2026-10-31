@@ -1,5 +1,9 @@
 # Targets to use in prometheus' blackbox
-{ lib, nixosConfigurations, ... }:
+{
+  lib,
+  nixosConfigurations,
+  ...
+}:
 let
   # modules.services.{nginx,traefik}.exposedServices on any host
   publicVhosts = lib.foldl' (
@@ -12,13 +16,30 @@ let
       )
     )
   ) { } (lib.attrValues nixosConfigurations);
+
+  # modules.services.monitor.blackboxEndpoints on any host
+  registeredEndpoints = lib.concatMap (host: host.config.modules.services.monitor.blackboxEndpoints) (
+    lib.attrValues nixosConfigurations
+  );
+
+  mkStaticConfig = (config: builtins.map (target: {
+      targets = [ "${config.prefix}${target}${config.suffix}" ];
+      labels.alias = target;
+    }) config.targets);
 in
 {
   blackbox = {
-    hostEndpoints = lib.mapAttrsToList (serverName: _: {
-      alias = serverName;
-      url = "https://${serverName}";
-    }) publicVhosts;
+    hostEndpoints = lib.attrValues (
+      lib.listToAttrs ( # avoid duplicates
+        map (endpoint: lib.nameValuePair endpoint.url endpoint) (
+          lib.mapAttrsToList (serverName: _: {
+            alias = serverName;
+            url = "https://${serverName}";
+          }) publicVhosts
+          ++ registeredEndpoints
+        )
+      )
+    );
 
     # hosts publishing their traefik http_sd
     traefikHosts = lib.attrNames (
@@ -27,7 +48,7 @@ in
       ) nixosConfigurations
     );
 
-    ctfchalls = {
+    ctfchalls = mkStaticConfig {
       targets = [
         "sqli1"
         "sqli2"
