@@ -28,6 +28,8 @@ let
   };
   acmeCertNames = attrNames config.security.acme.certs;
 
+  logDir = "/var/log/traefik";
+
   # cloudflared connects from loopback and sets X-Forwarded-{Proto,For}
   trustedIPs = [
     "127.0.0.1/32"
@@ -62,7 +64,21 @@ in
           sendAnonymousUsage = false;
         };
         log.level = "WARN";
-        accessLog = { };
+        accessLog = {
+          filePath = "${logDir}/access.log";
+          format = "json";
+          fields = {
+            defaultMode = "keep";
+            headers = {
+              defaultMode = "drop";
+              names = {
+                "User-Agent" = "keep";
+                "Referer" = "keep";
+                "Cf-Connecting-Ip" = "keep";
+              };
+            };
+          };
+        };
 
         entryPoints = {
           web = {
@@ -128,6 +144,23 @@ in
     systemd.services.traefik = {
       wants = map (name: "acme-${name}.service") acmeCertNames;
       after = [ "docker.service" ] ++ map (name: "acme-${name}.service") acmeCertNames;
+      serviceConfig = {
+        LogsDirectory = "traefik";
+        LogsDirectoryMode = "0750";
+      };
+    };
+
+    # traefik reopens its access log on USR1
+    services.logrotate.settings.traefik = {
+      files = "${logDir}/*.log";
+      su = "traefik traefik";
+      frequency = "daily";
+      rotate = -1;
+      compress = true;
+      delaycompress = true;
+      missingok = true;
+      notifempty = true;
+      postrotate = "systemctl kill --signal=USR1 --kill-whom=main traefik.service";
     };
   };
 }
