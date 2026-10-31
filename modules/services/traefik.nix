@@ -25,6 +25,27 @@ let
     ;
   cfg = config.modules.services.traefik;
 
+  # exposedServices -> one websecure router + service each, named after the host
+  exposedName = entry: "nix-" + lib.replaceStrings [ "." ] [ "-" ] entry.serverName;
+  exposedRouters = lib.listToAttrs (
+    map (
+      entry:
+      lib.nameValuePair (exposedName entry) {
+        rule = "Host(`${entry.serverName}`)";
+        entryPoints = [ "websecure" ];
+        service = exposedName entry;
+      }
+    ) cfg.exposedServices
+  );
+  exposedBackends = lib.listToAttrs (
+    map (
+      entry:
+      lib.nameValuePair (exposedName entry) {
+        loadBalancer.servers = [ { url = "http://127.0.0.1:${toString entry.port}"; } ];
+      }
+    ) cfg.exposedServices
+  );
+
   # basically every docker router's Host('...') as a prometheus http_sd target list
   targetsDir = "/var/lib/traefik-blackbox-targets";
   generateTargets = pkgs.writeShellApplication {
@@ -39,7 +60,8 @@ let
       trap 'rm -f "$tmp"' EXIT
 
       # on failure the previous list stays in place
-      curl -fsS --max-time 10 "http://127.0.0.1:${toString lib.my.ports.traefikApi}/api/http/routers?per_page=10000" \
+      # retries cover traefik still starting
+      curl -fsS --max-time 10 --retry 10 --retry-delay 2 --retry-connrefused "http://127.0.0.1:${toString lib.my.ports.traefikApi}/api/http/routers?per_page=10000" \
         | jq '
             [ .[] | select(.provider == "docker") | .rule
               | scan("Host\\(`([^`]+)`\\)") | .[0] ]
@@ -74,6 +96,26 @@ in
       type = types.str;
       default = "andrecadete.com";
       description = "Name of the provisioned certificate presented to unknown SNI names.";
+    };
+
+    exposedServices = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            serverName = mkOption {
+              type = types.str;
+              description = "Host to route through traefik";
+            };
+
+            port = mkOption {
+              type = types.port;
+              description = "Local TCP port of the service behind traefik.";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "Host -> local port routes";
     };
 
     blackboxTargets.enable = mkEnableOption "publishing every docker router's Host('...') to the fleet as prometheus http_sd blackbox targets";
@@ -163,10 +205,14 @@ in
                 entryPoints = [ "websecure" ];
                 service = "nginx";
               };
-            };
-            services.nginx.loadBalancer.servers = [
-              { url = "http://127.0.0.1:${toString lib.my.ports.nginxBackend}"; }
-            ];
+            }
+            // exposedRouters;
+            services = {
+              nginx.loadBalancer.servers = [
+                { url = "http://127.0.0.1:${toString lib.my.ports.nginxBackend}"; }
+              ];
+            }
+            // exposedBackends;
           };
         };
       };
