@@ -36,6 +36,8 @@
 
     mc = 25565;
 
+    ctfd = 50200;
+
     # 51820 is wireguard's default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;
   };

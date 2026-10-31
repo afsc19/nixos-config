@@ -25,9 +25,20 @@ in
       default = "/var/lib/ctfd";
       description = "The folder in which uploads, logs, db and cache will be stored";
     };
+    domain = mkOption {
+      type = types.str;
+      default = "ctf.andrecadete.com";
+      description = "Public hostname of CTFd, routed by traefik when it is enabled";
+    };
   };
 
   config = mkIf cfg.enable {
+    # modules.services.traefik.exposedServices = mkIf config.modules.services.traefik.enable [
+    #   {
+    #     serverName = cfg.domain;
+    #     port = lib.my.ports.ctfd;
+    #   }
+    # ];
 
     # yep force docker because internal network name resolution doesnt work with podman
     virtualisation.oci-containers.backend = "docker";
@@ -140,7 +151,7 @@ in
           "${cfg.folder}/uploads:/var/uploads"
           "${cfg.folder}/logs:/var/log/CTFd"
         ];
-        ports = [ "127.0.0.1:50200:8000" ];
+        # ports = [ "127.0.0.1:${toString lib.my.ports.ctfd}:8000" ];
         dependsOn = [
           "ctfd-db"
           "ctfd-cache"
@@ -148,8 +159,15 @@ in
         extraOptions = [
           "--network=ctfd_internal"
           "--network-alias=ctfd"
+          "--network=bridge"
           "--pull=always"
         ];
+        labels = {
+          "traefik.enable" = "true";
+          "traefik.docker.network" = "bridge";
+          "traefik.http.routers.ctfd.rule" = "Host(`${cfg.domain}`)";
+          "traefik.http.services.ctfd.loadbalancer.server.port" = "8000";
+        };
       };
     };
 
