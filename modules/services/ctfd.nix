@@ -40,6 +40,13 @@ in
     #   }
     # ];
 
+    modules.services.monitor.blackboxEndpoints = [
+      {
+        alias = "ctfd";
+        url = "https://${cfg.domain}";
+      }
+    ];
+
     # yep force docker because internal network name resolution doesnt work with podman
     virtualisation.oci-containers.backend = "docker";
 

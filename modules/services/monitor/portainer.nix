@@ -16,6 +16,13 @@ in
   options.modules.services.monitor.portainer.enable = mkEnableOption "Portainer container monitor";
 
   config = mkIf cfg.enable {
+    modules.services.monitor.blackboxEndpoints = [
+      {
+        alias = "portainer";
+        url = "https://portainer.andrecadete.com";
+      }
+    ];
+
     systemd.tmpfiles.rules = [
       "d /var/lib/portainer 0755 root root -"
       "d /run/podman 0755 root root -"
