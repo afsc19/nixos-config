@@ -27,6 +27,8 @@
     # A more reserved alternative to 8080
     nginxStubStatus = 18080;
     stalwartHttp = 18081;
+    # when behind traefik
+    nginxBackend = 18082;
 
     mc = 25565;
 

@@ -5,7 +5,8 @@ result-*
 # Ignore automatically generated direnv output
 .direnv
 
-secrets/*/nginx.conf
+secrets/*/*
+secrets/*/!*.age
 
 profiles/cybersec/rev/ida*/*
 profiles/cybersec/rev/binja/*.zip

@@ -84,6 +84,7 @@
         ];
       };
       stalwart.enable = true;
+      traefik.enable = true;
       # TODO automatic append-only backups
     };
     shell = {

@@ -12,9 +12,11 @@ let
     listToAttrs
     map
     optionalAttrs
+    optionalString
     mkEnableOption
     mkAfter
     mkBefore
+    mkForce
     mkIf
     mkOption
     types
@@ -22,6 +24,9 @@ let
     ;
   cfg = config.modules.services.nginx;
   hasEncryptedVhostsSecret = hasAttrByPath [ "host" "nginxVhosts" ] secrets;
+
+  # traefik reverse proxies, nginx only serves plain http on loopback
+  behindTraefik = config.modules.services.traefik.enable;
 
   # Cloudflare tunnel tells the proto using X-Forwarded-Proto header
   forwardedProtoRedirect = pkgs.writeText "nginx-forwarded-proto-redirect.conf" ''
@@ -41,6 +46,18 @@ let
         locations."/" = {
           proxyPass = "http://127.0.0.1:${toString entry.port}";
           proxyWebsockets = true;
+        }
+        // optionalAttrs behindTraefik {
+          # recommended settings would send X-Forwarded-Proto $scheme (always http here)
+          recommendedProxySettings = false;
+          extraConfig = ''
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Server $host;
+          '';
         };
       }
       // optionalAttrs entry.nebulaOnly {
@@ -59,8 +76,11 @@ let
       (cert: {
         name = cert.domain;
         value = {
-          group = "nginx";
+          group = if behindTraefik then "traefik" else "nginx";
         }
+        // (optionalAttrs behindTraefik {
+          reloadServices = [ "traefik.service" ];
+        })
         // (optionalAttrs (cert.extraDomainNames != [ ]) {
           inherit (cert) extraDomainNames;
         })
@@ -184,14 +204,26 @@ in
       types.submodule (
         { name, ... }:
         {
-          config.extraConfig = mkIf (
-            cfg.enable
-            && cfg.forwardedProtoRedirect.enable
-            && !(elem name [
-              "_"
-              "_tls"
-            ])
-          ) (mkBefore "include ${forwardedProtoRedirect};");
+          config = mkMerge [
+            {
+              extraConfig = mkIf (
+                cfg.enable
+                && cfg.forwardedProtoRedirect.enable
+                && !(elem name [
+                  "_"
+                  "_tls"
+                ])
+              ) (mkBefore "include ${forwardedProtoRedirect};");
+            }
+            # behind traefik every vhost is plain http on services.nginx.defaultListen
+            (mkIf (cfg.enable && behindTraefik) {
+              forceSSL = mkForce false;
+              addSSL = mkForce false;
+              onlySSL = mkForce false;
+              enableACME = mkForce false;
+              useACMEHost = mkForce null;
+            })
+          ];
         }
       )
     );
@@ -225,6 +257,12 @@ in
 
     services.nginx = {
       enable = true;
+      defaultListen = mkIf behindTraefik [
+        {
+          addr = "127.0.0.1";
+          port = lib.my.ports.nginxBackend;
+        }
+      ];
       recommendedGzipSettings = true;
       recommendedOptimisation = true;
       recommendedProxySettings = true;
@@ -239,6 +277,11 @@ in
 
         access_log /var/log/nginx/access.log combined;
         access_log /var/log/nginx/access_custom.log vhost;
+      ''
+      + optionalString behindTraefik ''
+        set_real_ip_from 127.0.0.1;
+        set_real_ip_from ::1;
+        real_ip_header X-Forwarded-For;
       '';
 
       virtualHosts =
@@ -248,7 +291,7 @@ in
           # Serves a static root if configured, otherwise redirects HTTP -> HTTPS.
           "_" = {
             default = true;
-            listen = [
+            listen = mkIf (!behindTraefik) [
               {
                 addr = "0.0.0.0";
                 port = 80;
@@ -258,14 +301,21 @@ in
                 port = 80;
               }
             ];
+
+            # upgrade all hosts that aren't served by nginx to https, and only then drop them if it's the case
+            extraConfig = mkIf (behindTraefik && cfg.httpRedirect.root == null) "include ${forwardedProtoRedirect};";
+            
             locations."/" =
               if cfg.httpRedirect.root != null then
                 { root = cfg.httpRedirect.root; }
+              # traefik already redirected or terminated TLS, so its an unknown host, drop it
+              else if behindTraefik then
+                { return = "444"; }
               else
                 { return = "301 https://$host$request_uri"; };
           };
         }
-        // optionalAttrs cfg.dropUnknownTls.enable {
+        // optionalAttrs (cfg.dropUnknownTls.enable && !behindTraefik) {
           # Drop unknown TLS hosts after the handshake
           "_tls" = {
             serverName = "_";
