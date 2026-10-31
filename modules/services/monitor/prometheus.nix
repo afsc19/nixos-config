@@ -15,7 +15,7 @@ let
     optional
     ;
   inherit (lib.my.uptimewire) fleet;
-  inherit (lib.my.blackbox) ctfchalls hostEndpoints;
+  inherit (lib.my.blackbox) ctfchalls hostEndpoints traefikHosts;
   hasPersonalEndpoints = lib.hasAttrByPath [ "host" "blackboxPersonal" ] secrets;
   crowdsecFleet = lib.filterAttrs (_: host: host.crowdsec or false) fleet;
   thisNode = fleet."${config.networking.hostName}" or null;
@@ -191,6 +191,17 @@ in
             relabel_configs = blackboxRelabelConfigs;
           }
         ]
+        ++ optional (traefikHosts != [ ]) {
+          job_name = "traefik-endpoints-https";
+          metrics_path = "/probe";
+          params = {
+            module = [ "http_2xx" ];
+          };
+          http_sd_configs = map (host: {
+            url = "http://${fleet.${host}.ip}:${toString lib.my.ports.blackboxTraefikTargets}/targets.json";
+          }) (builtins.filter (host: fleet ? ${host}) traefikHosts);
+          relabel_configs = blackboxRelabelConfigs;
+        }
         # Personal endpoints are kept out of the (public) config and nix store:
         # prometheus reads them at runtime from the agenix-decrypted file_sd file.
         ++ optional hasPersonalEndpoints {

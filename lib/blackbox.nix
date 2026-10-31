@@ -19,6 +19,11 @@ in
       url = "https://${serverName}";
     }) publicVhosts;
 
+    # hosts publishing their traefik http_sd
+    traefikHosts = lib.attrNames (
+      lib.filterAttrs (_: host: with host.config.modules.services.traefik; enable && blackboxTargets.enable) nixosConfigurations
+    );
+
     ctfchalls = {
       targets = [
         "sqli1"

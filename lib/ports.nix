@@ -29,6 +29,10 @@
     stalwartHttp = 18081;
     # when behind traefik
     nginxBackend = 18082;
+    # traefik API, loopback only
+    traefikApi = 18083;
+    # traefik docker routers as prometheus http_sd targets, for fleet only
+    blackboxTraefikTargets = 18084;
 
     mc = 25565;
 
