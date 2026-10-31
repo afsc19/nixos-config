@@ -100,8 +100,6 @@ in
       services.prometheus = {
         enable = true;
         port = lib.my.ports.prometheusServer;
-        # FIXME TEMP
-        extraFlags = [ "--web.enable-admin-api" ];
         globalConfig.scrape_interval = "15s";
 
         scrapeConfigs = [
