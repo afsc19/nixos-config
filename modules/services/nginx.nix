@@ -71,6 +71,24 @@ let
     }) cfg.exposedServices
   );
 
+  staticVhosts = listToAttrs (
+    map (site: {
+      name = site.serverName;
+      value = {
+        useACMEHost = site.acmeHost;
+        addSSL = site.allowPlainHttp;
+        forceSSL = !site.allowPlainHttp;
+        http2 = true;
+        forwardedProtoRedirect = !site.allowPlainHttp;
+
+        locations."/" = {
+          inherit (site) root;
+          extraConfig = optionalString site.autoindex "autoindex on;";
+        };
+      };
+    }) cfg.staticSites
+  );
+
   acmeCerts = listToAttrs (
     map
       (cert: {
@@ -167,6 +185,49 @@ in
       };
     };
 
+    staticSites = mkOption {
+      type = types.listOf (
+        types.submodule {
+          options = {
+            serverName = mkOption {
+              type = types.str;
+              description = "Host serving the files.";
+            };
+
+            root = mkOption {
+              type = types.str;
+              description = "Directory served as the site root.";
+            };
+
+            acmeHost = mkOption {
+              type = types.str;
+              description = "Name of the provisioned certificate to use.";
+            };
+
+            autoindex = mkOption {
+              type = types.bool;
+              default = true;
+              description = "List directory contents.";
+            };
+
+            allowPlainHttp = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Also serve over plain HTTP instead of redirecting to HTTPS.";
+            };
+
+            alias = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+              description = "Name of the blackbox probe in grafana (defaults to serverName).";
+            };
+          };
+        }
+      );
+      default = [ ];
+      description = "Static file sites served by nginx (also probed by blackbox).";
+    };
+
     acmeCerts = mkOption {
       type = types.listOf (
         types.submodule {
@@ -202,13 +263,20 @@ in
   options.services.nginx.virtualHosts = mkOption {
     type = types.attrsOf (
       types.submodule (
-        { name, ... }:
+        { name, config, ... }:
         {
+          options.forwardedProtoRedirect = mkOption {
+            type = types.bool;
+            default = true;
+            description = "Redirect requests with X-Forwarded-Proto: http to HTTPS.";
+          };
+
           config = mkMerge [
             {
               extraConfig = mkIf (
                 cfg.enable
                 && cfg.forwardedProtoRedirect.enable
+                && config.forwardedProtoRedirect
                 && !(elem name [
                   "_"
                   "_tls"
@@ -241,6 +309,11 @@ in
           http
           https
         ]);
+
+    modules.services.monitor.blackboxEndpoints = map (site: {
+      alias = if site.alias != null then site.alias else site.serverName;
+      url = "https://${site.serverName}";
+    }) cfg.staticSites;
 
     age.secrets.nginxVhosts = mkIf (hasEncryptedVhostsSecret) {
       file = secrets.host.nginxVhosts;
@@ -289,6 +362,7 @@ in
 
       virtualHosts =
         vhosts
+        // staticVhosts
         // optionalAttrs cfg.httpRedirect.enable {
           # Port 80 default server for any host not handled by another port 80 server.
           # Serves a static root if configured, otherwise redirects HTTP -> HTTPS.

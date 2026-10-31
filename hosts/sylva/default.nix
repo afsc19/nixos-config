@@ -70,6 +70,27 @@
             dnsProvider = "cloudflare";
           }
         ];
+        # file shares, also reachable over plain HTTP (e.g. wget during CTFs)
+        staticSites = [
+          {
+            serverName = "files-ctf.andrecadete.com";
+            alias = "files-ctf";
+            root = "/srv/www/files-ctf";
+            acmeHost = "andrecadete.com";
+          }
+          {
+            serverName = "files-sinfo2026.ctf.andrecadete.com";
+            alias = "files-sinfo2026";
+            root = "/srv/www/files-sinfo2026";
+            acmeHost = "ctf.andrecadete.com";
+          }
+          {
+            serverName = "stt.andrecadete.com";
+            alias = "stt";
+            root = "/srv/www/files-sinfo2026";
+            acmeHost = "andrecadete.com";
+          }
+        ];
       };
       # Nebula (VPN)
       nebula = {
