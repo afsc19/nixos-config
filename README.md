@@ -25,6 +25,13 @@ This flake's structure is inspired by [diogotcorreia's NixOS dotfiles](https://g
  - [Easyeffects](https://github.com/wwmm/easyeffects) presets
  - Multi-arch compatibility
  - A very complete Cybersec (CTF) toolset: [Pwndbg](https://github.com/pwndbg/pwndbg), [Binary Ninja](https://binary.ninja/), [IDA](https://hex-rays.com/ida-pro), [Angr Management](https://github.com/angr/angr-management), [Ghidra](https://github.com/nationalsecurityagency/ghidra), [Burp Suite](https://portswigger.net/burp), [The Sleuth Kit + Autopsy](https://www.sleuthkit.org/), [Wireshark](https://www.wireshark.org/), [Bettercap](https://github.com/bettercap/bettercap), [Volatility3](https://github.com/volatilityfoundation/volatility3), [Volatility2](https://github.com/volatilityfoundation/volatility), [Bulk Extractor](https://github.com/simsong/bulk_extractor), and many others
+ - Secure DNS using [DNSCrypt](https://www.dnscrypt.org/)
+ - [Stalwart Mail Server](https://stalw.art/)
+ - Monitoring tools such as [Grafana](https://grafana.com/), [Prometheus](https://prometheus.io/), [Rancher](https://www.rancher.com/), [Portainer](https://www.portainer.io/), [Komodo](https://komo.do/)
+ - [CrowdSec](https://www.crowdsec.net/) IPS
+ - [Traefik](https://traefik.io/) paired with [NGINX](https://nginx.org/), automatically probed by [Blackbox Exporter](https://github.com/prometheus/blackbox_exporter) for Prometheus.
+
+TODO: reorder this ^
   
 ## Machines:
 Machines follow a specific naming convention based on the fictional solar system from [ASTRONEER](https://astroneer.fandom.com/wiki/Astroneer_Wiki). Stationary systems (those with a static physical location) are named after planets and moons.
@@ -42,10 +49,21 @@ My daily driver for general use:
 
 ### Sylva - Oracle VPS (aarch64-linux)
 The public-facing primary server and lighthouse machine, chosen for it's high bandwidth:
- - **Nebula VPN**: The main lighthouse to assist me with NAT punching.
+ - **Nebula VPN**: A lighthouse to assist me with NAT punching.
+ - **CTF Platform**: Challenges hosting for [my personal CTF](https://ctf.andrecadete.com/).
+ - **Stalwart Mail Server**: A mail server for personal use across my domains.
+ - **CrowdSec**: An IPS (Intrusion Prevention System).
  - **Services**: Hosts my personal and private services.
 
-*(Nothing else for now.)*
+*(Other undocummented things that you can find in this config.)*
+
+### Desolo - Oracle VPS (aarch64-linux)
+The public-facing server and lighthouse machine, chosen for it's high bandwidth:
+ - **Nebula VPN**: A lighthouse to assist me with NAT punching.
+ - **Stalwart Mail Server**: A mail server for personal use across my domains.
+ - **CrowdSec**: An IPS (Intrusion Prevention System).
+ - **Services**: Hosts my personal and private services.
+
 
 ### Favilla - Stationary Laptop (x86_64-linux)
 Named after Calidor's moon, this machine serves as Calidor's instancer and wakes occasionally to assist sylva with heavy workloads.
