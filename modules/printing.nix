@@ -36,6 +36,9 @@ in
 
     services.system-config-printer.enable = true;
 
+    # cups-browsed was hanging for 2mins when shutting down, just shut yoself down
+    systemd.services.cups-browsed.serviceConfig.TimeoutStopSec = "5s";
+
     systemd.services.ensure-printers = {
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
