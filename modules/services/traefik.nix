@@ -2,6 +2,11 @@
 # terminates TLS on 80/443
 # routes docker containers by their labels and hands every other host to nginx (plain HTTP on loopback)
 #
+# Traefik has a single docker provider, so with both engines a second instance reads podman:
+#   :443 edge (TLS, docker labels) -> fallback -> traefik-podman (loopback, podman labels) -> fallback -> nginx
+#   :80  edge -> nginx, which upgrades unknown (container) hosts to HTTPS
+# If traefik-podman is down, the edge falls back to nginx directly.
+#
 # A docker compose service is exposed with:
 #   labels:
 #     - traefik.enable=true
@@ -24,6 +29,86 @@ let
     types
     ;
   cfg = config.modules.services.traefik;
+
+  engines = {
+    docker = {
+      endpoint = "unix:///var/run/docker.sock";
+      group = "docker";
+      unit = "docker.service";
+    };
+    podman = {
+      endpoint = "unix:///run/podman/podman.sock";
+      group = "podman";
+      unit = "podman.socket";
+    };
+  };
+  enabledEngines = lib.filter (e: lib.elem e cfg.containerEngines) [
+    "docker" # priority over podman just because
+    "podman"
+  ];
+  edgeEngine = if enabledEngines == [ ] then null else engines.${lib.head enabledEngines};
+  podmanInstance = lib.length enabledEngines == 2;
+
+  toml = pkgs.formats.toml { };
+  loopback = port: "http://127.0.0.1:${toString port}";
+
+  podmanStatic = toml.generate "traefik-podman.toml" (
+    lib.recursiveUpdate
+      {
+        global = {
+          checkNewVersion = false;
+          sendAnonymousUsage = false;
+        };
+        log.level = "WARN";
+        entryPoints = {
+          # plain HTTP from the edge; named websecure so labels written for the edge still apply
+          websecure = {
+            address = "127.0.0.1:${toString lib.my.ports.traefikPodman}";
+            asDefault = true;
+            forwardedHeaders = { inherit trustedIPs; };
+          };
+          ping.address = "127.0.0.1:${toString lib.my.ports.traefikPodmanPing}"; # so it doesn't use websites' /ping
+        };
+        ping.entryPoint = "ping";
+        providers.docker = {
+          exposedByDefault = false;
+          inherit (engines.podman) endpoint;
+        };
+        providers.file.filename = podmanDynamic;
+      }
+      (
+        lib.optionalAttrs cfg.blackboxTargets.enable {
+          api.dashboard = false;
+          entryPoints.traefik-api.address = "127.0.0.1:${toString lib.my.ports.traefikPodmanApi}";
+        }
+      )
+  );
+  podmanDynamic = toml.generate "traefik-podman-dynamic.toml" {
+    http = {
+      routers = {
+        nginx = {
+          rule = "PathPrefix(`/`)";
+          priority = 1;
+          entryPoints = [ "websecure" ];
+          service = "nginx";
+        };
+      }
+      // lib.optionalAttrs cfg.blackboxTargets.enable {
+        api = {
+          rule = "PathPrefix(`/api`)";
+          entryPoints = [ "traefik-api" ];
+          service = "api@internal";
+        };
+      };
+      services.nginx.loadBalancer.servers = [ { url = loopback lib.my.ports.nginxBackend; } ];
+    };
+  };
+
+  # APIs polled for blackbox targets
+  traefikApis = [
+    (loopback lib.my.ports.traefikApi)
+  ]
+  ++ lib.optional podmanInstance (loopback lib.my.ports.traefikPodmanApi);
 
   # exposedServices -> one websecure router + service each, named after the host
   exposedName = entry: "nix-" + lib.replaceStrings [ "." ] [ "-" ] entry.serverName;
@@ -61,9 +146,11 @@ let
 
       # on failure the previous list stays in place
       # retries cover traefik still starting
-      curl -fsS --max-time 10 --retry 10 --retry-delay 2 --retry-connrefused "http://127.0.0.1:${toString lib.my.ports.traefikApi}/api/http/routers?per_page=10000" \
-        | jq '
-            [ .[] | select(.provider == "docker") | .rule
+      for api in ${lib.escapeShellArgs traefikApis}; do
+        curl -fsS --max-time 10 --retry 10 --retry-delay 2 --retry-connrefused "$api/api/http/routers?per_page=10000"
+      done \
+        | jq -s '
+            [ .[][] | select(.provider == "docker") | .rule
               | scan("Host\\(`([^`]+)`\\)") | .[0] ]
             | unique
             | map({ targets: ["https://\(.)"], labels: { alias: . } })
@@ -119,6 +206,24 @@ in
     };
 
     blackboxTargets.enable = mkEnableOption "publishing every docker router's Host('...') to the fleet as prometheus http_sd blackbox targets";
+
+    containerEngines = mkOption {
+      type = types.listOf (
+        types.enum [
+          "docker"
+          "podman"
+        ]
+      );
+      default = lib.filter (e: config.virtualisation.${e}.enable) [
+        "docker"
+        "podman"
+      ];
+      defaultText = lib.literalExpression "every engine with virtualisation.<engine>.enable";
+      description = ''
+        Container engines whose traefik labels are routed (podman through its docker-compatible API).
+        With both, a second traefik instance reads podman behind the edge one.
+      '';
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
@@ -128,7 +233,11 @@ in
           assertion = config.modules.services.nginx.enable;
           message = "modules.services.traefik requires modules.services.nginx (fallback backend and ACME certs).";
         }
-      ];
+      ]
+      ++ map (e: {
+        assertion = config.virtualisation.${e}.enable;
+        message = "modules.services.traefik.containerEngines contains ${e}, but virtualisation.${e} is disabled.";
+      }) enabledEngines;
 
       services.traefik = {
         enable = true;
@@ -173,8 +282,9 @@ in
             };
           };
 
-          providers.docker = {
+          providers.docker = mkIf (edgeEngine != null) {
             exposedByDefault = false;
+            inherit (edgeEngine) endpoint;
           };
         };
 
@@ -203,29 +313,76 @@ in
                 rule = "PathPrefix(`/`)";
                 priority = 1;
                 entryPoints = [ "websecure" ];
-                service = "nginx";
+                service = if podmanInstance then "podman-or-nginx" else "nginx";
               };
             }
             // exposedRouters;
             services = {
-              nginx.loadBalancer.servers = [
-                { url = "http://127.0.0.1:${toString lib.my.ports.nginxBackend}"; }
-              ];
+              nginx.loadBalancer.servers = [ { url = loopback lib.my.ports.nginxBackend; } ];
+            }
+            // lib.optionalAttrs podmanInstance {
+              traefik-podman.loadBalancer = {
+                servers = [ { url = loopback lib.my.ports.traefikPodman; } ];
+                healthCheck = {
+                  path = "/ping";
+                  port = lib.my.ports.traefikPodmanPing; # so it doesn't use websites' /ping
+                  interval = "5s";
+                  timeout = "2s";
+                };
+              };
+              podman-or-nginx.failover = {
+                service = "traefik-podman";
+                fallback = "nginx";
+              };
             }
             // exposedBackends;
           };
         };
       };
 
-      # read the socket for the docker provider (privilege escalation?)
-      users.users.traefik.extraGroups = [ "docker" ];
-
       systemd.services.traefik = {
-        wants = map (name: "acme-${name}.service") acmeCertNames;
-        after = [ "docker.service" ] ++ map (name: "acme-${name}.service") acmeCertNames;
+        wants =
+          lib.optional (edgeEngine != null) edgeEngine.unit
+          ++ map (name: "acme-${name}.service") acmeCertNames;
+        after =
+          lib.optional (edgeEngine != null) edgeEngine.unit
+          ++ map (name: "acme-${name}.service") acmeCertNames;
         serviceConfig = {
           LogsDirectory = "traefik";
           LogsDirectoryMode = "0750";
+          # read the engine's API socket for the docker/podman provider (privilege escalation?)
+          # per unit, so each instance only reaches its own engine
+          SupplementaryGroups = lib.optional (edgeEngine != null) edgeEngine.group;
+        };
+      };
+
+      # podman labels
+      systemd.services.traefik-podman = mkIf podmanInstance {
+        description = "Traefik for podman containers, behind the edge traefik";
+        wantedBy = [ "multi-user.target" ];
+        wants = [
+          "network-online.target"
+          engines.podman.unit
+        ];
+        after = [
+          "network-online.target"
+          engines.podman.unit
+        ];
+        startLimitIntervalSec = 86400;
+        startLimitBurst = 5;
+        serviceConfig = {
+          ExecStart = "${config.services.traefik.package}/bin/traefik --configfile=${podmanStatic}";
+          User = "traefik";
+          Group = "traefik";
+          SupplementaryGroups = [ engines.podman.group ];
+          Restart = "on-failure";
+          NoNewPrivileges = true;
+          PrivateTmp = true;
+          PrivateDevices = true;
+          ProtectHome = true;
+          ProtectSystem = "full";
+          RuntimeDirectory = "traefik-podman";
+          WorkingDirectory = "/run/traefik-podman";
         };
       };
 

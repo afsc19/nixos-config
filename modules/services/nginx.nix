@@ -306,8 +306,8 @@ in
           group = "uptime";
         })
         (with lib.my.ports; [
-          http
-          https
+            http
+            https
         ]);
 
     modules.services.monitor.blackboxEndpoints = map (site: {
@@ -355,6 +355,8 @@ in
         set_real_ip_from 127.0.0.1;
         set_real_ip_from ::1;
         real_ip_header X-Forwarded-For;
+        # skip every trusted (loopback) hop: edge traefik, traefik-podman, cloudflared
+        real_ip_recursive on;
 
         # avoid switching to loopback port and scheme
         absolute_redirect off;

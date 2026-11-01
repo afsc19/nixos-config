@@ -33,6 +33,10 @@
     traefikApi = 18083;
     # traefik docker routers as prometheus http_sd targets, for fleet only
     blackboxTraefikTargets = 18084;
+    # second traefik reading podman labels, loopback only
+    traefikPodman = 18085;
+    traefikPodmanApi = 18086;
+    traefikPodmanPing = 18087;
 
     mc = 25565;
 
