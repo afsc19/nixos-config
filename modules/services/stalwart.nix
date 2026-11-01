@@ -60,6 +60,16 @@ in
           type = "console";
           level = "trace";
         };
+        # file logs, shown in webadmin under Logs
+        tracer.log = {
+          enable = true;
+          type = "log";
+          level = "info";
+          path = "${config.services.stalwart.dataDir}/logs";
+          prefix = "stalwart.log";
+          rotate = "weekly";
+          ansi = false;
+        };
         config.local-keys = [
           "authentication.fallback-admin.*"
           "certificate.*"
@@ -185,6 +195,10 @@ in
     #   file = secrets.host.stalwartAdminEnv;
     #   owner = "stalwart";
     # };
+
+    systemd.tmpfiles.rules = [
+      "d ${config.services.stalwart.dataDir}/logs 0750 stalwart stalwart -"
+    ];
 
     systemd.services.stalwart = {
       wants = [ "acme-${cfg.domain}.service" ];
