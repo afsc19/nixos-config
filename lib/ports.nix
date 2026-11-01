@@ -21,6 +21,7 @@
     cockpit = 9091;
     prometheusExporter = 9100;
     prometheusNginx = 9113;
+    prometheusNginxVisitors = 9114;
     prometheusBlackbox = 9115;
     komodoCore = 9120;
 
@@ -37,6 +38,8 @@
     traefikPodman = 18085;
     traefikPodmanApi = 18086;
     traefikPodmanPing = 18087;
+    # nginx access log stream (syslog over udp) for the visitors exporter, loopback only
+    nginxVisitorsSyslog = 18088;
 
     mc = 25565;
 

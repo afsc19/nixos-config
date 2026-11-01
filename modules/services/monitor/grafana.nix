@@ -2094,6 +2094,19 @@ in
                         value = [ "$__all" ];
                       };
                     }
+                    {
+                      name = "kind";
+                      label = "Visitor kind";
+                      type = "custom";
+                      query = "human,bot";
+                      includeAll = true;
+                      multi = true;
+                      current = {
+                        selected = true;
+                        text = [ "human" ];
+                        value = [ "human" ];
+                      };
+                    }
                   ];
                 };
 
@@ -2531,6 +2544,184 @@ in
                         gradientMode = "opacity";
                         showPoints = "never";
                       };
+                    };
+                  }
+
+                  {
+                    id = 9;
+                    title = "Visitors per Minute";
+                    description = "Unique visitors (ip, or ipv6 /64, + user-agent) per minute. Excludes nebula/vpn/lan ips and blackbox probes.";
+                    type = "timeseries";
+                    interval = "1m";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (vhost) (max by (alias, vhost, kind) (nginx_visitors{job=~\"uptimewire-fleet-nginx-visitors|uptimewire-fleet-nebula-nginx-visitors\",kind=~\"$kind\"}))";
+                        legendFormat = "{{vhost}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 0;
+                      y = 20;
+                    };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      decimals = 0;
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "bars";
+                        lineWidth = 1;
+                        fillOpacity = 80;
+                        stacking.mode = "normal";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+
+                  {
+                    id = 10;
+                    title = "New Visits per Minute";
+                    description = "A visit starts when a visitor shows up after 30 minutes of inactivity.";
+                    type = "timeseries";
+                    interval = "1m";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (vhost) (max by (alias, vhost, kind) (increase(nginx_visits_total{job=~\"uptimewire-fleet-nginx-visitors|uptimewire-fleet-nebula-nginx-visitors\",kind=~\"$kind\"}[1m])))";
+                        legendFormat = "{{vhost}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 12;
+                      y = 20;
+                    };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      decimals = 0;
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "bars";
+                        lineWidth = 1;
+                        fillOpacity = 80;
+                        stacking.mode = "normal";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+
+                  {
+                    id = 11;
+                    title = "Total Visits";
+                    type = "timeseries";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sum by (vhost) (max by (alias, vhost, kind) (nginx_visits_total{job=~\"uptimewire-fleet-nginx-visitors|uptimewire-fleet-nebula-nginx-visitors\",kind=~\"$kind\"}))";
+                        legendFormat = "{{vhost}}";
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 0;
+                      y = 28;
+                    };
+                    options = {
+                      legend = {
+                        displayMode = "list";
+                        placement = "bottom";
+                        showLegend = true;
+                      };
+                      tooltip = {
+                        mode = "multi";
+                        sort = "desc";
+                      };
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      decimals = 0;
+                      color.mode = "palette-classic";
+                      custom = {
+                        drawStyle = "line";
+                        lineInterpolation = "stepAfter";
+                        lineWidth = 2;
+                        fillOpacity = 8;
+                        gradientMode = "opacity";
+                        showPoints = "never";
+                      };
+                    };
+                  }
+
+                  {
+                    id = 12;
+                    title = "Visits in Range";
+                    type = "bargauge";
+                    datasource = {
+                      type = "prometheus";
+                      uid = "prometheus";
+                    };
+                    targets = [
+                      {
+                        expr = "sort_desc(sum by (vhost) (max by (alias, vhost, kind) (increase(nginx_visits_total{job=~\"uptimewire-fleet-nginx-visitors|uptimewire-fleet-nebula-nginx-visitors\",kind=~\"$kind\"}[$__range]))))";
+                        legendFormat = "{{vhost}}";
+                        instant = true;
+                        refId = "A";
+                      }
+                    ];
+                    gridPos = {
+                      h = 8;
+                      w = 12;
+                      x = 12;
+                      y = 28;
+                    };
+                    options = {
+                      orientation = "horizontal";
+                      displayMode = "gradient";
+                      showUnfilled = true;
+                    };
+                    fieldConfig.defaults = {
+                      unit = "short";
+                      decimals = 0;
+                      min = 0;
+                      color.mode = "continuous-BlYlRd";
                     };
                   }
                 ];
