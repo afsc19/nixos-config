@@ -9,7 +9,6 @@ let
     mkEnableOption
     mkIf
     mkOption
-    optional
     types
     ;
 
@@ -41,8 +40,16 @@ in
   config = mkIf cfg.enable {
     modules.services.monitor.blackboxEndpoints = [
       {
-        alias = "portainer";
+        alias = "portainer-${hostName}";
         url = "https://${cfg.domain}";
+      }
+    ];
+
+    # only reachable through traefik's labels below (no published port)
+    assertions = [
+      {
+        assertion = config.modules.services.traefik.enable;
+        message = "modules.services.monitor.portainer is only exposed through traefik: enable modules.services.traefik.";
       }
     ];
 
