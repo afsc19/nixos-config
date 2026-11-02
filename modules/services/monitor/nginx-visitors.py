@@ -28,10 +28,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 BOT_UA = re.compile(
     r"bot|crawl|spider|slurp|scan|curl|wget|python|go-http|java/|okhttp|libwww|"
-    r"httpclient|headless|zgrab|masscan|nmap|nuclei|feed|preview|monitor|uptime",
+    r"httpclient|headless|zgrab|masscan|nmap|nuclei|feed|preview|monitor|uptime|exporter",
     re.IGNORECASE,
 )
-BLACKBOX_UA = "Blackbox Exporter"
+# "Blackbox-Exporter/0.28.0"
+BLACKBOX_UA = re.compile(r"^blackbox[- ]exporter", re.IGNORECASE)
 # server names that only drop unknown hosts (444) or serve internal endpoints
 IGNORED_VHOSTS = {"", "_", "localhost"}
 
@@ -134,7 +135,7 @@ def listen(args, visitors, blackbox):
 
         if vhost in IGNORED_VHOSTS or not ip.is_global:
             continue
-        if ua.startswith(BLACKBOX_UA) and str(ip) in blackbox.addresses:
+        if BLACKBOX_UA.match(ua) and str(ip) in blackbox.addresses:
             continue
 
         kind = "bot" if not ua or BOT_UA.search(ua) else "human"
