@@ -17,6 +17,7 @@
     graphical.editor.neovim.base.enable = true;
     hardware.oracle.enable = true;
     services = {
+      ddns.enable = true;
       dnscrypt.enable = true;
       minecraftBackup = {
         enable = true;
