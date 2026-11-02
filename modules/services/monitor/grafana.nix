@@ -646,7 +646,7 @@ in
                   maxPerRow = 5;
                   targets = [
                     {
-                      expr = "100 - max by (alias) (avg by (alias, job)(irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s]) or irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) * 100)";
+                      expr = "100 * min by (alias) (1 - (sum by (alias, job) (irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) / sum by (alias, job) (irate(node_cpu_seconds_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}[30s])) or sum by (alias, job) (irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", mode=\"idle\", alias=~\"^$alias$\"}[30s])) / sum by (alias, job) (irate(windows_cpu_time_total{job=~\"uptimewire-fleet|uptimewire-fleet-nebula\", alias=~\"^$alias$\"}[30s]))))";
                       legendFormat = "{{alias}}";
                       refId = "A";
                     }
