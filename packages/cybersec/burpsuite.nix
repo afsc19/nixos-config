@@ -94,7 +94,14 @@ stdenvNoCC.mkDerivation {
 
 
     rm -f "''$CONFIG_DIR"/burpsuite_*.jar
-    ln -sf NIX_OUT/share/burpsuite/BurpLoaderKeygen.jar "''$CONFIG_DIR/"
+    # The keygen derives its config path (.config.ini) and its burp-jar search
+    # dir from its OWN jar location via CodeSource.getLocation(), which the JVM
+    # resolves through symlinks to the read-only nix store. A symlinked keygen
+    # therefore reads/writes .config.ini in the store, so launcher settings
+    # never persist. Install it as a real file in the writable CONFIG_DIR.
+    rm -f "''$CONFIG_DIR/BurpLoaderKeygen.jar"
+    cp NIX_OUT/share/burpsuite/BurpLoaderKeygen.jar "''$CONFIG_DIR/BurpLoaderKeygen.jar"
+    chmod u+w "''$CONFIG_DIR/BurpLoaderKeygen.jar"
     for jar in NIX_OUT/share/burpsuite/burpsuite*.jar; do
       ln -sf "''$jar" "''$CONFIG_DIR/"
     done
