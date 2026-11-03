@@ -128,6 +128,19 @@
       libxcb-render-util
       libxcb-wm
       qt6.qtwayland
+      # Chromium-based binaries (for Burp Browser per example)
+      nspr
+      nss
+      alsa-lib
+      cups
+      libgbm
+      pango
+      cairo
+      at-spi2-core
+      expat
+      libxcomposite
+      libxdamage
+      udev
       # pip venv interpreters (e.g. jupyter/pyzmq) dlopen these,
       # bypassing the nix-ld shim, so they must be in NIX_LD_LIBRARY_PATH
       # for penv()'s LD_LIBRARY_PATH promotion (see modules/util/python.nix)
