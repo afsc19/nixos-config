@@ -46,6 +46,10 @@
       };
     };
 
+    # FIXME TEMP https://github.com/wwmm/easyeffects/issues/4878
+    # wireplumber >= 0.5.18 is needed for bluetooth autoswitch to follow EasyEffects' filter chain
+    wireplumber.package = pkgs.unstable.wireplumber;
+
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
     # media-session.enable = true;

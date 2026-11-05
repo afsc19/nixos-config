@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  pkgs,
   configDir,
   ...
 }:
@@ -28,6 +29,9 @@ in
     hm = {
       # Enable EasyEffects
       services.easyeffects.enable = true;
+      # FIXME TEMP https://github.com/wwmm/easyeffects/issues/4878
+      # easyeffects >= 8.3.0 sets node.link-group, needed for bluetooth autoswitch to follow its filter chain
+      services.easyeffects.package = pkgs.unstable.easyeffects;
 
       xdg.dataFile = {
 
