@@ -9,8 +9,6 @@
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.modules.graphical.browser.zen;
-
-  zenPackage = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta;
 in
 {
 
@@ -18,12 +16,11 @@ in
 
   config = mkIf cfg.enable {
     home-manager.sharedModules = [
-      inputs.zen-browser.homeModules.default
+      inputs.zen-browser.homeModules.default # default=beta, twilight=twilight
     ];
 
     hm.programs.zen-browser = {
       enable = true;
-      package = zenPackage;
       # suppressXdgMigrationWarning = true;
       policies =
         let
