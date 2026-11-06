@@ -37,7 +37,7 @@ in
       description = userFullName;
 
       # Generate using: mkpasswd -m yescrypt
-      hashedPassword = "$y$j9T$XP1FJbkdLdABy2zN51npy0$wt1a7R6A6s/habUfVh7.MNzLWMIb93CM3RqBc8bnkk6";
+      hashedPassword = "$y$j9T$ydkFj06nsAILMfd6Bhmh30$3GBaow7A3V8JOm/P17FSqtq47neTa.QQQniE0V6qkS/";
 
       shell = pkgs.zsh;
       extraGroups = [ "wheel" ];
