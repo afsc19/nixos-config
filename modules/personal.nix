@@ -35,34 +35,6 @@ in
         #   TERM = "xterm-256color";
         # };
 
-        sylva = {
-          hostname = "sylva.andrecadete.com";
-          user = "ubuntu";
-          IdentitiesOnly = "yes";
-        };
-        "world.sylva sylva.world" = {
-          hostname = "world.sylva.andrecadete.com";
-          user = "ubuntu";
-          IdentitiesOnly = "yes";
-        };
-        sigma = {
-          hostname = "sigma.ist.utl.pt";
-          user = "ist1114254";
-          PubkeyAuthentication = "no";
-        };
-
-        "rnl cluster.rnl" = {
-          hostname = "cluster.rnl.tecnico.ulisboa.pt";
-          user = "ist1114254";
-          PubkeyAuthentication = "no";
-        };
-
-        pwncollege = {
-          hostname = "pwn.college";
-          user = "hacker";
-          IdentitiesOnly = "yes";
-        };
-
       };
 
       extraConfig = ''
