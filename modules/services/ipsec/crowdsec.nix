@@ -118,6 +118,8 @@ in
         Type = "oneshot";
         User = "root";
         RemainAfterExit = true;
+        Restart = "on-failure";
+        RestartSec = 10;
       };
     };
     users.users.crowdsec.extraGroups = mkIf nginxEnabled [ "nginx" ];
