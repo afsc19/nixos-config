@@ -18,6 +18,7 @@ in
   services.displayManager.noctalia-greeter = {
     enable = true;
     greeter-args = "-- --session niri";
+    passwordless-sync-users = [ user ]; # auto_sync runs on every wallpaper change, skip the polkit password prompt
     settings = {
       session.default = "niri";
       cursor = {
