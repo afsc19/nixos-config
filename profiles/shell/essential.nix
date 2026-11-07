@@ -42,6 +42,7 @@
 
     # Misc
     fastfetch
+    unstable.fetch # animated 3D fetch (not in 26.05)
     file
     which
     tree
