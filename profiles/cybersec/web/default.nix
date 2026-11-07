@@ -24,6 +24,8 @@ in
       dbeaver-bin
       sqlitebrowser
 
+      # Recon
+      pkgs.my.cybersec.subfaster # passive subdomain enumeration
     ];
 
     shellAliases = mkIf hasPython {
