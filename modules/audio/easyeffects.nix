@@ -13,7 +13,8 @@ let
   # Define your specific device name (Run `pw-cli info all` or check EasyEffects logs to find this)
   myDeviceName = "alsa_output.usb-Logitech_PRO_X_2_LIGHTSPEED_0000000000000000-00.analog-stereo";
   myDeviceDescription = "PRO X 2 LIGHTSPEED Analog Stereo";
-  myDeviceRoute = "Analog Stereo";
+  # must match the device's active *route* description (pw-dump -> Device -> params.Route[].description), not the profile description
+  myDeviceRoute = "Analog Output";
   # Define the Preset Name
   myPresetName = "px2";
 
