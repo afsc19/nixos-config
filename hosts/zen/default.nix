@@ -57,6 +57,7 @@
     };
     shell = {
       claude-code.enable = true;
+      freebuff.enable = true;
       git.enable = true;
       opencode.enable = true;
       yazi = {
