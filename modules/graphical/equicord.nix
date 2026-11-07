@@ -3,7 +3,6 @@
   config,
   lib,
   inputs,
-  pkgs,
   ...
 }:
 let
@@ -21,10 +20,7 @@ in
         # FIXME VA-API hardware video decode on the Intel iGPU crashes SIGTRAP when a gif loads
         commandLineArgs = [ "--disable-accelerated-video-decode" ];
         vencord.enable = false;
-        equicord = {
-          enable = true;
-          package = pkgs.unstable.equicord; # Follow global pkgs so I can use overlays
-        };
+        equicord.enable = true;
       };
       config = {
         autoUpdate = true;
