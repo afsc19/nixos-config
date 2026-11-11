@@ -93,10 +93,11 @@ in
         "disk"
         "net-down"
         "net-up"
+        "gap1"
       ];
       widget.gap1 = {
         type = "spacer";
-        length = 20;
+        expand = true;
       };
       widget.cpu = {
         type = "sysmon";
