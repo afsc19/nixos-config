@@ -19,7 +19,7 @@
 stdenvNoCC.mkDerivation (finalAttrs: {
   pname = "archi";
   version = "5.11.0";
-  tag = "5.11";
+  tag = "5_11";
 
   src = fetchurl {
     url = "https://github.com/archimatetool/archi.io/releases/download/${finalAttrs.tag}/Archi-Linux64-${finalAttrs.version}.tgz";
