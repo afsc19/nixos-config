@@ -23,7 +23,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
 
   src = fetchurl {
     url = "https://github.com/archimatetool/archi.io/releases/download/${finalAttrs.tag}/Archi-Linux64-${finalAttrs.version}.tgz";
-    hash = "sha256-+UIkVaAKIvU0DcKGks6v4K1yDIzeg56q+w+rHOpXKH8=";
+    hash = "sha256-oT9PBYwW2GU8EwehRbnda93UImq8lS9YxYbEbWHbIZ4=";
   };
 
   nativeBuildInputs = [
