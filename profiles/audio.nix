@@ -21,22 +21,6 @@
     #isDefault
     #wireplumber.enable= true;
 
-    # Auto-switch between speaker/headphone profiles on jack events
-    wireplumber.extraConfig."10-alsa-autoswitch" = {
-      "monitor.alsa.rules" = [
-        {
-          matches = [
-            { "device.name" = "~alsa_card.*"; }
-          ];
-          actions = {
-            update-props = {
-              "api.acp.auto-profile" = true;
-            };
-          };
-        }
-      ];
-    };
-
     # bluetooth fixes
     wireplumber.extraConfig."20-bluez" = {
       "monitor.bluez.properties" = {
