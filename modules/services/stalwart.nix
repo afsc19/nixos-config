@@ -21,6 +21,7 @@ let
   # adminHost = "stalwart.${hostName}.${cfg.domain}";
   adminHost = mailHost;
   mailHost = "mail.${hostName}.${cfg.domain}";
+  mailUptimeHost = "mail.uptime.${hostname}.${cfg.domain}"
 
   # utils for config
   ifthen = field: data: {
@@ -220,7 +221,7 @@ in
           nebulaOnly = true;
         }
         {
-          serverName = "stalwart.uptime.${hostName}.${cfg.domain}";
+          serverName = mailUptimeHost;
           port = lib.my.ports.stalwartHttp;
           uptimewireOnly = true;
         }
