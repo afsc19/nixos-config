@@ -6,7 +6,7 @@ result-*
 .direnv
 
 secrets/*/*
-secrets/*/!*.age
+!secrets/*/*.age
 
 profiles/cybersec/rev/ida*/*
 profiles/cybersec/rev/binja/*.zip
