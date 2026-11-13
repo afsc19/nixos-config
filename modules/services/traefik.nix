@@ -124,8 +124,18 @@ let
           entryPoints = [ "websecure" ];
           service = exposedName entry;
         }
-        // lib.optionalAttrs entry.nebulaOnly { middlewares = [ "nebula-only" ]; }
-        // lib.optionalAttrs entry.uptimewireOnly { middlewares = [ "uptimewire-only" ]; }
+        // lib.optionalAttrs (entry.nebulaOnly || entry.uptimewireOnly) {
+          middlewares = [
+            (
+              if entry.nebulaOnly && entry.uptimewireOnly then
+                "vpn-only"
+              else if entry.nebulaOnly then
+                "nebula-only"
+              else
+                "uptimewire-only"
+            )
+          ];
+        }
       )
     ) cfg.exposedServices
   );
@@ -238,6 +248,7 @@ in
               type = types.enum [
                 "nebula"
                 "uptimewire"
+                "vpn-only"
                 "public"
               ];
               description = "Who may reach this host.";
@@ -368,6 +379,12 @@ in
                 "127.0.0.1/32"
                 "::1/128"
               ];
+              vpn-only.ipAllowList.sourceRange = [
+                "192.168.100.0/24"
+                lib.my.uptimewire.cdir
+                "127.0.0.1/32"
+                "::1/128"
+              ];
             }
             // lib.optionalAttrs cfg.dashboard.enable {
               traefik-dashboard-auth.basicAuth = {
@@ -406,6 +423,7 @@ in
                   middlewares =
                     lib.optional (access == "nebula") "nebula-only"
                     ++ lib.optional (access == "uptimewire") "uptimewire-only"
+                    ++ lib.optional (access == "vpn-only") "vpn-only"
                     ++ [
                       "traefik-dashboard-auth"
                       "traefik-dashboard-root"
@@ -435,6 +453,14 @@ in
           };
         };
       };
+
+      networking.firewall.interfaces.uptimeWire0.allowedTCPPorts =
+        lib.optional
+          (
+            (cfg.dashboard.enable && lib.any (h: h.access == "uptimewire" || h.access == "vpn-only") (attrValues cfg.dashboard.hosts))
+            || lib.any (e: e.uptimewireOnly) cfg.exposedServices
+          )
+          lib.my.ports.https;
 
       age.secrets.traefikDashboardAuth = mkIf cfg.dashboard.enable {
         file = secrets.host.traefikDashboardAuth;

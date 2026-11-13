@@ -11,7 +11,7 @@ let
     acc
     // lib.listToAttrs (
       map (entry: lib.nameValuePair entry.serverName entry) (
-        lib.filter (entry: !entry.nebulaOnly) (
+        lib.filter (entry: !(entry.nebulaOnly || entry.uptimewireOnly or false)) (
           host.config.modules.services.nginx.exposedServices
           ++ host.config.modules.services.traefik.exposedServices
         )
