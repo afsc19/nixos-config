@@ -219,6 +219,11 @@ in
           port = lib.my.ports.stalwartHttp;
           nebulaOnly = true;
         }
+        {
+          serverName = "stalwart.uptime.${hostName}.${cfg.domain}";
+          port = lib.my.ports.stalwartHttp;
+          uptimewireOnly = true;
+        }
       ]
       ++ optionals (config.networking.hostName == lib.my.uptimewire.captain) [
         {
