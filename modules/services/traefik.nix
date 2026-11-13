@@ -153,6 +153,8 @@ let
 
       # on failure the previous list stays in place
       # retries cover traefik still starting
+      # one api when there's no podman instance, so the loop is fine
+      # shellcheck disable=SC2043
       for api in ${lib.escapeShellArgs traefikApis}; do
         curl -fsS --max-time 10 --retry 10 --retry-delay 2 --retry-connrefused "$api/api/http/routers?per_page=10000"
       done \
