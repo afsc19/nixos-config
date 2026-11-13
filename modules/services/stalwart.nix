@@ -21,7 +21,7 @@ let
   # adminHost = "stalwart.${hostName}.${cfg.domain}";
   adminHost = mailHost;
   mailHost = "mail.${hostName}.${cfg.domain}";
-  mailUptimeHost = "mail.uptime.${hostname}.${cfg.domain}";
+  mailUptimeHost = "mail.uptime.${hostName}.${cfg.domain}";
 
   # utils for config
   ifthen = field: data: {
