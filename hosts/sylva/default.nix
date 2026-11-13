@@ -108,7 +108,8 @@
       stalwart.enable = true;
       traefik = {
         enable = true;
-        # blackboxTargets.enable = true;
+        dashboard.enable = true;
+        blackboxTargets.enable = true;
       };
       # TODO automatic append-only backups
     };

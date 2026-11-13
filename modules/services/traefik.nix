@@ -16,17 +16,20 @@
   config,
   lib,
   pkgs,
+  secrets,
   ...
 }:
 let
   inherit (lib)
     attrNames
     attrValues
+    hasAttrByPath
     mkEnableOption
     mkIf
     mkMerge
     mkOption
     types
+    my
     ;
   cfg = config.modules.services.traefik;
 
@@ -115,11 +118,15 @@ let
   exposedRouters = lib.listToAttrs (
     map (
       entry:
-      lib.nameValuePair (exposedName entry) {
-        rule = "Host(`${entry.serverName}`)";
-        entryPoints = [ "websecure" ];
-        service = exposedName entry;
-      }
+      lib.nameValuePair (exposedName entry) (
+        {
+          rule = "Host(`${entry.serverName}`)";
+          entryPoints = [ "websecure" ];
+          service = exposedName entry;
+        }
+        // lib.optionalAttrs entry.nebulaOnly { middlewares = [ "nebula-only" ]; }
+        // lib.optionalAttrs entry.uptimewireOnly { middlewares = [ "uptimewire-only" ]; }
+      )
     ) cfg.exposedServices
   );
   exposedBackends = lib.listToAttrs (
@@ -169,6 +176,8 @@ let
 
   logDir = "/var/log/traefik";
 
+  hasDashboardSecret = hasAttrByPath [ "host" "traefikDashboardAuth" ] secrets;
+
   # cloudflared connects from loopback and sets X-Forwarded-{Proto,For}
   trustedIPs = [
     "127.0.0.1/32"
@@ -198,11 +207,50 @@ in
               type = types.port;
               description = "Local TCP port of the service behind traefik.";
             };
+
+            nebulaOnly = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Restrict access to Nebula VPN IPs only.";
+            };
+
+            uptimewireOnly = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Restrict access to UptimeWire VPN IPs only.";
+            };
           };
         }
       );
       default = [ ];
       description = "Host -> local port routes";
+    };
+
+    dashboard = {
+      enable = mkEnableOption "traefik dashboard and API";
+
+      hosts = mkOption {
+        type = types.attrsOf (
+          types.submodule {
+            options.access = mkOption {
+              type = types.enum [
+                "nebula"
+                "uptimewire"
+                "public"
+              ];
+              description = "Who may reach this host.";
+            };
+          }
+        );
+        default = {
+          "traefik.${config.networking.hostName}.andrecadete.com".access = "nebula";
+          "traefik.uptime.${config.networking.hostName}.andrecadete.com".access = "uptimewire";
+        }
+        // lib.optionalAttrs (config.networking.hostName == lib.my.uptimewire.captain) {
+          "traefik.andrecadete.com".access = "public";
+        };
+        description = "Hosts serving the dashboard and who can reach them.";
+      };
     };
 
     blackboxTargets.enable = mkEnableOption "publishing every docker router's Host('...') to the fleet as prometheus http_sd blackbox targets";
@@ -234,6 +282,10 @@ in
           message = "modules.services.traefik requires modules.services.nginx (fallback backend and ACME certs).";
         }
       ]
+      ++ lib.optional cfg.dashboard.enable {
+        assertion = hasDashboardSecret;
+        message = "modules.services.traefik.dashboard needs the traefikDashboardAuth secret (htpasswd line) for this host.";
+      }
       ++ map (e: {
         assertion = config.virtualisation.${e}.enable;
         message = "modules.services.traefik.containerEngines contains ${e}, but virtualisation.${e} is disabled.";
@@ -286,7 +338,8 @@ in
             exposedByDefault = false;
             inherit (edgeEngine) endpoint;
           };
-        };
+        }
+        // lib.optionalAttrs cfg.dashboard.enable { api.dashboard = true; };
 
         dynamicConfigOptions = {
           tls = {
@@ -298,9 +351,32 @@ in
           # Docker routers are websecure-only
           http = {
             # X-Forwarded-Proto
-            middlewares.https-redirect.redirectScheme = {
-              scheme = "https";
-              permanent = true;
+            middlewares = {
+              https-redirect.redirectScheme = {
+                scheme = "https";
+                permanent = true;
+              };
+              nebula-only.ipAllowList.sourceRange = [
+                "192.168.100.0/24"
+                "127.0.0.1/32"
+                "::1/128"
+              ];
+              uptimewire-only.ipAllowList.sourceRange = [
+                lib.my.uptimewire.cdir
+                "127.0.0.1/32"
+                "::1/128"
+              ];
+            }
+            // lib.optionalAttrs cfg.dashboard.enable {
+              traefik-dashboard-auth.basicAuth = {
+                usersFile = config.age.secrets.traefikDashboardAuth.path;
+                removeHeader = true;
+              };
+              # the dashboard only lives under /dashboard/
+              traefik-dashboard-root.redirectRegex = {
+                regex = "^(https?://[^/]+)/?$";
+                replacement = "$1/dashboard/";
+              };
             };
             routers = {
               nginx-web = {
@@ -316,7 +392,25 @@ in
                 service = if podmanInstance then "podman-or-nginx" else "nginx";
               };
             }
-            // exposedRouters;
+            // exposedRouters
+            // lib.optionalAttrs cfg.dashboard.enable (
+              lib.mapAttrs' (
+                host: { access }:
+                lib.nameValuePair ("traefik-dashboard-" + lib.replaceStrings [ "." ] [ "-" ] host) {
+                  rule = "Host(`${host}`)";
+                  entryPoints = [ "websecure" ];
+                  service = "api@internal";
+                  # ip check first, then auth, so nothing leaks to anonymous visitors
+                  middlewares =
+                    lib.optional (access == "nebula") "nebula-only"
+                    ++ lib.optional (access == "uptimewire") "uptimewire-only"
+                    ++ [
+                      "traefik-dashboard-auth"
+                      "traefik-dashboard-root"
+                    ];
+                }
+              ) cfg.dashboard.hosts
+            );
             services = {
               nginx.loadBalancer.servers = [ { url = loopback lib.my.ports.nginxBackend; } ];
             }
@@ -338,6 +432,13 @@ in
             // exposedBackends;
           };
         };
+      };
+
+      age.secrets.traefikDashboardAuth = mkIf cfg.dashboard.enable {
+        file = secrets.host.traefikDashboardAuth;
+        owner = "traefik";
+        group = "traefik";
+        mode = "0400";
       };
 
       systemd.services.traefik = {
@@ -405,7 +506,7 @@ in
       services.traefik = {
         staticConfigOptions = {
           # read-only api without a dashboard
-          api.dashboard = false;
+          api.dashboard = lib.mkDefault false;
           entryPoints.traefik-api.address = "127.0.0.1:${toString lib.my.ports.traefikApi}";
         };
         dynamicConfigOptions.http.routers.api = {

@@ -11,8 +11,10 @@ let
     acc
     // lib.listToAttrs (
       map (entry: lib.nameValuePair entry.serverName entry) (
-        lib.filter (entry: !entry.nebulaOnly) host.config.modules.services.nginx.exposedServices
-        ++ host.config.modules.services.traefik.exposedServices
+        lib.filter (entry: !entry.nebulaOnly) (
+          host.config.modules.services.nginx.exposedServices
+          ++ host.config.modules.services.traefik.exposedServices
+        )
       )
     )
   ) { } (lib.attrValues nixosConfigurations);

@@ -37,6 +37,7 @@
         crowdsec = true;
       };
     };
+    cdir = "10.100.0.0/24";
     port = lib.my.ports.wireguardUptimeWire;
     captain = "sylva";
   };
