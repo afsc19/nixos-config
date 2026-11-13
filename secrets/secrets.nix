@@ -96,6 +96,7 @@ mkSecrets [
       "ociSmtpPass"
       "stalwartAdminPass"
       "rclone"
+      "traefikDashboardAuth"
     ]
   )
 
@@ -120,6 +121,7 @@ mkSecrets [
       "cloudflaredTunnel_desolo-tunnel"
       "nginxVhosts"
       "blackboxPersonal"
+      "traefikDashboardAuth"
     ]
   )
 

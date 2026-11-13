@@ -49,7 +49,11 @@
         ];
       };
       # edge proxy; containerEngine follows oci-containers (podman here)
-      traefik.enable = true;
+      traefik = {
+        enable = true;
+        dashboard.enable = true;
+        blackboxTargets.enable = true;
+      };
       # Nebula (VPN)
       nebula = {
         enable = true;
