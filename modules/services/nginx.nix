@@ -111,7 +111,11 @@ let
         ++ [
           {
             domain = "${config.networking.hostName}.andrecadete.com";
-            extraDomainNames = [ "*.${config.networking.hostName}.andrecadete.com" ];
+            extraDomainNames = [
+              "*.${config.networking.hostName}.andrecadete.com"
+              # one more level, for traefik.uptime.<host> and friends
+              "*.uptime.${config.networking.hostName}.andrecadete.com"
+            ];
             dnsProvider = "cloudflare";
           }
         ]
