@@ -211,9 +211,25 @@ in
       "stalwart.service"
     ];
 
-    # Expose the admin UI behind nginx with the existing wildcard cert
+    # Expose the admin UI through traefik when it is the edge, nginx otherwise (certs are picked by SNI, acmeHost is nginx only)
+    modules.services.traefik.exposedServices = optionals config.modules.services.traefik.enable (
+      [
+        {
+          serverName = adminHost;
+          port = lib.my.ports.stalwartHttp;
+          nebulaOnly = true;
+        }
+      ]
+      ++ optionals (config.networking.hostName == lib.my.uptimewire.captain) [
+        {
+          serverName = "mail.andrecadete.com";
+          port = lib.my.ports.stalwartHttp;
+        }
+      ]
+    );
+
     modules.services.nginx.exposedServices =
-      optionals config.modules.services.nginx.enable [
+      optionals (config.modules.services.nginx.enable && !config.modules.services.traefik.enable) [
         {
           serverName = adminHost;
           port = lib.my.ports.stalwartHttp;
@@ -221,7 +237,11 @@ in
           nebulaOnly = true;
         }
       ]
-      ++ optionals (config.networking.hostName == lib.my.uptimewire.captain) [
+      ++ optionals (
+        config.modules.services.nginx.enable
+        && !config.modules.services.traefik.enable
+        && config.networking.hostName == lib.my.uptimewire.captain
+      ) [
         {
           serverName = "mail.andrecadete.com";
           port = lib.my.ports.stalwartHttp;
