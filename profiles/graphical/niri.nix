@@ -91,6 +91,7 @@ in
         "cpu"
         "ram"
         "disk"
+        "temp"
         "net-down"
         "net-up"
         "gap1"
@@ -115,6 +116,12 @@ in
         type = "sysmon";
         stat = "disk_used_pct";
         path = "/";
+        visualization = "gauge";
+        show_value = true;
+      };
+      widget.temp = {
+        type = "sysmon";
+        stat = "cpu_temp";
         visualization = "gauge";
         show_value = true;
       };
