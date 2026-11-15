@@ -78,6 +78,12 @@ in
                       fi
                     }
         '';
+        
+        history = {
+          size = 1000000000;
+          save = 1000000000;
+          extended = true;
+        };
 
         autosuggestion.enable = true;
         zplug = {
