@@ -7,6 +7,7 @@
   environment.systemPackages = with pkgs; [
     # Basic
     vim
+    bat
     zig
     wget
     killall
