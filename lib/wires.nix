@@ -20,7 +20,7 @@
         ip = "10.100.0.5";
         pubkey = "fspwH5bBnMyMlW+y6oIt7WI9KuSsPNOdzE4U+z35BUk=";
         isHub = false;
-        crowdsec = false;
+        crowdsec = true;
       };
       "calidor" = {
         ip = "10.100.0.3";
