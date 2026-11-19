@@ -334,6 +334,7 @@ in
 
     services.nginx = {
       enable = true;
+      package = pkgs.unstable.nginxStable;
       defaultListen = mkIf behindTraefik [
         {
           addr = "127.0.0.1";
