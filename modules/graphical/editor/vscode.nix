@@ -130,14 +130,14 @@ in
             # Custom theme
             ayu-high-contrast
 
-            # Astro language support
-            astro-build.astro-vscode
-
           ]
           # Extensions not packaged in nixpkgs (lowercase)
           ++ (with pkgs.nix-vscode-extensions.vscode-marketplace; [
             # JSON formatter
             meezilla.json
+
+            # Astro language support
+            astro-build.astro-vscode
           ]);
         # inherit userSettings;
       };
