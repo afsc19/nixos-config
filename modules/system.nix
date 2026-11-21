@@ -8,6 +8,10 @@
 {
   nix.optimise.automatic = true; # replaces nix.settings.auto-optimise-store
   nix = {
+    # build in the background, desktop keeps priority
+    daemonCPUSchedPolicy = "idle";
+    daemonIOSchedClass = "idle";
+
     settings = {
       #auto-optimise-store = true;
       experimental-features = [
@@ -32,6 +36,13 @@
 
       # Use substituters even for trivial derivations
       always-allow-substitutes = true;
+
+
+      # build caps
+      max-jobs = 10;
+      cores = 10;
+      zramSwap.enable = true;
+      services.earlyoom.enable = true;
     };
 
     # Lock flake registry to keep it synced with the inputs
