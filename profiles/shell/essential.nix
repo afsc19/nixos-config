@@ -52,6 +52,7 @@
     file
     which
     tree
+    tldr
     gnused
     gawk
     zstd
