@@ -1,5 +1,6 @@
 # Rallly (meeting polls)
 # https://github.com/lukevella/rallly
+# docker exec rallly-db psql -U rallly -d rallly -c "select * from verifications order by \"created_at\" desc limit 20;"
 {
   config,
   lib,
