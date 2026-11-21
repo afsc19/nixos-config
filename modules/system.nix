@@ -41,9 +41,12 @@
       # build caps
       max-jobs = 10;
       cores = 10;
-      zramSwap.enable = true;
-      services.earlyoom.enable = true;
     };
+    
+
+    # memory optimizations
+    zramSwap.enable = true;
+    services.earlyoom.enable = true;
 
     # Lock flake registry to keep it synced with the inputs
     # i.e. used by `nix run pkgs#<package>`
