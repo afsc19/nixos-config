@@ -60,7 +60,7 @@ in
             inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
             outputs = { nixpkgs, ... }: let 
               pkgs = nixpkgs.legacyPackages.x86_64-linux;
-              pythonEnv = (pkgs.python313.withPackages (ps: [ ps.numpy ps.matplotlib ]));
+              pythonEnv = (pkgs.python313.withPackages (ps: [ ps.numpy ps.matplotlib ps.pwntools ]));
             in {
               devShells.x86_64-linux.default = pkgs.mkShell {
                 packages = with pkgs; [
