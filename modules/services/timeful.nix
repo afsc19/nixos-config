@@ -35,7 +35,7 @@ let
     COPY server/ .
     # log otp codes instead of panicking when listmonk is not set up, written against cfg.rev
     COPY --from=patches otp.patch /tmp/otp.patch
-    RUN patch -p2 < /tmp/otp.patch
+    RUN git apply -p2 /tmp/otp.patch
     RUN go build -buildvcs=false -o server .
 
     FROM alpine:3.23
