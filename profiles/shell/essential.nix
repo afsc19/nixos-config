@@ -33,6 +33,11 @@
     # Disk
     ncdu
 
+    # Transfer / backup
+    rsync
+    rclone
+    restic
+
     # Utils
     ripgrep
     gnugrep
