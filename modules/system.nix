@@ -42,11 +42,6 @@
       max-jobs = 10;
       cores = 10;
     };
-    
-
-    # memory optimizations
-    zramSwap.enable = true;
-    services.earlyoom.enable = true;
 
     # Lock flake registry to keep it synced with the inputs
     # i.e. used by `nix run pkgs#<package>`
@@ -80,6 +75,11 @@
       "my=flake:my"
     ];
   };
+
+
+  # memory optimizations
+  zramSwap.enable = true;
+  services.earlyoom.enable = true;
 
   security.sudo.extraConfig = ''
     Defaults lecture=never
