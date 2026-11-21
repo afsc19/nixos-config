@@ -77,6 +77,24 @@ in
                         echo "flake.nix created"
                       fi
                     }
+
+                    
+                    # usage: tarpush <local_dir> <user@host>:<remote_dir>
+                    # or:    tarpush <local_dir> <user@host> <remote_dir>
+                    tarpush() {
+                      local host rdir
+                      if [[ $# -eq 2 && "$2" == *:* ]] then
+                        host="''${2%%:*}"
+                        rdir="''${2#*:}"
+                      elif [[ $# -eq 3 ]] then
+                        host="$2"
+                        rdir="$3"
+                      else
+                        echo "usage: tarpush <local_dir> <user@host>:<remote_dir>\n       tarpush <local_dir> <user@host> <remote_dir>"
+                        return 1
+                      fi
+                      tar -C "$1" -czf - . | ssh "$host" "mkdir -p ''${(q)rdir} && tar -C ''${(q)rdir} -xzf -"
+                    }
         '';
         
         history = {
