@@ -17,10 +17,9 @@ let
   secretsFile = "${cfg.folder}/secrets.env";
   backend = config.virtualisation.oci-containers.backend;
   docker = "${pkgs.docker}/bin/docker";
-  image = "timeful:${builtins.substring 0 12 cfg.rev}";
 
   # upstream has no published images, and its compose file splits the frontend into a volume so this folds frontend + server into one image
-  dockerfile = pkgs.writeText "timeful.Dockerfile" ''
+  dockerfileText = ''
     FROM node:18-alpine AS frontend
     WORKDIR /app
     COPY frontend/package*.json ./
@@ -34,6 +33,9 @@ let
     WORKDIR /app
     RUN apk add --no-cache git
     COPY server/ .
+    # log otp codes instead of panicking when listmonk is not set up, written against cfg.rev
+    COPY --from=patches otp.patch /tmp/otp.patch
+    RUN patch -p2 < /tmp/otp.patch
     RUN go build -buildvcs=false -o server .
 
     FROM alpine:3.23
@@ -48,6 +50,23 @@ let
     EXPOSE 3002
     CMD ["./server", "-release=true"]
   '';
+  dockerfile = pkgs.writeText "timeful.Dockerfile" dockerfileText;
+
+  patches = pkgs.linkFarm "timeful-patches" [
+    {
+      name = "otp.patch";
+      path = ./timeful-otp.patch;
+    }
+  ];
+
+  # the build is skipped when the tag exists, so everything that goes into it has to be in the tag
+  image =
+    "timeful:"
+    + builtins.substring 0 12 (
+      builtins.hashString "sha256" (
+        cfg.rev + cfg.googleClientId + dockerfileText + builtins.readFile ./timeful-otp.patch
+      )
+    );
 in
 {
   options.modules.services.timeful = {
@@ -105,6 +124,7 @@ in
           exit 0
         fi
         ${docker} build -t ${image} \
+          --build-context patches=${patches} \
           --build-arg VUE_APP_GOOGLE_CLIENT_ID=${lib.escapeShellArg cfg.googleClientId} \
           -f- https://github.com/schej-it/timeful.app.git#${cfg.rev} < ${dockerfile}
       '';
