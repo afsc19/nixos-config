@@ -27,6 +27,11 @@ in
       default = "/var/lib/rallly";
       description = "The folder in which the database and generated secrets will be stored";
     };
+    supportEmail = mkOption {
+      type = types.str;
+      default = "support@andrecadete.com";
+      description = "Contact address shown in the app";
+    };
     domain = mkOption {
       type = types.str;
       default = "rallly.andrecadete.com";
@@ -92,6 +97,7 @@ in
         pull = "always";
         environment = {
           NEXT_PUBLIC_BASE_URL = "https://${cfg.domain}";
+          SUPPORT_EMAIL = cfg.supportEmail;
         };
         # smtp and other settings can be appended to this file by hand
         environmentFiles = [ secretsFile ];
