@@ -29,7 +29,7 @@ in
     };
     supportEmail = mkOption {
       type = types.str;
-      default = "support@andrecadete.com";
+      default = "support.rallly@andrecadete.com";
       description = "Contact address shown in the app";
     };
     domain = mkOption {
