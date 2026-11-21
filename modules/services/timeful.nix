@@ -52,12 +52,10 @@ let
   '';
   dockerfile = pkgs.writeText "timeful.Dockerfile" dockerfileText;
 
-  patches = pkgs.linkFarm "timeful-patches" [
-    {
-      name = "otp.patch";
-      path = ./timeful-otp.patch;
-    }
-  ];
+  patches = pkgs.runCommand "timeful-patches" { } ''
+    mkdir $out
+    cp ${./timeful-otp.patch} $out/otp.patch
+  '';
 
   # the build is skipped when the tag exists, so everything that goes into it has to be in the tag
   image =
