@@ -44,6 +44,7 @@
         ];
       };
       ctfd.enable = true;
+      timeful.enable = true;
       personal-website = {
         enable = true;
         acmeHost = "andrecadete.com";
