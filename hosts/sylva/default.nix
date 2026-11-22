@@ -272,8 +272,5 @@
     serviceConfig.Type = "oneshot";
   };
 
-  # TEMP
-  services.pairdrop.environment.DEBUG_MODE = true;
-
   system.stateVersion = "26.05";
 }
