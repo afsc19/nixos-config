@@ -1,0 +1,178 @@
+diff --git a/server/server.js b/server/server.js
+index d249189..6474e62 100644
+--- a/server/server.js
++++ b/server/server.js
+@@ -3,6 +3,7 @@ import RateLimit from "express-rate-limit";
+ import {fileURLToPath} from "url";
+ import path, {dirname} from "path";
+ import http from "http";
++import {registerUnlockRoutes} from "./unlock.js";
+ 
+ export default class PairDropServer {
+ 
+@@ -35,6 +36,8 @@ export default class PairDropServer {
+         const publicPathAbs = path.join(__dirname, '../public');
+         app.use(express.static(publicPathAbs));
+ 
++        registerUnlockRoutes(app);
++
+         if (conf.debugMode && conf.rateLimit) {
+             console.debug("\n");
+             console.debug("----DEBUG RATE_LIMIT----")
+diff --git a/server/unlock.js b/server/unlock.js
+new file mode 100644
+index 0000000..c126859
+--- /dev/null
++++ b/server/unlock.js
+@@ -0,0 +1,103 @@
++import crypto from "crypto";
++import express from "express";
++
++// Optional unlock, enabled by setting UNLOCK_KEY.
++// Browsers that entered the key at /unlock get the full rtc config (turn servers) and the websocket fallback.
++// Everyone else only gets the stun servers, so the relays can't be used by strangers.
++// Without UNLOCK_KEY everything behaves like upstream.
++
++const COOKIE = "pd_unlock";
++const key = process.env.UNLOCK_KEY && process.env.UNLOCK_KEY !== "false" ? process.env.UNLOCK_KEY : null;
++
++export const unlockEnabled = key !== null;
++
++const sha256 = (data) => crypto.createHash("sha256").update(data).digest();
++
++// the cookie holds a hash derived from the key, never the key itself
++const token = unlockEnabled
++    ? crypto.createHmac("sha256", key).update("pairdrop-unlock-v1").digest("hex")
++    : null;
++
++export function isUnlocked(cookieHeader) {
++    if (!unlockEnabled) return true;
++    const match = new RegExp(`(?:^|;\\s*)${COOKIE}=([0-9a-f]{64})(?:;|$)`).exec(cookieHeader || "");
++    if (!match) return false;
++    return crypto.timingSafeEqual(Buffer.from(match[1]), Buffer.from(token));
++}
++
++// keeps the stun urls and drops everything else, including the credentials
++export function stripTurn(rtcConfig) {
++    const iceServers = (rtcConfig.iceServers || [])
++        .map((server) => {
++            const urls = [].concat(server.urls).filter((url) => /^stuns?:/i.test(url));
++            return urls.length ? {urls} : null;
++        })
++        .filter(Boolean);
++    return {...rtcConfig, iceServers};
++}
++
++const page = (message) => `<!doctype html>
++<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
++<title>Unlock PairDrop</title>
++<style>
++body{font-family:system-ui,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;background:#f4f4f4;color:#222}
++form{background:#fff;padding:2rem;border-radius:12px;box-shadow:0 2px 12px #0002;width:min(90vw,22rem)}
++input,button{width:100%;box-sizing:border-box;padding:.7rem;margin-top:.8rem;font-size:1rem}
++p{margin:.5rem 0 0}
++</style></head><body>
++<form method="post" action="/unlock">
++<h2>Unlock relays</h2>
++<p>Only needed when a direct connection fails.</p>
++${message ? `<p><b>${message}</b></p>` : ""}
++<input type="password" name="password" placeholder="Password" autocomplete="current-password" autofocus required>
++<button type="submit">Unlock</button>
++</form></body></html>`;
++
++export function registerUnlockRoutes(app) {
++    if (!unlockEnabled) return;
++
++    // 10 wrong passwords per 15 minutes for each ip
++    const failures = new Map();
++    const windowMs = 15 * 60 * 1000;
++    const maxFailures = 10;
++
++    const send = (res, status, message) => {
++        res.status(status)
++            .set({
++                "Cache-Control": "no-store",
++                "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'",
++            })
++            .type("html")
++            .send(page(message));
++    };
++
++    app.get("/unlock", (req, res) => {
++        send(res, 200, isUnlocked(req.headers.cookie) ? "This device is already unlocked." : "");
++    });
++
++    app.post("/unlock", express.urlencoded({extended: false, limit: "1kb"}), (req, res) => {
++        const now = Date.now();
++        const entry = failures.get(req.ip);
++        if (entry && entry.until > now && entry.count >= maxFailures) {
++            return send(res, 429, "Too many attempts, try again later.");
++        }
++
++        const password = typeof req.body?.password === "string" ? req.body.password : "";
++        if (!crypto.timingSafeEqual(sha256(password), sha256(key))) {
++            const current = entry && entry.until > now ? entry : {count: 0, until: now + windowMs};
++            current.count++;
++            failures.set(req.ip, current);
++            return send(res, 401, "Wrong password.");
++        }
++
++        failures.delete(req.ip);
++        res.cookie(COOKIE, token, {
++            maxAge: 365 * 24 * 60 * 60 * 1000,
++            httpOnly: true,
++            secure: true,
++            sameSite: "lax",
++            path: "/",
++        });
++        res.redirect(303, "/");
++    });
++}
+diff --git a/server/ws-server.js b/server/ws-server.js
+index da24375..2be2245 100644
+--- a/server/ws-server.js
++++ b/server/ws-server.js
+@@ -3,6 +3,7 @@ import crypto from "crypto"
+ 
+ import Peer from "./peer.js";
+ import {hasher, randomizer} from "./helper.js";
++import {isUnlocked, stripTurn} from "./unlock.js";
+ 
+ export default class PairDropWsServer {
+ 
+@@ -15,10 +16,13 @@ export default class PairDropWsServer {
+         this._keepAliveTimers = {};
+ 
+         this._wss = new WebSocketServer({ server });
+-        this._wss.on('connection', (socket, request) => this._onConnection(new Peer(socket, request, conf)));
++        this._wss.on('connection', (socket, request) => this._onConnection(new Peer(socket, request, conf), request));
+     }
+ 
+-    _onConnection(peer) {
++    _onConnection(peer, request) {
++        // see unlock.js, locked clients only get stun servers and no websocket fallback
++        peer.unlocked = isUnlocked(request.headers.cookie);
++
+         peer.socket.on('message', message => this._onMessage(peer, message));
+         peer.socket.onerror = e => console.error(e);
+ 
+@@ -27,8 +31,8 @@ export default class PairDropWsServer {
+         this._send(peer, {
+             type: 'ws-config',
+             wsConfig: {
+-                rtcConfig: this._conf.rtcConfig,
+-                wsFallback: this._conf.wsFallback
++                rtcConfig: peer.unlocked ? this._conf.rtcConfig : stripTurn(this._conf.rtcConfig),
++                wsFallback: this._conf.wsFallback && peer.unlocked
+             }
+         });
+ 
+@@ -103,7 +107,7 @@ export default class PairDropWsServer {
+             case 'display-name-changed':
+             case 'ws-chunk':
+                 // relay ws-fallback
+-                if (this._conf.wsFallback) {
++                if (this._conf.wsFallback && sender.unlocked) {
+                     this._signalAndRelay(sender, message);
+                 }
+                 else {

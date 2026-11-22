@@ -48,6 +48,9 @@
       wastebin.enable = true;
       chhoto-url.enable = true;
       bentopdf.enable = true;
+      changedetection-io.enable = true;
+      pairdrop.enable = true;
+      coturn.enable = true;
       personal-website = {
         enable = true;
         acmeHost = "andrecadete.com";

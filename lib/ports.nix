@@ -46,6 +46,8 @@
     ctfd = 50200;
     wastebin = 50201;
     chhotoUrl = 50202;
+    changedetection = 50203;
+    pairdrop = 50204;
 
     # 51820 is wireguard's default, let's start at 30 to be sure
     wireguardUptimeWire = 51830;
