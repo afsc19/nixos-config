@@ -16,6 +16,8 @@
     # Monitoring
     grafana = 3000;
     prometheusCrowdsec = 6060;
+    crowdsecLAPI = 7421;
+    crowdsecAppSec = 7422;
     komodoPeriphery = 8120;
     prometheusServer = 9090;
     cockpit = 9091;
@@ -40,6 +42,8 @@
     traefikPodmanPing = 18087;
     # nginx access log stream (syslog over udp) for the visitors exporter, loopback only
     nginxVisitorsSyslog = 18088;
+    # traefik https entrypoint without the crowdsec bouncer (ctf challs), loopback only
+    traefikChall = 18089;
 
     mc = 25565;
 
