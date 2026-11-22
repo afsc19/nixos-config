@@ -470,6 +470,7 @@ in
       };
 
       systemd.services.traefik = {
+        stopIfChanged = false;
         wants =
           lib.optional (edgeEngine != null) edgeEngine.unit
           ++ map (name: "acme-${name}.service") acmeCertNames;
