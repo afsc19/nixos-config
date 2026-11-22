@@ -21,7 +21,8 @@ let
   repo = "https://github.com/GRA0007/crab.fit.git";
 
   apiDockerfileText = ''
-    FROM rust:1-slim-bookworm AS builder
+    # old lockfile, rust newer than 1.79 breaks the time and sqlx crates
+    FROM rust:1.79-slim-bookworm AS builder
     RUN apt-get update && apt-get install -y --no-install-recommends pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
     WORKDIR /src
     COPY . .
