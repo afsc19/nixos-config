@@ -93,6 +93,7 @@
     security.agenix
 
     services.ssh
+    services.vnstat
     shell.essential
   ];
 
