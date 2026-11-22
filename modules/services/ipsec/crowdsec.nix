@@ -188,7 +188,9 @@ in
 
         if [ -s "$CRED" ] && ! ${pkgs.gnugrep}/bin/grep -qxF "$WANT" "$CRED"; then
           echo "pointing lapi credentials at the current listen_uri..."
-          ${pkgs.gnused}/bin/sed -i "s|^url: .*|$WANT|" "$CRED"
+          # no sed -i, the sandbox kills it on fchown
+          NEW=$(${pkgs.gnused}/bin/sed "s|^url: .*|$WANT|" "$CRED")
+          printf '%s\n' "$NEW" > "$CRED"
         fi
       '')
     ];
