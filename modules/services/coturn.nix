@@ -103,7 +103,7 @@ in
     # it is resolved from the (ddns kept) record on every start and only ever written to the runtime config
     systemd.services.coturn = {
       path = with pkgs; [
-        glibc.bin
+        getent
         gawk
         iproute2
       ];
