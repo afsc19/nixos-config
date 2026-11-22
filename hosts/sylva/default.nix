@@ -46,6 +46,7 @@
       ctfd.enable = true;
       timeful.enable = true;
       wastebin.enable = true;
+      chhoto-url.enable = true;
       personal-website = {
         enable = true;
         acmeHost = "andrecadete.com";

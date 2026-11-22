@@ -97,6 +97,7 @@ mkSecrets [
       "stalwartAdminPass"
       "rclone"
       "traefikDashboardAuth"
+      "chhotoUrlEnv"
     ]
   )
 
