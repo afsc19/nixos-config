@@ -28,7 +28,7 @@ in
     };
     maxBodySize = mkOption {
       type = types.ints.positive;
-      default = 500 * 1024 * 1024; # 500MiB
+      default = 10 * 1024 * 1024; # 500MiB
       description = "Maximum paste size in bytes";
     };
     title = mkOption {
