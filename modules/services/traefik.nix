@@ -208,6 +208,18 @@ let
     hash = "sha256-eAfekCgUfh6titLvnrYwXi4nBuCLXyrAa2gdrixHE/E=";
   };
   bouncerDir = "${config.services.traefik.dataDir}/plugins-local/src/${bouncerModule}";
+  # every level between dataDir and the link, tmpfiles refuses root-owned dirs inside traefik's dataDir
+  bouncerParents =
+    let
+      segs = [
+        "plugins-local"
+        "src"
+      ]
+      ++ lib.init (lib.splitString "/" bouncerModule);
+    in
+    lib.genList (
+      i: lib.concatStringsSep "/" ([ config.services.traefik.dataDir ] ++ lib.take (i + 1) segs)
+    ) (lib.length segs);
 in
 {
   options.modules.services.traefik = {
@@ -538,10 +550,10 @@ in
       ) lib.my.ports.https;
 
       # traefik looks for local plugins in ./plugins-local/src/<module>
-      systemd.tmpfiles.rules = mkIf cfg.crowdsec.enable [
-        "d ${dirOf bouncerDir} 0750 traefik traefik - -"
-        "L+ ${bouncerDir} - - - - ${bouncerSrc}"
-      ];
+      systemd.tmpfiles.rules = mkIf cfg.crowdsec.enable (
+        map (d: "d ${d} 0750 traefik traefik - -") bouncerParents
+        ++ [ "L+ ${bouncerDir} - - - - ${bouncerSrc}" ]
+      );
 
       age.secrets.traefikDashboardAuth = mkIf cfg.dashboard.enable {
         file = secrets.host.traefikDashboardAuth;
