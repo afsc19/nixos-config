@@ -98,6 +98,7 @@ mkSecrets [
       "rclone"
       "traefikDashboardAuth"
       "chhotoUrlEnv"
+      "pairdropEnv"
     ]
   )
 

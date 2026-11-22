@@ -4,6 +4,7 @@
   pkgs,
   profiles,
   lib,
+  secrets,
   ...
 }:
 {
@@ -271,6 +272,14 @@
     '';
     serviceConfig.Type = "oneshot";
   };
+
+  age.secrets.pairdropEnv = {
+    file = secrets.host.pairdropEnv;
+    owner = "root";
+    group = "root";
+    mode = "0400";
+  };
+  modules.services.pairdrop.unlockEnvFile = config.age.secrets.pairdropEnv.path;
 
   system.stateVersion = "26.05";
 }
