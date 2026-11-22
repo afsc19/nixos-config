@@ -47,6 +47,7 @@
       timeful.enable = true;
       wastebin.enable = true;
       chhoto-url.enable = true;
+      bentopdf.enable = true;
       personal-website = {
         enable = true;
         acmeHost = "andrecadete.com";
