@@ -101,6 +101,9 @@ in
       };
     };
 
+    # the traefik bouncer needs lapi, so don't leave it down during activation
+    systemd.services.crowdsec.stopIfChanged = false;
+
     services.crowdsec-firewall-bouncer = {
       enable = true;
       package = pkgs.unstable.crowdsec-firewall-bouncer;

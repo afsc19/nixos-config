@@ -454,6 +454,10 @@ in
                   "192.168.100.0/24"
                   lib.my.uptimewire.cdir
                 ];
+                # if crowdsec is down, let traffic through instead of 403ing everything
+                updateMaxFailure = -1;
+                streamStartupBlock = false;
+                crowdsecAppsecUnreachableBlock = false;
               };
             }
             // lib.optionalAttrs cfg.dashboard.enable {

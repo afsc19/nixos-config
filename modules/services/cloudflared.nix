@@ -86,5 +86,13 @@ in
         }) cfg.tunnels
       );
     };
+
+    # restart at the end of a rebuild instead of staying down during activation
+    systemd.services = listToAttrs (
+      map (entry: {
+        name = "cloudflared-tunnel-${entry.tunnelID}";
+        value.stopIfChanged = false;
+      }) cfg.tunnels
+    );
   };
 }
