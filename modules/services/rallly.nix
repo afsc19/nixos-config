@@ -33,6 +33,15 @@ in
       default = "support.rallly@andrecadete.com";
       description = "Contact address shown in the app";
     };
+    allowedEmails = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      example = [
+        "me@example.com"
+        "*@uni.edu"
+      ];
+      description = "Emails allowed to register and sign in, case insensitive and * matches anything, everyone is allowed when empty";
+    };
     domain = mkOption {
       type = types.str;
       default = "rallly.andrecadete.com";
@@ -99,6 +108,9 @@ in
         environment = {
           NEXT_PUBLIC_BASE_URL = "https://${cfg.domain}";
           SUPPORT_EMAIL = cfg.supportEmail;
+        }
+        // lib.optionalAttrs (cfg.allowedEmails != [ ]) {
+          ALLOWED_EMAILS = lib.concatStringsSep "," cfg.allowedEmails;
         };
         # smtp and other settings can be appended to this file by hand
         environmentFiles = [ secretsFile ];
