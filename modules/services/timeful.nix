@@ -33,9 +33,9 @@ let
     WORKDIR /app
     RUN apk add --no-cache git
     COPY server/ .
-    # log otp codes instead of panicking when listmonk is not set up, written against cfg.rev
-    COPY --from=patches otp.patch /tmp/otp.patch
-    RUN git apply -p2 /tmp/otp.patch
+    # log otp codes instead of panicking without listmonk and add ALLOWED_EMAILS, written against cfg.rev
+    COPY --from=patches timeful.patch /tmp/timeful.patch
+    RUN git apply -p2 /tmp/timeful.patch
     RUN go build -buildvcs=false -o server .
 
     FROM alpine:3.23
@@ -54,7 +54,7 @@ let
 
   patches = pkgs.runCommand "timeful-patches" { } ''
     mkdir $out
-    cp ${./timeful-otp.patch} $out/otp.patch
+    cp ${./timeful.patch} $out/timeful.patch
   '';
 
   # the build is skipped when the tag exists, so everything that goes into it has to be in the tag
@@ -62,7 +62,7 @@ let
     "timeful:"
     + builtins.substring 0 12 (
       builtins.hashString "sha256" (
-        cfg.rev + cfg.googleClientId + dockerfileText + builtins.readFile ./timeful-otp.patch
+        cfg.rev + cfg.googleClientId + dockerfileText + builtins.readFile ./timeful.patch
       )
     );
 in
@@ -83,6 +83,15 @@ in
       type = types.str;
       default = "743f3c6f1e29d068f29fc8417479f6278478abcd";
       description = "Upstream commit to build, bump it to update";
+    };
+    allowedEmails = mkOption {
+      type = types.listOf types.str;
+      default = [ "timeful@andrecadete.com" ];
+      example = [
+        "me@example.com"
+        "*@uni.edu"
+      ];
+      description = "Emails allowed to sign in, case insensitive and * matches anything, everyone is allowed when empty";
     };
     googleClientId = mkOption {
       type = types.str;
@@ -177,6 +186,9 @@ in
           CORS_ORIGINS = "https://${cfg.domain}";
           LISTMONK_ENABLED = "false";
           CLIENT_ID = cfg.googleClientId;
+        }
+        // lib.optionalAttrs (cfg.allowedEmails != [ ]) {
+          ALLOWED_EMAILS = lib.concatStringsSep "," cfg.allowedEmails;
         };
         environmentFiles = [ secretsFile ];
         dependsOn = [ "timeful-mongo" ];
