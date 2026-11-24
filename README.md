@@ -106,7 +106,9 @@ Named after Calidor's moon, this machine serves as Calidor's instancer and wakes
 
 ## Deployment
 
-### *(Recommended)* Manual installation - From live installer to flake
+<details id="manual-live">
+<summary><b>Manual installation - From live installer to flake</b> <i>(recommended)</i></summary>
+
 If you haven't already, boot into a [NixOS live installer](https://nixos.org/download/). <br>
 I strongly recommend using a graphical installer to use GUI tools to assist the process.<br>
 Use [netboot.xyz](https://github.com/netbootxyz/netboot.xyz) if you don't have access to a bootable USB/ISO, but have a network connection.
@@ -120,7 +122,11 @@ Use [netboot.xyz](https://github.com/netbootxyz/netboot.xyz) if you don't have a
 8. Generate a hardware configuration using `nixos-generate-config --show-hardware-config` and add it as a `hardware.nix` to the dedicated host's folder.
 9. Run `sudo nixos-install --root /mnt --flake .#<hostname>`.
 
-### Manual installation - From a NixOS installation to flake
+</details>
+
+<details>
+<summary><b>Manual installation - From a NixOS installation to flake</b></summary>
+
 If you haven't already, install NixOS using [the dedicated graphical installer](https://nixos.org/download/) for ease.
 1. Establish a network connection.
 2. Make sure your system has an ssh key (use `sudo ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key`)
@@ -130,7 +136,11 @@ If you haven't already, install NixOS using [the dedicated graphical installer](
 6. Generate a hardware configuration using `nixos-generate-config --show-hardware-config` and add it as a `hardware.nix` to the dedicated host's folder.
 7. Run `sudo nixos-rebuild switch --flake .#<hostname>` on the configuration's root folder.
 
-### Deploying through SSH (with secrets - [nixrnl](https://github.com/rnl-dei/nixrnl))
+</details>
+
+<details>
+<summary><b>Deploying through SSH</b> (with secrets - <a href="https://github.com/rnl-dei/nixrnl">nixrnl</a>)</summary>
+
   > **Warning:** Do not use deploy-anywhere without setting up disko for that machine.
 
 Start a shell with a development environment:
@@ -149,8 +159,11 @@ Description of the arguments:
 
 After the deployment is complete, you should be able to SSH into the machine.
 
+</details>
 
-### *(Recommended)* How to create a live USB/ISO?
+<details>
+<summary><b>How to create a live USB/ISO?</b> <i>(recommended)</i></summary>
+
 
 To deploy your flake using a custom live USB/ISO, you need to either create a copy or temporarily add `installation-cd-graphical-calamares-gnome.nix` or [a similar installer](https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/installer/cd-dvd) to your host's configuration.
 
@@ -179,7 +192,7 @@ After the ISO is built, you can write it to a USB drive using the following comm
 dd if=result/iso/<nixosConfiguration>.iso of=/dev/sdX status=progress
 ```
 
-The installation is now identical to a [manual installation](#recommended-manual-installation---from-live-installer-to-flake):
+The installation is now identical to a [manual installation](#manual-live):
 1. Establish a network connection.
 2. Partition your storage if you haven't already. (Use GParted if on a graphical installer)
 3. Mount the filesystem partition on `/mnt` and the boot partition on `/mnt/boot`. (Use GParted again or `sudo mount /dev/sdXY /mnt && sudo mount /dev/sdXZ /mnt/boot`, taking sdX as your storage device, Y as the number of the filesystem partition and Z as the number of the boot partition)
@@ -188,6 +201,7 @@ The installation is now identical to a [manual installation](#recommended-manual
 6. Generate a hardware configuration using and add it as a `hardware.nix` to the dedicated host's folder, using: `sudo nixos-generate-config --root /mnt --show-hardware-config > /nixos-config-source/hosts/<nixosConfiguration>/hardware.nix`.
 7. Run `sudo nixos-install --root /mnt --flake .#<nixosConfiguration>`.
 
+</details>
 
 ## Useful links
  - [My NixOS](https://mynixos.com/) - Search packages and options
