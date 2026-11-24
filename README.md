@@ -36,6 +36,37 @@ TODO: reorder this ^
 ## Machines:
 Machines follow a specific naming convention based on the fictional solar system from [ASTRONEER](https://astroneer.fandom.com/wiki/Astroneer_Wiki). Stationary systems (those with a static physical location) are named after planets and moons.
 
+```mermaid
+flowchart LR
+    zen{{"⌬ <b>zen</b><br/>personal laptop<br/>x86_64 · in transit"}}
+    calidor(("🪐 <b>calidor</b><br/>desktop<br/>Windows · home"))
+    favilla(("🌕 <b>favilla</b><br/>stationary laptop<br/>x86_64 · home"))
+
+    sylva(("🌍 <b>sylva</b><br/>Oracle VPS · aarch64<br/>captain · lighthouse"))
+    desolo(("🌑 <b>desolo</b><br/>Oracle VPS · aarch64<br/>lighthouse"))
+
+    calidor -. orbit .- favilla
+    sylva -. orbit .- desolo
+    zen & calidor & favilla ==> sylva & desolo
+
+    classDef sylva fill:#3f8f4f,stroke:#a8e6a1,color:#ffffff
+    classDef desolo fill:#5b5f6b,stroke:#c9ccd6,color:#ffffff
+    classDef calidor fill:#c2682e,stroke:#f5c08a,color:#ffffff
+    classDef favilla fill:#d8b65e,stroke:#fff1c2,color:#1f1a10
+    classDef ship fill:#2f5fa8,stroke:#9cc3ff,color:#ffffff
+
+    class sylva sylva
+    class desolo desolo
+    class calidor calidor
+    class favilla favilla
+    class zen ship
+
+    linkStyle 0,1 stroke:#8a93a6,stroke-dasharray:3 3
+    linkStyle 2,3,4,5,6,7 stroke:#6fa8ff,stroke-width:2px
+```
+
+<sub>Moons orbit their planets: Desolo orbits Sylva, Favilla orbits Calidor. Arrows are the VPN (Nebula and UptimeWire) links to the two lighthouses/hubs.</sub>
+
 ### Zen - Personal Laptop (x86_64-linux)
 My daily driver for general use:
  - **Desktop**: [GNOME](https://www.gnome.org/) with my personal flavor of themes, plugins, and GUI apps.
